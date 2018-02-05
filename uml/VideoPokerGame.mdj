@@ -1,7 +1,7 @@
 {
 	"_type": "Project",
 	"_id": "AAAAAAFF+h6SjaM2Hec=",
-	"name": "Untitled",
+	"name": "Video Poker Game Python Implementation",
 	"ownedElements": [
 		{
 			"_type": "UMLModel",
@@ -3279,9 +3279,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 622,
+									"left": 606,
 									"top": 361,
-									"width": 0,
+									"width": 32.88720703125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -3291,6 +3291,7 @@
 									},
 									"edgePosition": 2,
 									"underline": false,
+									"text": "+0...5",
 									"horizontalAlignment": 2,
 									"verticalAlignment": 5,
 									"wordWrap": false
