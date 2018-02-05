@@ -30,3 +30,8 @@ Two Pair
 One Pair
 High Card
 Jacks or Better
+
+Key Novel Idea:
+We must get a deck of cards and play Poker to make sure we thorougly understand all of the rules.  
+
+We will become Poker experts once this project is completed.
