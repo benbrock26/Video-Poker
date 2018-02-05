@@ -1,0 +1,148 @@
+Python: Design Patterns
+
+Python: Python Projects
+
+Setting up the Python development environment
+
+After watching videos
+https://github.com/faif/python-patterns
+https://github.com/buckyroberts/Python-Design-Patterns
+https://github.com/gennad/Design-Patterns-in-Python
+https://bitbucket.org/davidcorne/design-patterns-in-python
+https://github.com/papisz/python-design-patterns
+https://github.com/wy36101299/Mastering-Python-Design-Patterns-Example
+
+https://github.com/faif/python-patterns
+http://deviq.com/strategy-design-pattern/
+http://deviq.com/category/principles/
+http://deviq.com/inversion-of-control/
+
+
+Good
+Fabin
+* miles
+   --> Poker::evaluateHand()
+      
+*** han
+    --> Hand::getRank() does the work for winner
+    
+* jungans
+    --> Hand::getPayout()
+
+* kaleb
+    --> Hand::getPayoutRatio()
+
+OK
+Mark
+  --> PokerGame::getScore() && PokerGame::evaluateHands()
+Lawrie-Jason
+  --> Player::IsOnePair(), Player::IsTwoPairs(), Player::IsTriplets(), Player::IsFlush(), ....Player::IsRoyalFlush()
+      and Player::ReportHand()
+
+BAD
+Jordan
+--> PokerGame::()
+Alexander Morgan
+pfeiffer
+christopher williams
+
+
+
+
+Mastering Predictive Analytics with Python
+Mastering Social Media Mining with Python
+
+https://www.udemy.com/data-science-supervised-machine-learning-in-python/?couponCode=WINTER2017
+
+https://www.udemy.com/machine-learning-in-python-random-forest-adaboost/?couponCode=WINTER2017
+
+https://www.udemy.com/unsupervised-deep-learning-in-python/?couponCode=WINTER2017
+
+
+
+Recommendation for outline for Data Science Bootcamp
+
+M/L
+Supervised
+Unsupervised
+Deep Learning
+
+Example:
+  Linear Regression
+  Classification and Regression Trees (CART) or other tree-based techniques
+  Logistic Regression
+  Decision Trees
+  Random Forest
+  Gradient Boosting Model
+  Time Series
+
+Languages
+Python
+R
+SAS
+
+Jupyter Notebook setup
+Anaconda using Python, R, MySQL. SAS all in the same notebook
+
+Programming using Python
+Several Coding exercises
+
+
+Data Mining
+Analyzing several data sets from the Data Mining class
+
+SAS
+Get SAS Certificate
+
+Exerience working with Credit Models
+- example credit default datasets
+
+Toyota Job Description
+
+Detailed knowledge of advanced analytics modeling including several of 
+Descriptive Analytics 
+  - Descriptive analytics (univariate and multivariate statistics or data visualization)
+
+Predictive analytics (supervised learning techniques such as logistic regression or Classification and Regression Trees (CART) or other tree-based techniques; and unsupervised learning models such as cluster analysis).
+
+Time series forecasting techniques.
+
+Prescriptive analytics: optimized decision strategies using methods such as decision tree models, linear programming, stochastic and/or dynamic modeling.
+
+
+
+An ability to communicate data-driven insights effectively with management and business stakeholders at their level of expertise and experience.
+
+Knowledge of statistical software such as R, Python (Numpy/Pandas), or SAS.
+Proficiency with SQL and data warehouses.
+
+Experience in developing consumer credit scoring models or other credit loss models or strategies using credit reporting data.   Experience implementing credit scorecards or other statistical models in production software. 
+
+- credit data sets
+
+
+What TFS does
+Design, develop, refine and maintain TFS credit default models using statistical software and develop Risk scoring models based on credit bureau attributes and internal data.
+
+Monitor performance of existing risk functionality (scorecards, forecasts, models, and strategies). Identify enhanced functionality and recommend improvements to leverage data science or analytics in credit risk management.
+
+Refresh and use the advanced analytics models driving TFS’s Collections Treatment Optimization program.  Develop and manage forecasts using time series techniques, including ARIMA.
+
+Westcreek Financial
+HUGE PLUS Is someone that has built a risk model, dealt with Adverse Action reasons, etc.
+
+ Responsibilities:
+-  Leadership of Data Science team and attendant people management responsibilities
+-  Construction of statistical models via machine learning, deep learning and traditional technique (e.g. logistic regression)
+-  Evaluation of new data sources
+-  Transformation of independent variables
+-  Evaluation of alternative modeling techniques and constructs
+-  Experimentation with different dependent variables and selection of dependent variables for rollout
+-  Presentation to investors on data science capability
+-  Monitoring of models for stability
+-  Collaboration with IT to enhance production systems
+-  Presentations to senior management and board on data science results and plans
+-  Continuing research on state of industry for both machine learning and lending modeling
+
+What is Random Forest Regression
+Can you explain when you will not want to use Linear Regression

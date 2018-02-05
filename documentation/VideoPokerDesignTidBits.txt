@@ -1,0 +1,32 @@
+Video Poker Game Class Relationships
+
+
+VideoPokerGame Class
+VideoPokerGame has 0 to n Player's
+VideoPokerGame has a VideoPokerGameInterface (ONLY 1 VideoPokerGame)
+VideoPokerGame has a Deck (ONLY ONE DECK)
+
+Player Class
+Each Player has a Hand (ONLY ONE HAND)
+
+
+Deck Class
+The Deck has 0 to 52 cards
+
+
+Hand Class
+The Hand class has 0 to 5 cards (MAX: 5 cards)
+
+Either we can make the Hand class complicated with a bunch of if statemeents or a simplify by having specialized hands
+Each of the following customized classes inherit from the Five Card Hand class
+Royal Flush
+Straight Flush
+Flush
+Full House
+Five of a Kind
+Four of a Kind
+Three of a Kind
+Two Pair
+One Pair
+High Card
+Jacks or Better
