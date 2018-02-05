@@ -35,3 +35,14 @@ Key Novel Idea:
 We must get a deck of cards and play Poker to make sure we thorougly understand all of the rules.  
 
 We will become Poker experts once this project is completed.
+
+
+Make sure we keep this Python code implementation very Pythonic
+- use list compression
+- use maps
+- use lists
+- use dictionary
+- use set
+- use lambda
+
+This will greatly simplify the implementation of the video poker game
