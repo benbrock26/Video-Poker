@@ -46,3 +46,17 @@ Make sure we keep this Python code implementation very Pythonic
 - use lambda
 
 This will greatly simplify the implementation of the video poker game
+
+Example implementations:
+
+https://rosettacode.org/wiki/Poker_hand_analyser
+
+https://github.com/jfilliben/poker-sim/blob/master/pokersim.py
+
+https://codereview.stackexchange.com/questions/60738/optimizing-poker-hands-challenge-solution
+
+http://briancaffey.github.io/2018/01/02/checking-poker-hands-with-python.html
+
+A poker hand evaluation and equity calculation library
+https://pypi.python.org/pypi/eval7/0.1.2
+
