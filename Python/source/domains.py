@@ -7,6 +7,7 @@ from colour import Color
 card_suites = ['Spade','Diamond','Heart','Club']
 card_values = [2,3,4,5,6,7,8,9,10,'Joker','Queen','King','Ace']
 card_colors = [Color('red'),Color('black')]
+card_priority = {'Ace':1,'King':2,'Queen':3,'Joker':4}
 
 class Card:
     def __init__(self, suite, color, value, priority):
@@ -23,10 +24,11 @@ class Deck:
         self.deck = []
         for color in card_colors:
             for suite in card_suites:
-                priority = 0
                 for value in card_values:
+                    priority = card_priority.get(value)
+                    if priority is None:
+                        priority = 999
                     card = Card(suite, color, value, priority)
-                    priority += 1
                     self.deck.append(card)
     
     def show(self):
