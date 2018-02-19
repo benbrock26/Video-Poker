@@ -32,18 +32,6 @@ class PokerGameInterface (object):
     OTHER                                           = 99
     EXIT                                            = -1
 
-    
-    MACHINE_INVENTORY_DICT = dict(
-              DIET_SODA = 0,
-              SODA      = 1,
-              JUICE     = 2,
-              NUTS      = 3,
-              CHIPS     = 4,
-              CANDY     = 5)
-                              
-    NUMBER_OF_INVENTORY_ITEMS    = 6
-
-
 
     def __init__(self, game):
         self.game = game
