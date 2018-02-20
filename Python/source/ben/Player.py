@@ -107,7 +107,7 @@ class Player(object):
      @return: LIST :  The player's hand
      '''
      def get_hand(self):
-        return self.__current_hand
+        return self.__current_hand.get_cards()
     
      def get_current_hand_size(self):
          return len(self.__current_hand.get_cards())
@@ -154,6 +154,8 @@ class Player(object):
      def add_hand_to_list_of_players_hands(self, five_stud_hand):
          self.__list_of_hands.append(five_stud_hand)
     
+     def get_list_of_players_hands_size(self):
+         return len(self.__list_of_hands)
      '''
      This was done to make the Card class iterable
      '''
@@ -179,10 +181,21 @@ def main():
     
     print "Players' current hand size:\t{}\n".format(bob.get_current_hand_size())
     
+    print "\n...Printing Bob's hand via the show_hand() method.....\n"
     bob.show_hand()
     
-    
+    print "\n...Printing Bob's hand via the get_hand() method.....\n"
+    for card in bob.get_hand():
+        card.print_card()
+        
     print "\nUpdated Number of cards in the deck:\t{}\n".format(deck.get_deck_size())
+    
+    
+    print "\nONLY ADD 5 STUD CARD HANDS TO LIST OF HISTORY OF HAND COMMANDS\n"
+    
+    bob.add_hand_to_list_of_players_hands(bob.get_hand())
+    
+    print "Number of hands listed in the HISTORY of Commands:\t{}\n".format(bob.get_list_of_players_hands_size())
     
     
     
