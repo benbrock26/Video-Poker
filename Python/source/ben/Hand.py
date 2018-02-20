@@ -79,6 +79,11 @@ class Hand(object):
     def get_number_of_cards(self):
         return len(self.__hand)
         
+    def print_hand(self):
+        for card in self.__hand:
+            card.print_card()
+            
+            
     '''
     This will be the abstract calculate_payout function to determine the 
     specific hand payout based on the bet and hand type.
@@ -103,12 +108,22 @@ def main():
     
     a = [1,2,3,1,2,3,4]
     print "Length of LIST A is:\t{}".format(len(a))
+    print "Original list:\t{}\n".format(a)
     print "Item at position 0:\t{}\n".format(a[0])
     
+    # remoove position 0 or the 1st position
     b = a[0]
     
     a.remove(b)
     
+    print "Updated Length of LIST A is:\t{}".format(len(a))
+    print "Print the new list:\t{}\n".format(a)
+    
+    #remove the last items
+    b = a[len(a)-1]
+    a.remove(b)
+    
+    print "\n....Remove the last item in the list....\n"
     print "Updated Length of LIST A is:\t{}".format(len(a))
     print "Print the new list:\t{}\n".format(a)
     
@@ -126,14 +141,26 @@ def main():
     hand.add_card(card5)
     
     print "Number of cards in the Hand LIST:\t{}\n".format(hand.get_number_of_cards())
+    print "\n...Printing hand via the get_cards() method.....\n"
+    for card in hand.get_cards():
+        card.print_card()
+        
+    print "\n...Printing hand via the print_hand() method.....\n"
+    hand.print_hand()
+        
+        
+    print "\n.....Next test  --> remove card test .....\n"
     
     card = hand.remove_card(2)
     card.print_card()
     
-    print "Updated Number of cards in the Hand LIST:\t{}\n".format(hand.get_number_of_cards())
+    print "\nUpdated Number of cards in the Hand LIST:\t{}\n".format(hand.get_number_of_cards())
+    
+    print "\n...Printing hand via the print_hand() method.....\n"
+    hand.print_hand()
     
     hand.clear()
-    print "Updated Number of cards in the Hand LIST:\t{}\n".format(hand.get_number_of_cards())
+    print "\nUpdated Number of cards in the Hand LIST:\t{}\n".format(hand.get_number_of_cards())
     
             
 if __name__ == '__main__':
