@@ -144,6 +144,17 @@ class Player(object):
         return self.__list_of_hands
     
      '''
+     add_hand_to_list_of_players_hands
+     Add the latest current hand to the list of players hands
+     This can be used to study the players hands later
+     @param: self
+     @param: list : five_stud_hand
+     @return: NONE
+     '''
+     def add_hand_to_list_of_players_hands(self, five_stud_hand):
+         self.__list_of_hands.append(five_stud_hand)
+    
+     '''
      This was done to make the Card class iterable
      '''
      def __eq__(self, other):
