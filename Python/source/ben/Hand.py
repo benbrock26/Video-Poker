@@ -89,6 +89,12 @@ class Hand(object):
     '''
     def calculate_payout(bet):
         pass
+    
+    '''
+    This was done to make the Card class iterable
+    '''
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
         
 ## Unit Test of the Hand Class ####
 def main():

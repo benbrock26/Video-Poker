@@ -102,7 +102,11 @@ class Deck(object):
     def draw_card(self):
         return self.__cards.pop()
     
-    
+    '''
+    This was done to make the Card class iterable
+    '''
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__    
             
 ## Unit Test of the Deck Class ####
 def main():
