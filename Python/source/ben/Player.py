@@ -52,7 +52,8 @@ class Player(object):
      @return: NONE
      '''
      def add_funds(self, new_funds):
-        self.__bank_roll += new_funds
+        self.__bank_roll = self.__bank_roll + int(new_funds)
+        
     
      '''
      remove_funds
@@ -61,7 +62,7 @@ class Player(object):
      @return: NONE
      '''
      def remove_funds(self, amount_of_funds):
-        self.__bank_roll -= amount_of_funds
+        self.__bank_roll = self.__bank_roll - int(amount_of_funds)
     
      '''
      get_funds
@@ -117,6 +118,11 @@ class Player(object):
          for card in self.__current_hand.get_cards():
              card.print_card()
              
+     def show_hand_single_card_format(self):
+         for card in self.__current_hand.get_cards():
+             card.print_single_card()
+             
+             
      def draw(self, deck):
          self.__current_hand.add_card(deck.draw_card())
          return self
@@ -162,6 +168,18 @@ class Player(object):
      def __eq__(self, other):
         return self.__dict__ == other.__dict__
     
+     '''
+     toString method
+     @return - String respresentation in a customized card hand order
+     '''
+     '''
+     def toString(self):
+        return "Hand: \t\t{} | {} | {} | {} | {}".format(self.__current_hand[0].print_card(),
+                                                    self.__current_hand[1].print_card(),
+                                                    self.__current_hand[2].print_card(),
+                                                    self.__current_hand[3].print_card(),
+                                                    self.__current_hand[4].print_card())
+     '''
     
 ## Unit Test of the Player Class ####
 def main():

@@ -19,26 +19,31 @@ class Poker(object):
     
     def __init__(self):
         pass
+        self.__play_game = True
+        self.__player = None
     
     def __del__(self):
         pass
     
     def add_view(self, game_view):
-        pass
+        self.game_view = game_view
     
     def add_player(self, player):
-        pass
+        self.__player = player
     
     def play(self):
         pass
     
     def get_player_funds(self):
-        pass
+        return self.__player.get_funds()
     
     def get_player_hand(self):
+        return self.__player.get_hand()
+        
+    def is_bet_valid(self, amount):
         pass
     
-    def is_bet_valid(self, amount):
+    def evaluate_hand(self):
         pass
     
     def get_straight_type(self, values):
@@ -49,6 +54,12 @@ class Poker(object):
     
     def reset_table(self):
         pass
+    
+    def get_play_game(self):
+        return self.__play_game
+    
+    def get_player(self):
+        return self.__player
     
 ## Unit Test of the Poker Class ####
 def main():
