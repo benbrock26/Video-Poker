@@ -16,6 +16,7 @@ class Hand(object):
     '''
     def __init__(self):
         self.__hand = []
+        self.__number_of_cards_in_hand = 0
     
     
     '''
@@ -24,6 +25,7 @@ class Hand(object):
     '''
     def __del__(self):
         self.clear() # delete all card objects in the hand list
+        self.__number_of_cards_in_hand = 0
         pass
     
     '''
@@ -36,6 +38,7 @@ class Hand(object):
     '''
     def add_card(self, new_card):
         self.__hand.append(new_card)
+        self.__number_of_cards_in_hand = self.__number_of_cards_in_hand + 1
     
     
     '''
@@ -51,6 +54,7 @@ class Hand(object):
         
         card = self.__hand[position]
         self.__hand.remove(card)
+        self.__number_of_cards_in_hand = self.__number_of_cards_in_hand - 1
     
         return card
     

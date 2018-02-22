@@ -23,6 +23,7 @@ class Deck(object):
     '''
     def __init__(self):
         self.__cards = []
+        self.__deck_size = 0
         self.build_deck_of_cards()
         self.shuffle()
         
@@ -55,6 +56,7 @@ class Deck(object):
         for suit in Card.SUIT_TYPE:
             for value in Card.ORDERED_RANK:
                 self.__cards.append(Card(suit, value))
+                self.__deck_size = self.__deck_size + 1
              
     '''
     show_deck_of_cards.
@@ -65,8 +67,16 @@ class Deck(object):
     '''  
     def show_deck_of_cards(self):
         
-        for c in self.__cards:
-            c.print_card()
+        '''
+        The pythonic way to do it is from the PEP 8 style guide: 
+        https://stackoverflow.com/questions/53513/how-do-i-check-if-a-list-is-empty   
+        '''
+        if self.__cards:
+            
+            for c in self.__cards:
+                c.print_card()
+        else:
+            print "CARD LIST IS EMPTY --> NO CARDS ARE IN LIST"
             
     '''
     shuffle.
@@ -100,6 +110,7 @@ class Deck(object):
     @return: Card --> returns the Card on the top of the deck of cards list.
     '''  
     def draw_card(self):
+        self.__deck_size = self.__deck_size - 1
         return self.__cards.pop()
     
     '''

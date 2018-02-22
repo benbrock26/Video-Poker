@@ -91,13 +91,15 @@ class PokerGameInterface (object):
     @return: NONE
     '''
     def display_players_five_card_stud_hand_table_summary(self):
+        #print "\nENTER PokerGameInterface::display_players_five_card_stud_hand_table_summary()\n"
         print 
         print "-----Display players 5 card stud hand table summary ------"
         print 
         #game.get_player().show_hand()
-        "Hand:\t{}\n".format(self.__game.get_player().show_hand())
+        "Hand:\t{}\n".format(self.__game.get_player().show_hand_by_index())
         print "-----------------------------------------------------------\n"
         print "Positions:\t\t  0 |   1 |   2 |   3 |   4\n\n"
+        #print "\nEXIT PokerGameInterface::display_players_five_card_stud_hand_table_summary()\n"
         
         
     '''
@@ -350,6 +352,12 @@ def main():
     game_view = PokerGameInterface(game)
     
     '''
+    Add  player Joe without a HAND to the PokerGame
+    '''
+    player_joe = Player("joe")
+    print "\n...Adding Player Joe hand to the poker game via 'game.add_player() method .....\n"
+    game.add_player(player_joe)
+    
     game.add_view(game_view)
     
     game_view.display_welcome()
@@ -357,6 +365,7 @@ def main():
     game_view.display_new_game()
     
     game_view.display_players_five_card_stud_hand_table_summary()
+    
     
     game_view.display_winnings (450)
     
@@ -381,7 +390,9 @@ def main():
     action = game_view.get_end_of_game_action()
     
     print "Players Action 'continue', 'deposit', or 'quit':\t{}\n".format(action)
-    '''
+    
+
+    
     
     '''
     Scenario 2:
@@ -431,7 +442,7 @@ def main():
     for i in range(0,5):
         game.get_player().add_card(deck.draw_card())
         
-    game.get_player().show_hand()
+    #game.get_player().show_hand()
         
     game_view.display_players_five_card_stud_hand_table_summary()
             

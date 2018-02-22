@@ -107,6 +107,14 @@ class Card(object):
     '''
     def print_card(self):
 		print "{} of {}".format(self.rank, self.suit_type)
+        
+    '''
+    print_card method for card suit_type and rank
+    @param NONE
+    @return: NONE
+    '''
+    def print_card_by_index(self, index):
+		print "Card: {} at Position {} is {} of {}".format(index, index, self.rank, self.suit_type)
 
 
     def print_single_card(self):

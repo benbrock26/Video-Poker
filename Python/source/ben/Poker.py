@@ -21,6 +21,7 @@ class Poker(object):
         pass
         self.__play_game = True
         self.__player = None
+        self.__discard_cards = []
     
     def __del__(self):
         pass

@@ -25,6 +25,7 @@ class Player(object):
          self.__list_of_hands = []
          self.__bank_roll = 0
          self.__bet_amount = 0
+         self.__current_hand_size = 0
          
      
      '''
@@ -44,7 +45,7 @@ class Player(object):
      '''
      def add_card(self, new_card):
         self.__current_hand.add_card(new_card)
-    
+        self.__current_hand_size = self.__current_hand_size + 1
      '''
      add_funds
      Adds the specified amount to the player's funds
@@ -118,6 +119,29 @@ class Player(object):
          for card in self.__current_hand.get_cards():
              card.print_card()
              
+     def show_hand_by_index(self):
+         
+         '''
+         The pythonic way to do it is from the PEP 8 style guide:
+         https://stackoverflow.com/questions/53513/how-do-i-check-if-a-list-is-empty
+         '''
+         if self.__current_hand.get_cards():
+             index = 0
+             for card in self.__current_hand.get_cards():
+                 card.print_card_by_index(index)
+                 index = index + 1
+         else:
+            print "PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
+             
+     def show_hand_ver1(self):
+         idx = 0
+         for card in self.__current_hand.get_cards():
+             self.__current_hand.get_cards()[idx].print_card()
+             idx = idx + 1
+             
+     def get_card_at_index(self, position):
+         return self.__current_hand[position]
+     
      def show_hand_single_card_format(self):
          for card in self.__current_hand.get_cards():
              card.print_single_card()
@@ -172,14 +196,14 @@ class Player(object):
      toString method
      @return - String respresentation in a customized card hand order
      '''
-     '''
+    
      def toString(self):
-        return "Hand: \t\t{} | {} | {} | {} | {}".format(self.__current_hand[0].print_card(),
-                                                    self.__current_hand[1].print_card(),
-                                                    self.__current_hand[2].print_card(),
-                                                    self.__current_hand[3].print_card(),
-                                                    self.__current_hand[4].print_card())
-     '''
+        return "Hand: \t\t{} Test\t| {} | {} | {} | {}".format(self.__current_hand.get_cards()[0].print_card(),
+                                                    self.__current_hand.get_cards()[1].print_card(),
+                                                    self.__current_hand.get_cards()[2].print_card(),
+                                                    self.__current_hand.get_cards()[3].print_card(),
+                                                    self.__current_hand.get_cards()[4].print_card())
+    
     
 ## Unit Test of the Player Class ####
 def main():
@@ -214,6 +238,12 @@ def main():
     bob.add_hand_to_list_of_players_hands(bob.get_hand())
     
     print "Number of hands listed in the HISTORY of Commands:\t{}\n".format(bob.get_list_of_players_hands_size())
+    
+    print "CARD:\t{}".format(bob.get_hand()[0].print_card())
+    position = 2
+    #print "CARD POSITION:\t{} is {}".format(position,   bob.get_card_at_index(position))
+    
+    bob.show_hand_ver1()
     
     
     
