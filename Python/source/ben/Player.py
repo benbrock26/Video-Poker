@@ -116,8 +116,12 @@ class Player(object):
     
      
      def show_hand(self):
-         for card in self.__current_hand.get_cards():
-             card.print_card()
+         
+         if self.__current_hand.get_cards():
+             for card in self.__current_hand.get_cards():
+                 card.print_card()
+         else:
+             print "PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
              
      def show_hand_by_index(self):
          
@@ -134,17 +138,24 @@ class Player(object):
             print "PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
              
      def show_hand_ver1(self):
-         idx = 0
-         for card in self.__current_hand.get_cards():
-             self.__current_hand.get_cards()[idx].print_card()
-             idx = idx + 1
+         
+         if self.__current_hand.get_cards():
+             idx = 0
+             for card in self.__current_hand.get_cards():
+                 self.__current_hand.get_cards()[idx].print_card()
+                 idx = idx + 1
+         else:
+             print "PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
              
      def get_card_at_index(self, position):
          return self.__current_hand[position]
      
      def show_hand_single_card_format(self):
-         for card in self.__current_hand.get_cards():
-             card.print_single_card()
+         if self.__current_hand.get_cards():
+             for card in self.__current_hand.get_cards():
+                 card.print_single_card()
+         else:
+             print "PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
              
              
      def draw(self, deck):

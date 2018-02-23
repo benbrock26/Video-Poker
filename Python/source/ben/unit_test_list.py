@@ -26,6 +26,7 @@ def main():
     discard_card_list = []
     
     card_list = [ 1, 2, 3, 4, 5]
+    number_of_replacement_cards = 0
 
     #print card_list[0]
     
@@ -48,10 +49,12 @@ def main():
                 
                 discard_card_list.append(temp)
                 
+                number_of_replacement_cards = number_of_replacement_cards + 1
+                
                 # remove the value from card list
                 #card_list.remove(temp)
-    
-    
+                
+ 
     if discard_indices_list:
         print "\nDISCARD POSITION LIST is {}\n".format(discard_indices_list)
     else:
@@ -62,7 +65,7 @@ def main():
     else:
         print "\nDISCARD CARD LIST IS EMPTY\n"
         
-        
+
     ## REMOVE ITEMS FROM CARD_LIST  ####
     if discard_card_list:
         #for idx in discard_card_list:
@@ -76,8 +79,18 @@ def main():
     else:
         print "\nCARD CARD LIST IS EMPTY\n"
         
+        
     '''
-    Now add random cards back to the list to replace the cards removed.
+    Based on the "n" cards that were discarded by the user, 
+    Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
+    ==> Will not have duplicate cards in the deck.
+    '''
+    print "Number of Replacement Cards:\t{}".format(number_of_replacement_cards)
+    
+    
+    '''
+    Based on the "n" cards that were discarded by the user, 
+    Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
     '''
         
 if __name__ == '__main__':
