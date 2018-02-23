@@ -15,6 +15,7 @@ for the Poker game.  This is where we will use all kinds of data visualizations
 to make the Poker game user friendly for the poker players.
 '''
 from Poker import Poker
+import sys
 
 class PokerGameInterface (object):
     
@@ -351,6 +352,8 @@ def main():
     # add a 'view' to the "controller"
     game_view = PokerGameInterface(game)
     
+    
+    print "\nNow Going Thru Scenario 1\n"
     '''
     Add  player Joe without a HAND to the PokerGame
     '''
@@ -406,11 +409,16 @@ def main():
     flush out the bugs and make sure the application is properly working as 
     intended.
     '''
+    print "\nNow Going Thru Scenario 2\n"
     bob = Player("bob")
     print "Players name:\t{}\n".format(bob.get_name())
     
-    deck = Deck()
-    deck.shuffle()
+    #deck = Deck()
+    #deck.shuffle()
+    
+    print "The number of cards in the deck of cards:\t{}".format(game.get_deck().get_deck_size())
+    
+    #sys.exit(2)
     
     #print "Number of cards in the deck:\t{}\n" .format(deck.get_deck_size())
     
@@ -439,13 +447,24 @@ def main():
     
     bet_amount = game_view.get_bet()
     
-    for i in range(0,5):
-        game.get_player().add_card(deck.draw_card())
+    for i in range(0, 5):
+        game.get_player().add_card(game.get_deck().draw_card())
+        
+    '''
+    List Comprehension
+    The above command is coded up in the Pythonic way listed below.
+    '''
+    #[game.get_player().add_card(game.get_deck().draw_card()) for i in range(0, 5)]
         
     #game.get_player().show_hand()
         
     game_view.display_players_five_card_stud_hand_table_summary()
             
+    print "The number of cards in the deck of cards:\t{}".format(game.get_deck().get_deck_size())
+    
+    # Card Position Keep/Delete Card Management
+    game.player_card_keep_delete_position_management()
+    
 if __name__ == '__main__':
     main()
     

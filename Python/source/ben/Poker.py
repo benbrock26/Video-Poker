@@ -7,7 +7,7 @@ Created on Mon Feb 19 21:58:28 2018
 
 from Deck import Deck
 from Player import Player
-
+import sys
 
 '''
 Starting Boilerplate for the Poker class.
@@ -21,16 +21,17 @@ class Poker(object):
     STARTING_CARD_SIZE    = 0
     
     def __init__(self):
-        pass
+        
         self.__play_game = True
-        self.__player = None
         self.__discard_cards = []
-        self.__game_view = []
         self.__discard_indices_list = []
         self.__discard_card_list = []
         self.__number_of_replacement_cards = 0
         
-        self.__deck = Deck()
+        # instantiate the objects controlled by the Poker object
+        self.__deck = Deck()        ## 1 deck of cards
+        self.__player = None        ## 1 to many player's
+        self.__game_view = None     ## 1 PokerGameInterface
     
     def __del__(self):
         pass
@@ -43,7 +44,7 @@ class Poker(object):
     @return: NONE
     '''
     def add_view(self, game_view):
-        self.game_view = game_view
+        self.__game_view = game_view
     
     def add_player(self, player):
         self.__player = player
@@ -88,11 +89,11 @@ class Poker(object):
         self.__discard_card_list = []
         self.__number_of_replacement_cards = 0
         
-        if self.__current_hand.get_cards():
+        if self.__player.get_hand():
             
             for idx in range(Poker.STARTING_CARD_SIZE, Poker.MAX_CARD_HAND_SIZE):
                 
-                action  = self.__game_view.checker_action(idx)
+                action  = self.__game_view.get_action(idx)
                 
                 if action in ['k', 'd']:
                     
@@ -120,20 +121,26 @@ class Poker(object):
                
             if self.__discard_card_list:
                 print "\nDISCARD CARD LIST is {}\n".format(self.__discard_card_list)
+                [card.print_card()  for card in self.__discard_card_list]
             else:
                print "\nDISCARD CARD LIST IS EMPTY\n" 
              
             print "Number of Replacement Cards:\t{}".format(self.__number_of_replacement_cards)            
+            
+            '''
             # add new random card or cards to the players hand
             self.add_new_card_to_hand()
+            '''
             
             '''
             Based on the "n" cards that were discarded by the user, 
             Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
             ==> Will not have duplicate cards in the deck.
             '''
+            '''
             # add the discarded cars back to the Deck
             self.add_discarded_cards_back_to_deck()
+            '''
                     
         else:
             print "CANNOT KEEP OR DISCARD MANAGEMENT OF PLAYERS' HAND ==> PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
@@ -150,6 +157,9 @@ class Poker(object):
     '''
     def add_discarded_cards_back_to_deck(self):
         pass
+    
+    def get_deck(self):
+        return self.__deck
     
 ## Unit Test of the Poker Class ####
 def main():

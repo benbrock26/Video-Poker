@@ -109,7 +109,8 @@ class Player(object):
      @return: LIST :  The player's hand
      '''
      def get_hand(self):
-        return self.__current_hand.get_cards()
+        #return self.__current_hand.get_cards()
+        return self.__current_hand
     
      def get_current_hand_size(self):
          return len(self.__current_hand.get_cards())
@@ -238,7 +239,7 @@ def main():
     bob.show_hand()
     
     print "\n...Printing Bob's hand via the get_hand() method.....\n"
-    for card in bob.get_hand():
+    for card in bob.get_hand().get_cards():
         card.print_card()
         
     print "\nUpdated Number of cards in the deck:\t{}\n".format(deck.get_deck_size())
@@ -250,7 +251,7 @@ def main():
     
     print "Number of hands listed in the HISTORY of Commands:\t{}\n".format(bob.get_list_of_players_hands_size())
     
-    print "CARD:\t{}".format(bob.get_hand()[0].print_card())
+    print "CARD:\t{}".format(bob.get_hand().get_cards()[0].print_card())
     position = 2
     #print "CARD POSITION:\t{} is {}".format(position,   bob.get_card_at_index(position))
     

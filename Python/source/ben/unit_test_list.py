@@ -5,7 +5,9 @@ Created on Wed Feb 21 19:48:55 2018
 @author: Ben Brock
 """
 
-
+MAX_CARD_HAND_SIZE    = 5
+STARTING_CARD_SIZE    = 0
+    
 '''
 Will not have duplicate cards in the deck.
 '''
@@ -30,7 +32,7 @@ def main():
 
     #print card_list[0]
     
-    for idx in range(0, 5):
+    for idx in range(STARTING_CARD_SIZE, MAX_CARD_HAND_SIZE):
         #print card_list[idx]
         action = checker_action(idx)
         
