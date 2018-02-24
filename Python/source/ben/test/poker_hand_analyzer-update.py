@@ -3,6 +3,8 @@
 
 https://rosettacode.org/wiki/Poker_hand_analyser#Python
 
+https://en.wikipedia.org/wiki/List_of_poker_hands
+
 Created on Sat Feb 24 08:33:29 2018
 
 @author: Ben Brock and Shazia Zaman
@@ -16,7 +18,7 @@ class Card(namedtuple('Card', 'face, suit')):
         return ''.join(self)
  
  
-suit = '♥ ♦ ♣ ♠'.split()
+suit = 'h d c s'.split()
 # ordered strings of faces
 faces   = '2 3 4 5 6 7 8 9 10 j q k a'
 lowaces = 'a 2 3 4 5 6 7 8 9 10 j q k'
@@ -132,7 +134,7 @@ def rank(cards):
     assert rank, "Invalid: Failed to rank cards: %r" % cards
     return rank
  
-def handy(cards='2♥ 2♦ 2♣ k♣ q♦'):
+def handy(cards='2h 2d 2c kc qd'):
     hand = []
     for card in cards.split():
         f, s = card[:-1], card[-1]
@@ -155,27 +157,61 @@ def convert_unicode(text):
  
 if __name__ == '__main__':
     
+    #suit = 'h d c s'.lower()
+    #print suit
+    
+    #sys.exit(1)
     #sent = '@bob said the #chicken was at the #junkyard.'
     #out_tokens = convert_unicode(sent.split())
     #print(out_tokens)
     
-    hands = ["2♥ 2♦ 2♣ k♣ q♦",
-     "2♥ 5♥ 7♦ 8♣ 9♠",
-     "a♥ 2♦ 3♣ 4♣ 5♦",
-     "2♥ 3♥ 2♦ 3♣ 3♦",
-     "2♥ 7♥ 2♦ 3♣ 3♦",
-     "2♥ 7♥ 7♦ 7♣ 7♠",
-     "10♥ j♥ q♥ k♥ a♥"] + [
-     "4♥ 4♠ k♠ 5♦ 10♠",
-     "q♣ 10♣ 7♣ 6♣ 4♣",
-     ]
+    '''
+    c1= ['10s','Js','Qs','Ks','As']  # --> Royal Flush!
+    c2=['4d','5d','6d','7d','8d']    # --> Straight Flush!
+    c3=['Qs','Qd','Qc','Qh','10s']   # --> Four of a kind!
+    c4=['Ks','Kd','3h','3s','3c']    # --> Full house!
+    c5=['Ad','Qd','6d','Jd','2d']    # --> Flush
+    c6=['Ks','Qd','Jc','10h','9s']   #  --> Straight
+    c7=['5d','Js','8h','8s','8d']    # --> Three of a kind!
+    c8=['10s','Qd','7s','Qc','7h']   # --> Two pairs!
+    c9=['10s','Jd','7s','6h','6s']   # --> Pair!
+    c10=['7c','6d','4s','3h','2c']   # --> High Card
+    
+    c20 = ['As', 'Ac', 'Ah', 'Ad', '2c']     # four of a kind 
+    c21 = ['Jc', '10c', '9c', '8c', '7c']    # straight flush
+    c22 = ['5c', '5d', '5h', '5s', '2d']     # four of a kind
+    c23 = ['6s', '6h', '6d', 'Kc', 'Kh']     # full house
+    c24 = ['Jd', '9d','8d', '4d', '3d']      # flush
+    c25 = ['10d', '9s', '8h', '7d', '6c' ]   # straight
+    c26 = ['Qc', 'Qs', 'Qh', '9h', '2s']     # three of a kind 
+    c27 = ['Jh', 'Jc', '3c', '3s', '2h']    # two pair
+    c28 = ['10c', '10h', '8s', '7h', '4c']   # one pair
+    c29 = ['Kd', 'Qd', '7s', '4s', '2h']     # high card
+    c30 = ['Jh', 'Jc', '3c', '3s', '2h']     # --> Two pairs!
+    '''
+    
+    hands = ["2h 2d 2c kc qd",
+     "2h 5h 7d 8c 9h",
+     "ah 2d 3c 4c 5d",
+     "2h 3h 2d 3c 3d",
+     "2h 7h 2d 3c 3d",
+     "2h 7h 7d 7c 7s",
+     "10h jh qh kh ah"] + [
+     "4h 4c ks 5d 10s",
+     "qc 10c 7c 6c 4c"] + [
+     "10s js qs ks as",
+     '4d 5d 6d 7d 8d',
+     'qs qd qc qh 10s',
+     'ks kd 3h 3s 3c']
+             
+    
     print("%-18s %-15s %s" % ("HAND", "CATEGORY", "TIE-BREAKER"))
     #sys.exit(2)
     
-    print hands[0].split()
-    print len(hands[0].split())
+    #print hands[0].split()
+    #print len(hands[0].split())
     #sys.exit(2)
     
     for cards in hands:
         r = rank(cards)
-        print("%-18r %-15s %r" % (cards, convert_unicode(r[0]), convert_unicode(r[1])))
+        print("%-18r %-15s %r" % (cards, r[0], r[1]))
