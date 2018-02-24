@@ -43,13 +43,13 @@ class Hand(object):
         return self.hasFlush() and self.hasStraight()
     def hasFourOfAKind(self):#3rd
         hand=self.values
-        return (hand[0]==hand[1] and hand[1]==hand[2] and hand[2]==hand[3] and hand[3]!=hand[4]) or
-(hand[0]!=hand[1] and hand[1]==hand[2] and hand[2]==hand[3] and hand[3]==hand[4])
+        return ((hand[0]==hand[1] and hand[1]==hand[2] and hand[2]==hand[3] and hand[3]!=hand[4]) or
+(hand[0]!=hand[1] and hand[1]==hand[2] and hand[2]==hand[3] and hand[3]==hand[4]))
 
     def hasFullHouse(self):#4th
         hand=self.values
-        return (hand[0]==hand[1] and hand[1]==hand[2] and hand[2]!=hand[3] and hand[3]==hand[4]) or
-(hand[0]==hand[1] and hand[1]!=hand[2] and hand[2]==hand[3] and hand[3]==hand[4])
+        return ((hand[0]==hand[1] and hand[1]==hand[2] and hand[2]!=hand[3] and hand[3]==hand[4]) or
+(hand[0]==hand[1] and hand[1]!=hand[2] and hand[2]==hand[3] and hand[3]==hand[4]))
 
     def hasFlush(self):#5th
         s=self.suits
@@ -62,22 +62,22 @@ class Hand(object):
 
     def hasThreeOfAKind(self):#7th
         hand=self.values
-        return (hand[0]==hand[1] and hand[1]==hand[2] and hand[2]!=hand[3] and hand[3]!=hand[4])
+        return ((hand[0]==hand[1] and hand[1]==hand[2] and hand[2]!=hand[3] and hand[3]!=hand[4])
 or (hand[0]!=hand[1] and hand[1]==hand[2] and hand[2]==hand[3] and hand[3]!=hand[4]) or
-(hand[0]!=hand[1] and hand[1]!=hand[2] and hand[2]==hand[3] and hand[3]==hand[4])
+(hand[0]!=hand[1] and hand[1]!=hand[2] and hand[2]==hand[3] and hand[3]==hand[4]))
 
     def hasTwoPairs(self):#8th
         hand=self.values
-        return (hand[0]==hand[1] and hand[1]!=hand[2] and hand[2]==hand[3] and hand[3]!=hand[4])
+        return ((hand[0]==hand[1] and hand[1]!=hand[2] and hand[2]==hand[3] and hand[3]!=hand[4])
 or (hand[0]==hand[1] and hand[1]!=hand[2] and hand[2]!=hand[3] and hand[3]==hand[4]) or
-(hand[0]!=hand[1] and hand[1]==hand[2] and hand[2]!=hand[3] and hand[3]==hand[4])
+(hand[0]!=hand[1] and hand[1]==hand[2] and hand[2]!=hand[3] and hand[3]==hand[4]))
 
     def hasPair(self):#9th
         hand=self.values
-        return (hand[0]==hand[1] and hand[1]!=hand[2] and hand[2]!=hand[3] and hand[3]!=hand[4]) or
+        return ((hand[0]==hand[1] and hand[1]!=hand[2] and hand[2]!=hand[3] and hand[3]!=hand[4]) or
 (hand[0]!=hand[1] and hand[1]==hand[2] and hand[2]!=hand[3] and hand[3]!=hand[4]) or
 (hand[0]!=hand[1] and hand[1]!=hand[2] and hand[2]==hand[3] and hand[3]!=hand[4]) or
-(hand[0]!=hand[1] and hand[1]!=hand[2] and hand[2]!=hand[3] and hand[3]==hand[4])
+(hand[0]!=hand[1] and hand[1]!=hand[2] and hand[2]!=hand[3] and hand[3]==hand[4]))
 
     # in the getRank function, lower ranks will be masked by higher ranks
     def getRank(self):
