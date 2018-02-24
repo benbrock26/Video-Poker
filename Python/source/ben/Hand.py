@@ -68,6 +68,10 @@ class Hand(object):
     def get_cards(self):
         return self.__hand
     
+    
+    def get_card_list(self):
+        return self.__hand.get_cards()
+    
     '''
     clear
     clear, remove, or empty all items in the hand list

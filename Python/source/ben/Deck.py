@@ -118,6 +118,9 @@ class Deck(object):
     '''
     def __eq__(self, other):
         return self.__dict__ == other.__dict__    
+    
+    def get_cards(self):
+        return self.__cards
             
 ## Unit Test of the Deck Class ####
 def main():

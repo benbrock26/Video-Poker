@@ -361,6 +361,8 @@ def main():
     print "\n...Adding Player Joe hand to the poker game via 'game.add_player() method .....\n"
     game.add_player(player_joe)
     
+    print "The number of cards in the deck of cards:\t{}".format(game.get_deck().get_deck_size())
+    
     game.add_view(game_view)
     
     game_view.display_welcome()
@@ -394,7 +396,7 @@ def main():
     
     print "Players Action 'continue', 'deposit', or 'quit':\t{}\n".format(action)
     
-
+    #sys.exit(2)
     
     
     '''
