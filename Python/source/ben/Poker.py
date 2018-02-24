@@ -7,6 +7,7 @@ Created on Mon Feb 19 21:58:28 2018
 
 from Deck import Deck
 from Player import Player
+from PokerGameTheoryStrategy import PokerGameTheoryStrategy
 import sys
 
 debug = 0
@@ -34,6 +35,7 @@ class Poker(object):
         self.__deck = Deck()        ## 1 deck of cards
         self.__player = None        ## 1 to many player's
         self.__game_view = None     ## 1 PokerGameInterface
+        self.__poker_game_theory_strategy   = PokerGameTheoryStrategy()  # Nash Equilibrium Game Theory
     
     def __del__(self):
         pass
@@ -134,23 +136,24 @@ class Poker(object):
                 print "\n\nNumber of Replacement Cards:\t{}".format(self.__number_of_replacement_cards)            
             
             
-            self.remove_cards_from_hand()
-            
             if self.__number_of_replacement_cards > 0:
+                
+                # removed the player's requested cards from the player's current hand
+                self.remove_cards_from_hand()
+                
                 # add new random card or cards to the players hand
                 self.add_new_cards_to_hand()
                 
+                # Update poker game player user experience or hand summary
                 self.__game_view.display_players_five_card_stud_hand_table_summary()
-            
-            
-            '''
-            Based on the "n" cards that were discarded by the user, 
-            Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
-            ==> Will not have duplicate cards in the deck.
-            '''
-            
-            # add the discarded cars back to the Deck
-            self.add_discarded_cards_back_to_deck()
+                
+                '''
+                Based on the "n" cards that were discarded by the user, 
+                Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
+                ==> Will not have duplicate cards in the deck.
+                '''
+                # add the discarded cars back to the Deck
+                self.add_discarded_cards_back_to_deck()
                     
         else:
             print "CANNOT KEEP OR DISCARD MANAGEMENT OF PLAYERS' HAND ==> PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
