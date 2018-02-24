@@ -158,7 +158,7 @@ class Poker(object):
         
     def add_new_cards_to_hand(self):
         
-        #[ self.get_player_hand().get_cards().add_card(self.__deck.draw_card()) for index in range(0, self.__number_of_replacement_cards) ]
+        #[ self.__player.get_hand().add_card(self.__deck.draw_card()) for index in range(0, self.__number_of_replacement_cards) ]
         
         if debug == 1:
             print
