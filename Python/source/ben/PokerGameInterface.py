@@ -312,29 +312,6 @@ def main():
     
     print "\n.... This is where most of the Poker Game Interface logic will be located for the Poker Game presentation...\n"
     
-    '''
-    ## Read raw input from key board
-    deposit_amount = raw_input("Type in the amount of coins you would like to deposit: ")
-    
-    print(isinstance("25",int))
-    print(isinstance("25",str))
-    
-    if deposit_amount.isdigit():
-        print "YOU ENTERED A CORRECT NUMBER:\t{}\n".format(deposit_amount)
-    else:
-        print "PLEASE ENTER AN INTEGER VALUE NOT:\t{}".format(deposit_amount)
-        
-    #print "DEPOSIT AMOUNT:\t{}\n".format(deposit_amount)
-    
-    checker()
-   
-    checkerv1()
-    
-    checker_range()
-
-    checker_action(1)
-    checker_game_continue()
-    '''
     from PokerGameInterface import PokerGameInterface
     from Player import Player
     from Deck import Deck
@@ -422,16 +399,6 @@ def main():
     
     #sys.exit(2)
     
-    #print "Number of cards in the deck:\t{}\n" .format(deck.get_deck_size())
-    
-    
-    #bob.draw(deck).draw(deck).draw(deck).draw(deck).draw(deck)
-    
-    #print "Players' current hand size:\t{}\n".format(bob.get_current_hand_size())
-    
-    #print "\n...Printing Bob's hand via the show_hand() method.....\n"
-    #bob.show_hand()
-    
     '''
     Add a player to the PokerGame
     '''
@@ -457,8 +424,6 @@ def main():
     The above command is coded up in the Pythonic way listed below.
     '''
     #[game.get_player().add_card(game.get_deck().draw_card()) for i in range(0, 5)]
-        
-    #game.get_player().show_hand()
         
     game_view.display_players_five_card_stud_hand_table_summary()
             

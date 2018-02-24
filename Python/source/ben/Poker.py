@@ -184,6 +184,9 @@ class Poker(object):
         
         [ self.__deck.get_cards().append(card)  for card in self.__discard_card_list ]
         
+        # reshuffle the deck after putting the cards back in the deck.
+        self.__deck.shuffle()
+        
         if debug == 1:
             print "\n\nAFTER -- NUMBER OF CARDS IN THE DECK:\t{}".format(self.__deck.get_deck_size())
     
