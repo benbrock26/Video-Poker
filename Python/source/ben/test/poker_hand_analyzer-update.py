@@ -316,7 +316,17 @@ def highcard(hand):
 handrankorder =  (royal_flush, straightflush, fourofakind, fullhouse,
                   flush, straight, threeofakind,
                   twopair, onepair, highcard)
- 
+
+'''
+rank
+rank function will iterate through the list of poker hand functions listed in
+the handrankorder list to determine the poker hand.
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+''' 
 def rank(cards):
     hand = handy(cards)
     for ranker in handrankorder:
@@ -332,6 +342,24 @@ def rank(cards):
     assert rank, "Invalid: Failed to rank cards: %r" % cards
     return rank
  
+'''
+handy
+Handy function to manipulate the 2 digit card string.
+This function will determine the hand for each string, that is,
+- the card value or rank --> f
+- the suit of the card   --> s
+
+This nifty function will iterate thru the five card hand to interogate the 
+card value/rank and suit.
+
+Additionally, this function provides error protection to insure there are only
+5 cards in the hand and verify all cards in the hand are unique.
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def handy(cards='2h 2d 2c kc qd'):
     hand = []
     for card in cards.split():
