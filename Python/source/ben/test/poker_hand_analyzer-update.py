@@ -5,6 +5,8 @@ https://rosettacode.org/wiki/Poker_hand_analyser#Python
 
 https://en.wikipedia.org/wiki/List_of_poker_hands
 
+https://en.wikipedia.org/wiki/List_of_poker_hands
+
 Created on Sat Feb 24 08:33:29 2018
 
 @author: Ben Brock and Shazia Zaman
@@ -12,6 +14,8 @@ Created on Sat Feb 24 08:33:29 2018
 
 from collections import namedtuple
 import sys
+
+debug = 0
  
 class Card(namedtuple('Card', 'face, suit')):
     def __repr__(self):
@@ -26,7 +30,46 @@ lowaces = 'a 2 3 4 5 6 7 8 9 10 j q k'
 face   = faces.split()
 lowace = lowaces.split()
  
+
+'''
+Royal Flush
+A, K, Q, J, 10 all of the same suit.
+
+An ace-high straight flush, such as A♦ K♦ Q♦ J♦ 10♦, is commonly known as a 
+royal flush or royal straight flush and is the best possible hand in high 
+games when not using wild cards.
+
+POKER HAND RANKINGS:  1
+
+Example:  As, Ks, Qs, Js, 10s
+
+DOES NOT SUPPORT ROYAL FLUSH
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank
+2nd digit - suit
+'''
+def royal_flush(hand):
+    return False
  
+
+'''
+Straight Flush
+Any five card sequence in the same suit.
+
+A straight flush is a poker hand containing five cards of sequential rank, 
+all of the same suit, such as Q♥ J♥ 10♥ 9♥ 8♥ (a "queen-high straight flush").
+
+POKER HAND RANKINGS:  2
+
+Example: 4d, 5d, 6d, 7d, 8d
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank
+2nd digit - suit
+'''
 def straightflush(hand):
     f,fs = ( (lowace, lowaces) if any(card.face == '2' for card in hand)
              else (face, faces) )
@@ -37,6 +80,25 @@ def straightflush(hand):
         return 'straight-flush', ordered[-1].face
     return False
  
+    
+'''
+Four of a Kind
+All four cards of the same rank.
+
+Four of a kind, also known as quads, is a poker hand containing four cards of 
+the same rank and one card of another rank, such as:
+9c, 9s, 9d, 9h, Jh ("four of kind, nines").
+
+Rank is card value or encoded value
+POKER HAND RANKINGS:  3
+
+Example:  Qs, Qd, Qc, Qh, 3c
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def fourofakind(hand):
     allfaces = [f for f,s in hand]
     allftypes = set(allfaces)
@@ -49,6 +111,23 @@ def fourofakind(hand):
     else:
         return False
  
+'''
+Full House
+Three of a kind combined with a pair.
+
+A full house, also known as a full boat or tight, is a poker hand containing 
+three cards of one rank and two cards of another rank, such as 3♣ 3♠ 3♦ 6♣ 6♥ 
+(a "full house, threes over sixes" or "threes full of sixes" or "threes full")
+
+POKER HAND RANKINGS:  4
+
+Example:  Kh, Kd, 3h, 3s, 3c
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def fullhouse(hand):
     allfaces = [f for f,s in hand]
     allftypes = set(allfaces)
@@ -61,6 +140,23 @@ def fullhouse(hand):
     else:
         return False
  
+'''
+Flush
+Any five cards of the same suit but not in the same sequence
+
+A flush is a poker hand containing five cards all of the same suit, not all of
+sequential rank, such as K♣ 10♣ 7♣ 6♣ 4♣ (a "king-high flush" or
+"king-ten-high flush").
+
+POKER HAND RANKINGS:  5
+
+Example:  Ad, Qd, 6d, Jd, 2d
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def flush(hand):
     allstypes = {s for f, s in hand}
     if len(allstypes) == 1:
@@ -70,6 +166,22 @@ def flush(hand):
                                reverse=True)
     return False
  
+'''
+Straight
+Five cards in sequence, but not in the same suit.
+
+A straight is a poker hand containing five cards of sequential rank, not all 
+of the same suit, such as 7♣ 6♠ 5♠ 4♥ 3♥ (a "seven-high straight")
+
+POKER HAND RANKINGS:  6
+
+Example:  Ks, Qd, Jc, 10h, 9s
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def straight(hand):
     f,fs = ( (lowace, lowaces) if any(card.face == '2' for card in hand)
              else (face, faces) )
@@ -79,6 +191,25 @@ def straight(hand):
         return 'straight', ordered[-1].face
     return False
  
+    
+'''
+Three of a Kind
+Three cards of the same rank.
+
+Three of a kind, also known as trips or a set, is a poker hand containing 
+three cards of the same rank and two cards of two other ranks (the kickers), 
+such as 2♦ 2♠ 2♣ K♠ 6♥ ("three of a kind, twos" or "trip twos" or a 
+"set of twos").
+
+POKER HAND RANKINGS:  7
+
+Example:  5d, Js, 8h, 8s, 8d
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def threeofakind(hand):
     allfaces = [f for f,s in hand]
     allftypes = set(allfaces)
@@ -94,6 +225,26 @@ def threeofakind(hand):
     else:
         return False
  
+'''
+Two Pair
+Two separate pairs.
+
+Two pair is a poker hand containing two cards of the same rank, two cards of 
+another rank and one card of a third rank (the kicker),
+
+such as J♥ J♣ 4♣ 4♠ 9♥ 
+
+("two pair, jacks and fours" or "two pair, jacks over fours" or "jacks up").
+
+POKER HAND RANKINGS:  8
+
+Example:  10s, Qd, 7s, Qc, 7h
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def twopair(hand):
     allfaces = [f for f,s in hand]
     allftypes = set(allfaces)
@@ -104,6 +255,26 @@ def twopair(hand):
     other = [(allftypes - set(pairs)).pop()]
     return 'two-pair', pairs + other if face.index(p0) > face.index(p1) else pairs[::-1] + other
  
+'''
+One Pair
+Two cars of the same rank.
+
+One pair, or simply a pair, is a poker hand containing two cards of the same 
+rank and three cards of three other ranks (the kickers), 
+
+such as 4♥ 4♠ K♠ 10♦ 5♠ 
+
+("one pair, fours" or a "pair of fours").
+
+POKER HAND RANKINGS:  9
+
+Example:  10s, Jd, 7s, 6h, 6c
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def onepair(hand):
     allfaces = [f for f,s in hand]
     allftypes = set(allfaces)
@@ -114,22 +285,49 @@ def onepair(hand):
     return 'one-pair', pairs + sorted(allftypes,
                                       key=lambda f: face.index(f),
                                       reverse=True)
- 
+
+'''
+High Card
+Othewise unrelated cards ranked by the highest single card.
+
+High card, also known as no pair or simply nothing, is a poker hand containing
+five cards not all of sequential rank or of the same suit, and none of which 
+are of the same rank, 
+
+such as K♥ J♥ 8♣ 7♦ 4♠ 
+
+("high card, king" or "king-jack-high" or "king-high").
+
+POKER HAND RANKINGS:  10
+
+Example:  7c, 6d, 4s, 3h, 2c
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''
 def highcard(hand):
     allfaces = [f for f,s in hand]
     return 'high-card', sorted(allfaces,
                                key=lambda f: face.index(f),
                                reverse=True)
  
-handrankorder =  (straightflush, fourofakind, fullhouse,
+handrankorder =  (royal_flush, straightflush, fourofakind, fullhouse,
                   flush, straight, threeofakind,
                   twopair, onepair, highcard)
  
 def rank(cards):
     hand = handy(cards)
     for ranker in handrankorder:
+        
         rank = ranker(hand)
         if rank:
+            if (debug == 1):
+                print "RANKER:\t{}".format(ranker)
+                print "RANK:\t{}".format(rank)
+                print "HAND:\t{}".format(hand)
+                sys.exit(2)
             break
     assert rank, "Invalid: Failed to rank cards: %r" % cards
     return rank
@@ -184,7 +382,7 @@ if __name__ == '__main__':
     c24 = ['Jd', '9d','8d', '4d', '3d']      # flush
     c25 = ['10d', '9s', '8h', '7d', '6c' ]   # straight
     c26 = ['Qc', 'Qs', 'Qh', '9h', '2s']     # three of a kind 
-    c27 = ['Jh', 'Jc', '3c', '3s', '2h']    # two pair
+    c27 = ['Jh', 'Jc', '3c', '3s', '2h']     # two pair
     c28 = ['10c', '10h', '8s', '7h', '4c']   # one pair
     c29 = ['Kd', 'Qd', '7s', '4s', '2h']     # high card
     c30 = ['Jh', 'Jc', '3c', '3s', '2h']     # --> Two pairs!
@@ -202,7 +400,25 @@ if __name__ == '__main__':
      "10s js qs ks as",
      '4d 5d 6d 7d 8d',
      'qs qd qc qh 10s',
-     'ks kd 3h 3s 3c']
+     'ks kd 3h 3s 3c',
+     'ad qd 6d jd 2d',
+     'ks qd jc 10h 9s',
+     '5d js 8h 8s 8d',
+     '10s  qd 7s qc 7h',
+     '10s  jd 7s 6h 6s' ,
+     '7c   6d 4s 3h 2c'] + [
+     'as   ac ah ad 2c',
+     'jc  10c 9c 8c 7c',
+     '5c   5d 5h 5s 2d',
+     '6s   6h 6d kc kh',
+     'jd   9d 8d 4d 3d',
+     '10d  9s 8h 7d 6c',
+     'qc   qs qh 9h 2s',
+     'jh   jc 3c 3s 2h',
+     '10c 10h 8s 7h 4c',
+     'kd   qd 7s 4s 2h',
+     'jh   jc 3c 3s 2h'
+      ]
              
     
     print("%-18s %-15s %s" % ("HAND", "CATEGORY", "TIE-BREAKER"))
@@ -213,5 +429,10 @@ if __name__ == '__main__':
     #sys.exit(2)
     
     for cards in hands:
+        #print cards.capitalize()
+        #print cards
+        #print len(cards.split())
+        #print cards.count()
+        #sys.exit(2)
         r = rank(cards)
         print("%-18r %-15s %r" % (cards, r[0], r[1]))

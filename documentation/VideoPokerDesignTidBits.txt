@@ -74,6 +74,44 @@ http://www.chegg.com/homework-help/questions-and-answers/python-coding-game-texa
 
 A poker hand evaluation and equity calculation library
 https://pypi.python.org/pypi/eval7/0.1.2
-
-
 https://www.youtube.com/watch?v=wmhhPagxSO8
+
+
+
+https://codehiker.wordpress.com/2012/03/12/poker-hand-evaluation/
+https://github.com/worldveil/deuces
+https://github.com/fogleman/Poker
+https://codereview.stackexchange.com/questions/144551/find-and-display-best-poker-hand
+
+https://shaziazaman.com
+
+List Comprehension examples
+https://www.analyticsvidhya.com/blog/2016/01/python-tutorial-list-comprehension-examples/
+
+
+
+cards are in two digits
+1st digit - encoded card value  or encoded rank
+2nd digit - suit
+
+based on rules
+same suit  --> Suit Testing
+royal flush (1)
+straight flush (2)
+flush (5)
+
+
+Card Value --> Rank Testing
+Four of a Kind (3)
+Full House (4)
+Straight (6)
+Three of a Kind (7)
+Two Pair  (8)
+Pair (9)
+
+Unrelated Cards
+High Card (10)
+
+How can you test the sequence of cards in hand?
+
+I understand how to test the suit types in a hanc by using the set command.
