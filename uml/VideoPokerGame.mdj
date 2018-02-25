@@ -982,7 +982,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "VideoPokerGame",
+											"text": "PokerGame",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -3729,7 +3729,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "VideoPokerGameInterface",
+											"text": "PokerGameInterface",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -13506,7 +13506,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "VideoPokerGame",
+					"name": "PokerGame",
 					"visibility": "public",
 					"isAbstract": false,
 					"isFinalSpecialization": false,
@@ -13756,7 +13756,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "VideoPokerGameInterface",
+					"name": "PokerGameInterface",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
