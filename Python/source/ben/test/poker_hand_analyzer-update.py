@@ -41,6 +41,9 @@ games when not using wild cards.
 
 POKER HAND RANKINGS:  1
 
+Tie breaker rules
+https://www.adda52.com/poker/poker-rules/cash-game-rules/tie-breaker-rules
+
 Example:  As, Ks, Qs, Js, 10s
 
 DOES NOT SUPPORT ROYAL FLUSH
@@ -66,7 +69,7 @@ def royal_flush(hand):
         #print "\nROYAL FLUSH: ALL SUITS:\t{}".format(all_suits)
         #print "ROYAL FLUSH: ALL SUIT TYPES:\t{}".format(all_stypes)
         #print "ROYAL FLUSH SUM is:\t{}".format(sum(values))
-        return 'royal-flush', ""
+        return 'royal-flush', "No Tie breaker, if 2 players have RF split the pot"
     else:
         return False
  
@@ -490,7 +493,8 @@ if __name__ == '__main__':
      'jh   jc 3c 3s 2h',
      '10c 10h 8s 7h 4c',
      'kd   qd 7s 4s 2h',
-     'jh   jc 3c 3s 2h'
+     'jh   jc 3c 3s 2h',
+     'as  2c  4h 5d ks'
       ]
              
     
