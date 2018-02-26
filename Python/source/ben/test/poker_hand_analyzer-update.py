@@ -51,7 +51,24 @@ cards are in two digits
 2nd digit - suit
 '''
 def royal_flush(hand):
-    return False
+    allfaces = [f for f,s in hand]
+    allftypes = set(allfaces)
+    
+    all_suits = [s for f, s in hand]
+    all_stypes = len(set(all_suits))
+    
+    #print "ROYAL FLUSH: HAND:\t{}".format(hand)
+    values, suit = set_Cards(hand)
+
+    if all_stypes == 1 and sum(values) == 60:
+        #print "\nROYAL FLUSH: ALL FACES:\t{}".format(allfaces)
+        #print "ROYAL FLUSH: ALL FTYPES:\t{}".format(allftypes)
+        #print "\nROYAL FLUSH: ALL SUITS:\t{}".format(all_suits)
+        #print "ROYAL FLUSH: ALL SUIT TYPES:\t{}".format(all_stypes)
+        #print "ROYAL FLUSH SUM is:\t{}".format(sum(values))
+        return 'royal-flush', ""
+    else:
+        return False
  
 
 '''
@@ -102,6 +119,10 @@ cards are in two digits
 def fourofakind(hand):
     allfaces = [f for f,s in hand]
     allftypes = set(allfaces)
+    
+    all_suits = [s for f, s in hand]
+    all_stypes = set(all_suits)
+    
     if len(allftypes) != 2:
         return False
     for f in allftypes:
@@ -312,6 +333,29 @@ def highcard(hand):
     return 'high-card', sorted(allfaces,
                                key=lambda f: face.index(f),
                                reverse=True)
+    
+# extract values and suits information from cards
+def set_Cards(hand):
+    #print "ENTER SET_CARDS HAND:\t{}".format(hand)
+    values=[]
+    suits=[]
+    for card in hand:
+        #print card
+        suits.append(card[-1])
+        if  card[0] == 'j' or card[0] == 'J':
+            values.append(11)
+        elif  card[0] == 'q' or card[0] == 'A':
+            values.append(12)
+        elif  card[0] == 'k' or card[0] == 'K':
+            values.append(13)
+        elif  card[0] == 'a' or card[0] == 'A':
+            values.append(14)
+        elif card[0] == '10':
+            values.append(10)
+        
+    #print "SET_CARDS: SUITS:\t{}".format(suits)
+    #print "SET_CARDS: VALUES:\t{}".format(values)
+    return sorted(values),suits  #values need to be sorted
  
 handrankorder =  (royal_flush, straightflush, fourofakind, fullhouse,
                   flush, straight, threeofakind,
@@ -416,7 +460,8 @@ if __name__ == '__main__':
     c30 = ['Jh', 'Jc', '3c', '3s', '2h']     # --> Two pairs!
     '''
     
-    hands = ["2h 2d 2c kc qd",
+    hands = [
+     "2h 2d 2c kc qd",
      "2h 5h 7d 8c 9h",
      "ah 2d 3c 4c 5d",
      "2h 3h 2d 3c 3d",
