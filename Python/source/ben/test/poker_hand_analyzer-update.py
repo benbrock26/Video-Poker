@@ -442,6 +442,9 @@ def one_pair(hand):
     if len(pairs) != 1:
         return False
   
+    '''
+    Test and make sure the card pair IS NOT a 'J', 'Q', 'K', or 'A'
+    '''
     if pairs[0].isalpha() and str(pairs[0]) in ['j', 'q', 'k', 'a']:
         return False
     
@@ -539,6 +542,11 @@ def jacks_or_better(hand):
     if not result:
         return False
     '''
+    '''
+    Test and make sure the card pair IS a 'J', 'Q', 'K', or 'A'.  
+    The logic here is to test if the pair is the following list:
+    '2', '3', '4', '5', '6', '7', '8', '9', or '10'
+    '''
     if not (pairs[0].isalpha() and str(pairs[0]) in ['j', 'q', 'k', 'a']):
         return False
     
@@ -549,6 +557,16 @@ def jacks_or_better(hand):
     
 
 # extract values and suits information from cards
+'''
+set_cards_rank_value_to_max_rank_ordinal_value
+
+set_cards_rank_value_to_max_rank_ordinal_value is a helper function which
+will convert the high card face value's ('J', 'Q', 'K', 'A', '10') into
+the cardinal values.
+
+@param: hand  --> Players hand
+@return: sorted values, suits 
+'''
 def set_cards_rank_value_to_max_rank_ordinal_value(hand):
     #print "ENTER set_cards_rank_value_to_max_rank_ordinal_value HAND:\t{}".format(hand)
     values=[]
