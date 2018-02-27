@@ -441,6 +441,10 @@ def one_pair(hand):
     pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
     if len(pairs) != 1:
         return False
+  
+    if pairs[0].isalpha() and str(pairs[0]) in ['j', 'q', 'k', 'a']:
+        return False
+    
     all_rank_types.remove(pairs[0])
     return 'one-pair', pairs + sorted(all_rank_types,
                                       key=lambda f: FACE.index(f),
@@ -480,7 +484,70 @@ def high_card(hand):
     return 'high-card', sorted(all_ranks,
                                key=lambda f: FACE.index(f),
                                reverse=True)
+'''
+jacks or better
+Exactly on pair of Jacks, Queens, Kings, or Aces, and nothing else of interest.
+
+Here after converting the card value or rank value to actual ordinal number 
+in the list for this particular hand.
+
+  [ 'a', 'a', '2', '2', 3]  ==> Jacks or Better via card value or rank value
+  [ 14,   14,  2,  2,   3 ] ==> Jacks or Better via converted max ordinal value
+  
+  With respect to the Jacks or Better in terms of the converted max ordinal 
+  value,the sum of all in values in the list is 35
+  
+  total_sum = 14 + 14 + 2 + 2 + 3 = 35
+
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a jacks or better based
+  on the rules.
+  
+  - All cards can be of any suit
+  - at least 1 pair of either of the following: J, K, Q, A
+  - 5 unique cards in the hand 
+  - total sum of the converted ordinal values is 35; which is equivalent to
+    [ 14,   14,  2,  2,   3] 
     
+Example:  JH, JC, 2s, 2c, 3h
+
+Payout 1:1
+
+One quick thing about this hand is that is can be easily mis-classified as a
+one-pair or two-pair.   Must interrogate the hand and check to make sure either
+one of the high pairs ('J', 'Q', 'K', and 'A') are the ONLY valid pairs.
+
+Based on the definition of this hand, the one-pair can 
+not contain any of the high pairs of cards listed in the hand as listed above.
+
+Note:
+cards are in two digits
+1st digit - encoded card value  or encoded rank 
+2nd digit - suit
+'''  
+def jacks_or_better(hand):
+
+    all_ranks = [f for f,s in hand]
+    all_rank_types = set(all_ranks)
+    
+    pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
+    if len(pairs) != 1:
+        return False
+    
+    '''
+    result = [ pair in [ 'j', 'q', 'k', 'a']  for pair in pairs ]
+    if not result:
+        return False
+    '''
+    if not (pairs[0].isalpha() and str(pairs[0]) in ['j', 'q', 'k', 'a']):
+        return False
+    
+    all_rank_types.remove(pairs[0])
+    return 'jacks or better', pairs + sorted(all_rank_types,
+                                      key=lambda f: FACE.index(f),
+                                      reverse=True)
+    
+
 # extract values and suits information from cards
 def set_cards_rank_value_to_max_rank_ordinal_value(hand):
     #print "ENTER set_cards_rank_value_to_max_rank_ordinal_value HAND:\t{}".format(hand)
@@ -504,9 +571,23 @@ def set_cards_rank_value_to_max_rank_ordinal_value(hand):
     #print "set_cards_rank_value_to_max_rank_ordinal_value: VALUES:\t{}".format(values)
     return sorted(values),suits  #values need to be sorted
  
-hand_rank_order =  (royal_flush, straight_flush, four_of_a_kind, full_house,
-                  flush, straight, three_of_a_kind,
-                  two_pair, one_pair, high_card)
+    
+'''
+List of functional objects used for the poker hand evalution.  The function 
+objects are listed in Poker hand priority order, i.e., from highest to lowest.
+'''
+hand_rank_order =  (royal_flush, 
+                    straight_flush, 
+                    four_of_a_kind, 
+                    full_house,
+                    flush, 
+                    straight, 
+                    three_of_a_kind,
+                    two_pair, 
+                    one_pair, 
+                    jacks_or_better,
+                    high_card
+                    )
 
 '''
 rank
@@ -611,7 +692,7 @@ if __name__ == '__main__':
     c30 = ['Jh', 'Jc', '3c', '3s', '2h']     # --> Two pairs!
     '''
     
-    #hands = ["kd qd 7s 4s 2h"]
+    #hands = ["7h 7c 2s 3c 4h"]
     #'''
     hands = [
      "2h 2d 2c kc qd",
@@ -644,7 +725,11 @@ if __name__ == '__main__':
      '10c 10h 8s 7h 4c',
      'kd   qd 7s 4s 2h',
      'jh   jc 3c 3s 2h',
-     'as  2c  4h 5d ks'
+     'as   2c 4h 5d ks',
+     'jh   jc 2s 3c 4h',
+     'qh   qc 2s 3c 4h',
+     'kh   kc 2s 3c 4h',
+     'ah   ac 2s 3c 4h'
       ]
     #'''
              
