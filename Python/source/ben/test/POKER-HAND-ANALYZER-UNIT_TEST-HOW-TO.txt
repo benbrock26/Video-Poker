@@ -1,0 +1,254 @@
+HAND               CATEGORY        TIE-BREAKER
+'2h 2d 2c kc qd'   three-of-a-kind ['2', 'k', 'q']
+'2h 5h 7d 8c 9h'   high-card       ['9', '8', '7', '5', '2']
+'ah 2d 3c 4c 5d'   straight        '5'
+'2h 3h 2d 3c 3d'   full-house      ['3', '2']
+'2h 7h 2d 3c 3d'   two-pair        ['3', '2', '7']
+'2h 7h 7d 7c 7s'   four-of-a-kind  ['7', '2']
+'10h jh qh kh ah'  royal-flush     'No Tie breaker, if 2 players have RF split the pot'
+'4h 4c ks 5d 10s'  one-pair        ['4', 'k', '10', '5']
+'qc 10c 7c 6c 4c'  flush           ['q', '10', '7', '6', '4']
+'10s js qs ks as'  royal-flush     'No Tie breaker, if 2 players have RF split the pot'
+'4d 5d 6d 7d 8d'   straight-flush  '8'
+'qs qd qc qh 10s'  four-of-a-kind  ['q', '10']
+'ks kd 3h 3s 3c'   full-house      ['3', 'k']
+'ad qd 6d jd 2d'   flush           ['a', 'q', 'j', '6', '2']
+'ks qd jc 10h 9s'  straight        'k'
+'5d js 8h 8s 8d'   three-of-a-kind ['8', 'j', '5']
+'10s  qd 7s qc 7h' two-pair        ['q', '7', '10']
+'10s  jd 7s 6h 6s' one-pair        ['6', 'j', '10', '7']
+'7c   6d 4s 3h 2c' high-card       ['7', '6', '4', '3', '2']
+'as   ac ah ad 2c' four-of-a-kind  ['a', '2']
+'jc  10c 9c 8c 7c' straight-flush  'j'
+'5c   5d 5h 5s 2d' four-of-a-kind  ['5', '2']
+'6s   6h 6d kc kh' full-house      ['6', 'k']
+'jd   9d 8d 4d 3d' flush           ['j', '9', '8', '4', '3']
+'10d  9s 8h 7d 6c' straight        '10'
+'qc   qs qh 9h 2s' three-of-a-kind ['q', '9', '2']
+'jh   jc 3c 3s 2h' two-pair        ['j', '3', '2']
+'10c 10h 8s 7h 4c' one-pair        ['10', '8', '7', '4']
+'kd   qd 7s 4s 2h' high-card       ['k', 'q', '7', '4', '2']
+'jh   jc 3c 3s 2h' two-pair        ['j', '3', '2']
+'as  2c  4h 5d ks' high-card       ['a', 'k', '5', '4', '2']
+
+
+
+unit testing royal flush via iPython debugger
+
+Royal Flush function testing......
+hand = ['10s', 'Js', 'Qs', 'Ks', 'As']
+
+for card in hand:
+    print card[:-1], card[-1]
+
+all_faces = [ f for f in hand]
+all_faces
+
+all_faces = [ f[:-1] for f in hand]
+all_ftypes
+
+all_suits = [ s[-1] for s in hand]
+all_suits
+
+all_stypes = len(set(all_suits))
+all_stypes
+
+all_ftypes = len(set(all_faces))
+all_ftypes
+
+
+key=lambda card: (f.index(card.face), card.suit)
+
+
+
+In [86]: hand = ['Qd','7s','Qc','7h', '10d']
+
+In [89]: all_faces = [ f[:-1] for f in hand]
+
+In [90]:
+
+In [90]: all_ranks = [ f[:-1] for f in hand]
+
+In [91]: all_ranks
+Out[91]: ['Q', '7', 'Q', '7', '10']
+
+In [92]: all_rank_types = set(all_ranks)
+
+In [93]: all_rank_types
+Out[93]: {'10', '7', 'Q'}
+
+In [94]: pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
+
+In [95]: pairs
+Out[95]: ['Q', '7']
+
+
+In [97]: len(pairs)
+Out[97]: 2
+
+In [98]: p0, p1 = pairs
+
+In [99]: p0
+Out[99]: 'Q'
+
+In [100]: p1
+Out[100]: '7'
+
+In [101]: other = [(all_rank_types - set(pairs)).pop()]
+
+In [102]: other
+Out[102]: ['10']
+
+In [103]: hand = ['10s', 'Jd', '7s', '6h', '6c']
+
+In [104]: all_ranks = [ f[:-1] for f in hand]
+
+In [105]: all_ranks
+Out[105]: ['10', 'J', '7', '6', '6']
+
+In [106]: hand = ['5d', 'Js', '8h', '8s', '8d']
+
+In [107]: all_ranks = [ f[:-1] for f in hand]
+
+In [108]: all_ranks
+Out[108]: ['5', 'J', '8', '8', '8']
+
+In [109]: all_rank_types = set(all_ranks)
+
+In [110]: all_rank_types
+Out[110]: {'5', '8', 'J'}
+
+In [111]: hand = ['qs', 'qd', 'qc', 'qh', '3c']
+
+In [112]: all_ranks = [ f[:-1] for f in hand]
+
+In [113]: all_rank_types = set(all_ranks)
+
+In [114]: all_rank_types
+Out[114]: {'3', 'q'}
+
+In [115]: hand = ['jh', 'jc', '4c', '4s', '9h']
+
+In [116]: all_ranks = [ f[:-1] for f in hand]
+
+In [117]: all_rank_types = set(all_ranks)
+
+In [118]: all_rank_types
+Out[118]: {'4', '9', 'j'}
+
+In [119]: hand = ['jh', 'jc', '4c', '4s', '4h']
+
+In [120]: all_ranks = [ f[:-1] for f in hand]
+
+In [121]: all_rank_types = set(all_ranks)
+
+In [122]: all_rank_types
+Out[122]: {'4', 'j'}
+
+In [123]: hand = ['jh', 'jc', '4c', '4s', '9h']
+
+In [124]: all_ranks = [ f[:-1] for f in hand]
+
+In [125]: all_rank_types = set(all_ranks)
+
+In [126]: all_rank_types
+Out[126]: {'4', '9', 'j'}
+
+In [127]: hand = ['10s', 'qd', '7s', 'qc', '7h']
+
+In [128]: all_ranks = [ f[:-1] for f in hand]
+
+In [129]: all_rank_types = set(all_ranks)
+
+In [130]: all_rank_types
+Out[130]: {'10', '7', 'q'}
+
+In [131]: len(all_rank_types)
+Out[131]: 3
+
+In [132]: pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
+
+In [133]: pairs
+Out[133]: ['q', '7']
+
+In [134]: hand = ['4h', '4c', 'ks', '10d', '5h']
+
+In [135]: all_ranks = [ f[:-1] for f in hand]
+
+In [136]: all_rank_types = set(all_ranks)
+
+In [137]: all_rank_types
+Out[137]: {'10', '4', '5', 'k'}
+
+In [138]: len(all_rank_types)
+Out[138]: 4
+
+In [139]: pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
+
+In [140]: pairs
+Out[140]: ['4']
+
+In [141]: hand = ['7c', '6d', '4s', '3h', '2c']
+
+In [142]: all_ranks = [ f[:-1] for f in hand]
+
+In [143]: all_rank_types = set(all_ranks)
+
+In [144]: len(all_rank_types)
+Out[144]: 5
+
+In [145]: all_rank_types
+Out[145]: {'2', '3', '4', '6', '7'}
+
+In [146]: hand = ['ad', 'qd', '6d', 'jd', '2d']
+
+In [147]: all_ranks = [ f[:-1] for f in hand]
+
+In [148]: all_rank_types = set(all_ranks)
+
+In [149]: len(all_rank_types)
+Out[149]: 5
+
+In [150]: all_rank_types
+Out[150]: {'2', '6', 'a', 'j', 'q'}
+
+In [151]: all_suit_types = [ s[-1] for f in hand]
+
+In [152]: all_suit_types
+Out[152]: ['h', 'h', 'h', 'h', 'h']
+
+In [153]: hand
+Out[153]: ['ad', 'qd', '6d', 'jd', '2d']
+
+In [154]: all_suit_types = [ s[-1] for f in hand]
+
+In [155]:
+
+In [155]: all_suits = [ s[-1] for f in hand]
+
+In [156]: all_suits
+Out[156]: ['h', 'h', 'h', 'h', 'h']
+
+In [157]:
+
+In [157]: all_suits = [ s[-1] for s in hand]
+
+In [158]: all_suits
+Out[158]: ['d', 'd', 'd', 'd', 'd']
+
+In [159]: all_suit_types = set(all_suits)
+
+In [160]: all_suit_types
+Out[160]: {'d'}
+
+In [161]: hand = ['4d', '5d', '6d', '7d', '8d']
+
+In [162]: all_ranks = [ f[:-1] for f in hand]
+
+In [163]: len(all_rank_types)
+Out[163]: 5
+
+In [164]: all_ranks
+Out[164]: ['4', '5', '6', '7', '8']
+
+In [165]:
