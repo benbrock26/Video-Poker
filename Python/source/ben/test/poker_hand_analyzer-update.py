@@ -7,6 +7,12 @@ https://en.wikipedia.org/wiki/List_of_poker_hands
 
 https://en.wikipedia.org/wiki/List_of_poker_hands
 
+
+NOTE:
+    Will follow the Google Python Style Guide for the coding standards.
+    
+    https://google.github.io/styleguide/pyguide.html
+    
 Created on Sat Feb 24 08:33:29 2018
 
 @author: Ben Brock and Shazia Zaman
@@ -22,13 +28,15 @@ class Card(namedtuple('Card', 'face, suit')):
         return ''.join(self)
  
  
-suit = 'h d c s'.split()
+SUIT = 'h d c s'.split()
+
 # ordered strings of faces
-faces   = '2 3 4 5 6 7 8 9 10 j q k a'
-lowaces = 'a 2 3 4 5 6 7 8 9 10 j q k'
+FACES    = '2 3 4 5 6 7 8 9 10 j q k a'
+LOW_ACES = 'a 2 3 4 5 6 7 8 9 10 j q k'
+
 # faces as lists
-face   = faces.split()
-lowace = lowaces.split()
+FACE    = FACES.split()
+LOW_ACE = LOW_ACES.split()
  
 
 '''
@@ -46,7 +54,25 @@ https://www.adda52.com/poker/poker-rules/cash-game-rules/tie-breaker-rules
 
 Example:  As, Ks, Qs, Js, 10s
 
-DOES NOT SUPPORT ROYAL FLUSH
+Here after converting the card value or rank value to actual ordinal number 
+in the list for this particular hand.
+
+  [ 'a', 'k', 'q', 'j', 10]      ==> Royal flush via card value or rank value
+  [ 14,   13,  12,  11, 10 ]     ==> Royal flush via converted max ordinal value
+  
+  With respect to the Royal flush in terms of the converted max ordinal value,
+  the sum of all in values in the list is 60
+  
+  total_sum = 14 + 13 + 12 + 11 + 10 = 60
+
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a royal flush based
+  on the rules.
+  
+  - All cards MUST be of the SAME SUIT
+  - 5 unique cards in the hand 
+  - total sum of the converted ordinal values is 60; which is equivalent to
+    [ 14,   13,  12,  11, 10 ] 
 
 Note:
 cards are in two digits
@@ -54,21 +80,27 @@ cards are in two digits
 2nd digit - suit
 '''
 def royal_flush(hand):
-    allfaces = [f for f,s in hand]
-    allftypes = set(allfaces)
+
+    #print "ENTER ROYAL FLUSH: HAND:\t{}".format(hand)
+    
+    all_ranks = [f for f,s in hand]
+    all_rank_types = set(all_ranks)
     
     all_suits = [s for f, s in hand]
-    all_stypes = len(set(all_suits))
+    all_suit_types = len(set(all_suits))
     
     #print "ROYAL FLUSH: HAND:\t{}".format(hand)
-    values, suit = set_Cards(hand)
+    values, suit = set_cards_rank_value_to_max_rank_ordinal_value(hand)
 
-    if all_stypes == 1 and sum(values) == 60:
-        #print "\nROYAL FLUSH: ALL FACES:\t{}".format(allfaces)
-        #print "ROYAL FLUSH: ALL FTYPES:\t{}".format(allftypes)
+    if all_suit_types == 1 and len(all_rank_types) == 5 and sum(values) == 60:
+        #print "\nROYAL FLUSH: ALL FACES:\t{}".format(all_ranks)
+        #print "ROYAL FLUSH: ALL FTYPES:\t{}".format(all_rank_types)
+        #print "ROYAL FLUSH: NUMBER OF FTYPE's:\t{}".format(len(set(all_ranks)))
         #print "\nROYAL FLUSH: ALL SUITS:\t{}".format(all_suits)
-        #print "ROYAL FLUSH: ALL SUIT TYPES:\t{}".format(all_stypes)
+        #print "ROYAL FLUSH: ALL SUIT TYPES:\t{}".format(all_suit_types)
         #print "ROYAL FLUSH SUM is:\t{}".format(sum(values))
+        
+        #sys.exit(2)
         return 'royal-flush', "No Tie breaker, if 2 players have RF split the pot"
     else:
         return False
@@ -85,16 +117,44 @@ POKER HAND RANKINGS:  2
 
 Example: 4d, 5d, 6d, 7d, 8d
 
+Nice feature of Python:  any command
+--> https://www.dotnetperls.com/any-python
+--> https://www.programiz.com/python-programming/methods/built-in/any
+--> The any() method returns True if any element of an iterable is true. 
+    If not, this method returns False.
+
+all() command
+--> https://www.programiz.com/python-programming/methods/built-in/all
+--> The all() method returns True when all elements in the given iterable 
+    are true. If not, it returns False.
+    
+sorted command
+--> https://medium.com/@johngrant/python-list-sorting-keys-lambdas-1903b2a4c949
+--> https://www.pythoncentral.io/how-to-sort-a-list-tuple-or-object-with-sorted-in-python/
+--> https://www.pythoncentral.io/how-to-sort-python-dictionaries-by-key-or-value/
+
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a straight flush based
+  on the rules.
+  - All cards MUST be of the SAME SUIT
+  - 5 unique cards in the hand 
+  - len(all_rank_types) == 5
+  - len(all_suit_types) == 1
+  - sorted card list
+  - hand will support LOW_ACES and FACES
+  - display --> ['8', '7', '6', '4', '5']
+    
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank
 2nd digit - suit
 '''
-def straightflush(hand):
-    f,fs = ( (lowace, lowaces) if any(card.face == '2' for card in hand)
-             else (face, faces) )
+def straight_flush(hand):
+    f,fs = ( (LOW_ACE, LOW_ACES) if any(card.face == '2' for card in hand)
+             else (FACE, FACES) )
     ordered = sorted(hand, key=lambda card: (f.index(card.face), card.suit))
     first, rest = ordered[0], ordered[1:]
+    
     if ( all(card.suit == first.suit for card in rest) and
          ' '.join(card.face for card in ordered) in fs ):
         return 'straight-flush', ordered[-1].face
@@ -114,24 +174,36 @@ POKER HAND RANKINGS:  3
 
 Example:  Qs, Qd, Qc, Qh, 3c
 
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a four of a kind based
+  on the rules.
+  - 5 unique cards in the hand 
+  - length of all rank types is 2
+  - all_ranks.count('Q') == 4
+  - all_rank_types == 2 --> { '3', 'q'}
+  - will display the set of all_rank_types 
+
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
-def fourofakind(hand):
-    allfaces = [f for f,s in hand]
-    allftypes = set(allfaces)
+def four_of_a_kind(hand):
+    all_ranks = [f for f,s in hand]
+    all_rank_types = set(all_ranks)
     
     all_suits = [s for f, s in hand]
-    all_stypes = set(all_suits)
+    all_suit_types = set(all_suits)
     
-    if len(allftypes) != 2:
+    # Only support 2 face types or two ranks of with respect to the card face
+    # values
+    #  "qs qd qc qh 3c"  ==> face types == 2
+    if len(all_rank_types) != 2:
         return False
-    for f in allftypes:
-        if allfaces.count(f) == 4:
-            allftypes.remove(f)
-            return 'four-of-a-kind', [f, allftypes.pop()]
+    for f in all_rank_types:
+        if all_ranks.count(f) == 4:
+            all_rank_types.remove(f)
+            return 'four-of-a-kind', [f, all_rank_types.pop()]
     else:
         return False
  
@@ -147,20 +219,28 @@ POKER HAND RANKINGS:  4
 
 Example:  Kh, Kd, 3h, 3s, 3c
 
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a full house based
+  on the rules.
+  - 5 unique cards in the hand 
+  - length of all rank types is 2
+  - all_ranks.count == 3
+  - function will list the highest rank
+  
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
-def fullhouse(hand):
-    allfaces = [f for f,s in hand]
-    allftypes = set(allfaces)
-    if len(allftypes) != 2:
+def full_house(hand):
+    all_ranks = [f for f,s in hand]
+    all_rank_types = set(all_ranks)
+    if len(all_rank_types) != 2:
         return False
-    for f in allftypes:
-        if allfaces.count(f) == 3:
-            allftypes.remove(f)
-            return 'full-house', [f, allftypes.pop()]
+    for f in all_rank_types:
+        if all_ranks.count(f) == 3:
+            all_rank_types.remove(f)
+            return 'full-house', [f, all_rank_types.pop()]
     else:
         return False
  
@@ -176,17 +256,29 @@ POKER HAND RANKINGS:  5
 
 Example:  Ad, Qd, 6d, Jd, 2d
 
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a flush based
+  on the rules.
+  - 5 unique cards in the hand 
+  - length of all suits types is 1
+  - len(all_rank_types) == 5
+  - all_rank_types = {'a', 'q', 'j', '6', '2'}
+  - all_suit_types = {'d'}
+  - len(all_suit_types) == 1
+  - all_ranks in ordered sort order
+  - function will list the sorted(all_ranks) --> ['a', 'q', 'j', '6', '2']
+ 
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
 def flush(hand):
-    allstypes = {s for f, s in hand}
-    if len(allstypes) == 1:
-        allfaces = [f for f,s in hand]
-        return 'flush', sorted(allfaces,
-                               key=lambda f: face.index(f),
+    all_suit_types = {s for f, s in hand}
+    if len(all_suit_types) == 1:
+        all_ranks = [f for f,s in hand]
+        return 'flush', sorted(all_ranks,
+                               key=lambda f: FACE.index(f),
                                reverse=True)
     return False
  
@@ -201,14 +293,25 @@ POKER HAND RANKINGS:  6
 
 Example:  Ks, Qd, Jc, 10h, 9s
 
+- Similar to straight flush but without the constraint of having all cards  
+  having the same suit.
+  
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a straight based
+  on the rules.
+  - 5 unique cards in the hand 
+  - 4 of the cards do not belong to the same suit
+  - all_ranks in ordered sort order
+  - will display the highest order 
+  
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
 def straight(hand):
-    f,fs = ( (lowace, lowaces) if any(card.face == '2' for card in hand)
-             else (face, faces) )
+    f,fs = ( (LOW_ACE, LOW_ACES) if any(card.face == '2' for card in hand)
+             else (FACE, FACES) )
     ordered = sorted(hand, key=lambda card: (f.index(card.face), card.suit))
     first, rest = ordered[0], ordered[1:]
     if ' '.join(card.face for card in ordered) in fs:
@@ -229,22 +332,30 @@ POKER HAND RANKINGS:  7
 
 Example:  5d, Js, 8h, 8s, 8d
 
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a three of a kind based
+  on the rules.
+  - 5 unique cards in the hand 
+  - all_rank_types == 3 --> { '5', '8', 'J'}
+  - all_ranks.count('8') == 3
+  - will display the set of all_rank_types --> { '5', '8', 'J'}
+  
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
-def threeofakind(hand):
-    allfaces = [f for f,s in hand]
-    allftypes = set(allfaces)
-    if len(allftypes) <= 2:
+def three_of_a_kind(hand):
+    all_ranks = [f for f,s in hand]
+    all_rank_types = set(all_ranks)
+    if len(all_rank_types) <= 2:
         return False
-    for f in allftypes:
-        if allfaces.count(f) == 3:
-            allftypes.remove(f)
+    for f in all_rank_types:
+        if all_ranks.count(f) == 3:
+            all_rank_types.remove(f)
             return ('three-of-a-kind', [f] +
-                     sorted(allftypes,
-                            key=lambda f: face.index(f),
+                     sorted(all_rank_types,
+                            key=lambda f: FACE.index(f),
                             reverse=True))
     else:
         return False
@@ -264,20 +375,32 @@ POKER HAND RANKINGS:  8
 
 Example:  10s, Qd, 7s, Qc, 7h
 
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a two pair based
+  on the rules.
+  - 5 unique cards in the hand 
+  - all_rank_types == 3 --> { '10', '7', 'Q'}
+  - all_ranks.count('Q') == 2 and all_ranks.count('7') == 2
+  - len(all_rank_types) == 3
+  - pairs = ['Q', '7']
+  - len(pairs) == 2
+  - will display the set of all_rank_types -->  { '10', '7', 'Q'}
+
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
-def twopair(hand):
-    allfaces = [f for f,s in hand]
-    allftypes = set(allfaces)
-    pairs = [f for f in allftypes if allfaces.count(f) == 2]
+def two_pair(hand):
+    
+    all_ranks = [f for f,s in hand]
+    all_rank_types = set(all_ranks)
+    pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
     if len(pairs) != 2:
         return False
     p0, p1 = pairs
-    other = [(allftypes - set(pairs)).pop()]
-    return 'two-pair', pairs + other if face.index(p0) > face.index(p1) else pairs[::-1] + other
+    other = [(all_rank_types - set(pairs)).pop()]
+    return 'two-pair', pairs + other if FACE.index(p0) > FACE.index(p1) else pairs[::-1] + other
  
 '''
 One Pair
@@ -294,20 +417,33 @@ POKER HAND RANKINGS:  9
 
 Example:  10s, Jd, 7s, 6h, 6c
 
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a one pair based
+  on the rules.
+  - 5 unique cards in the hand 
+  - all_rank_types == 4 --> {'10', '4', '5', 'k'}
+  - all_ranks.count('4') == 2
+  - len(all_rank_types) == 4
+  - pairs = ['4']
+  - len(pairs) == 1
+  - will display the set of all_rank_types -->  {'10', '4', '5', 'k'}
+
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
-def onepair(hand):
-    allfaces = [f for f,s in hand]
-    allftypes = set(allfaces)
-    pairs = [f for f in allftypes if allfaces.count(f) == 2]
+def one_pair(hand):
+    
+    all_ranks = [f for f,s in hand]
+    all_rank_types = set(all_ranks)
+    
+    pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
     if len(pairs) != 1:
         return False
-    allftypes.remove(pairs[0])
-    return 'one-pair', pairs + sorted(allftypes,
-                                      key=lambda f: face.index(f),
+    all_rank_types.remove(pairs[0])
+    return 'one-pair', pairs + sorted(all_rank_types,
+                                      key=lambda f: FACE.index(f),
                                       reverse=True)
 
 '''
@@ -326,20 +462,28 @@ POKER HAND RANKINGS:  10
 
 Example:  7c, 6d, 4s, 3h, 2c
 
+Design implementation implemented using Python 'set' data structure
+  This made it very simplistic to verify if the hand is a one pair based
+  on the rules.
+  - 5 unique cards in the hand 
+  - all_rank_types == 5 --> {'2', '3', '4', '6', '7'}
+  - len(all_rank_types) == 5
+  - will display the set of all_rank_types -->  {'7', '6', '4', '3', '2'}
+
 Note:
 cards are in two digits
 1st digit - encoded card value  or encoded rank 
 2nd digit - suit
 '''
-def highcard(hand):
-    allfaces = [f for f,s in hand]
-    return 'high-card', sorted(allfaces,
-                               key=lambda f: face.index(f),
+def high_card(hand):
+    all_ranks = [f for f,s in hand]
+    return 'high-card', sorted(all_ranks,
+                               key=lambda f: FACE.index(f),
                                reverse=True)
     
 # extract values and suits information from cards
-def set_Cards(hand):
-    #print "ENTER SET_CARDS HAND:\t{}".format(hand)
+def set_cards_rank_value_to_max_rank_ordinal_value(hand):
+    #print "ENTER set_cards_rank_value_to_max_rank_ordinal_value HAND:\t{}".format(hand)
     values=[]
     suits=[]
     for card in hand:
@@ -347,7 +491,7 @@ def set_Cards(hand):
         suits.append(card[-1])
         if  card[0] == 'j' or card[0] == 'J':
             values.append(11)
-        elif  card[0] == 'q' or card[0] == 'A':
+        elif  card[0] == 'q' or card[0] == 'Q':
             values.append(12)
         elif  card[0] == 'k' or card[0] == 'K':
             values.append(13)
@@ -356,18 +500,18 @@ def set_Cards(hand):
         elif card[0] == '10':
             values.append(10)
         
-    #print "SET_CARDS: SUITS:\t{}".format(suits)
-    #print "SET_CARDS: VALUES:\t{}".format(values)
+    #print "set_cards_rank_value_to_max_rank_ordinal_value: SUITS:\t{}".format(suits)
+    #print "set_cards_rank_value_to_max_rank_ordinal_value: VALUES:\t{}".format(values)
     return sorted(values),suits  #values need to be sorted
  
-handrankorder =  (royal_flush, straightflush, fourofakind, fullhouse,
-                  flush, straight, threeofakind,
-                  twopair, onepair, highcard)
+hand_rank_order =  (royal_flush, straight_flush, four_of_a_kind, full_house,
+                  flush, straight, three_of_a_kind,
+                  two_pair, one_pair, high_card)
 
 '''
 rank
 rank function will iterate through the list of poker hand functions listed in
-the handrankorder list to determine the poker hand.
+the hand_rank_order list to determine the poker hand.
 
 Note:
 cards are in two digits
@@ -376,7 +520,7 @@ cards are in two digits
 ''' 
 def rank(cards):
     hand = handy(cards)
-    for ranker in handrankorder:
+    for ranker in hand_rank_order:
         
         rank = ranker(hand)
         if rank:
@@ -399,6 +543,10 @@ This function will determine the hand for each string, that is,
 This nifty function will iterate thru the five card hand to interogate the 
 card value/rank and suit.
 
+This is where you instantiate or create a Card object based on the face value
+and suit.  The Card face rank value and the suit value is created from the 
+two digit encoded value (ie., '2h 2d 2c kc qd').  
+
 Additionally, this function provides error protection to insure there are only
 5 cards in the hand and verify all cards in the hand are unique.
 
@@ -411,8 +559,8 @@ def handy(cards='2h 2d 2c kc qd'):
     hand = []
     for card in cards.split():
         f, s = card[:-1], card[-1]
-        assert f in face, "Invalid: Don't understand card face %r" % f
-        assert s in suit, "Invalid: Don't understand card suit %r" % s
+        assert f in FACE, "Invalid: Don't understand card face %r" % f
+        assert s in SUIT, "Invalid: Don't understand card suit %r" % s
         hand.append(Card(f, s))
     assert len(hand) == 5, "Invalid: Must be 5 cards in a hand, not %i" % len(hand)
     assert len(set(hand)) == 5, "Invalid: All cards in the hand must be unique %r" % cards
@@ -463,6 +611,8 @@ if __name__ == '__main__':
     c30 = ['Jh', 'Jc', '3c', '3s', '2h']     # --> Two pairs!
     '''
     
+    #hands = ["kd qd 7s 4s 2h"]
+    #'''
     hands = [
      "2h 2d 2c kc qd",
      "2h 5h 7d 8c 9h",
@@ -496,6 +646,7 @@ if __name__ == '__main__':
      'jh   jc 3c 3s 2h',
      'as  2c  4h 5d ks'
       ]
+    #'''
              
     
     print("%-18s %-15s %s" % ("HAND", "CATEGORY", "TIE-BREAKER"))
