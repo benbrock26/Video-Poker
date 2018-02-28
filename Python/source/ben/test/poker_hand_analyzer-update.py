@@ -8,6 +8,11 @@ https://en.wikipedia.org/wiki/List_of_poker_hands
 https://en.wikipedia.org/wiki/List_of_poker_hands
 
 
+https://briancaffey.github.io/2018/01/02/checking-poker-hands-with-python.html
+
+https://www.pokerstars.com/poker/games/rules/hand-rankings/?no_redirect=1
+
+
 NOTE:
     Will follow the Google Python Style Guide for the coding standards.
     
