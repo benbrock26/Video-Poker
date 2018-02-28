@@ -443,6 +443,7 @@ cards are in two digits
 '''
 def one_pair(hand):
     
+    #print "\nEnter\nONE_PAIR: HAND is {}".format(hand)
     all_ranks = [f for f,s in hand]
     all_rank_types = set(all_ranks)
     
@@ -754,7 +755,8 @@ if __name__ == '__main__':
      'jh   jc 2s 3c 4h',
      'qh   qc 2s 3c 4h',
      'kh   kc 2s 3c 4h',
-     'ah   ac 2s 3c 4h'
+     'ah   ac 2s 3c 4h',
+     '10s  8h 7d 7s 8d'
       ]
     #'''
              

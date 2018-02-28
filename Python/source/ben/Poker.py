@@ -8,6 +8,7 @@ Created on Mon Feb 19 21:58:28 2018
 from Deck import Deck
 from Player import Player
 from PokerGameTheoryStrategy import PokerGameTheoryStrategy
+from PokerHandUtility import PokerHandUtility
 import sys
 
 debug = 0
@@ -36,6 +37,7 @@ class Poker(object):
         self.__player = None        ## 1 to many player's
         self.__game_view = None     ## 1 PokerGameInterface
         self.__poker_game_theory_strategy   = PokerGameTheoryStrategy()  # Nash Equilibrium Game Theory
+        self.__poker_hand_utility = PokerHandUtility()   # Poker Hand Utility object which evaluates any 5 card hand
     
     def __del__(self):
         pass
@@ -223,6 +225,9 @@ def main():
     print "\nUnit Testing of the Poker Class.....\n"
     
     print "\n.... This is where most of the complex logic will be located for the Poker Game...\n"
+    
+    print "\nCreate a Poker object"
+    poker = Poker()
     
     
     
