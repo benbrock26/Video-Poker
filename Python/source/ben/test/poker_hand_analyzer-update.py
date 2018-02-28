@@ -88,7 +88,7 @@ def royal_flush(hand):
     
     all_suits = [s for f, s in hand]
     all_suit_types = len(set(all_suits))
-    
+        
     #print "ROYAL FLUSH: HAND:\t{}".format(hand)
     values, suit = set_cards_rank_value_to_max_rank_ordinal_value(hand)
 
@@ -101,7 +101,10 @@ def royal_flush(hand):
         #print "ROYAL FLUSH SUM is:\t{}".format(sum(values))
         
         #sys.exit(2)
-        return 'royal-flush', "No Tie breaker, if 2 players have RF split the pot"
+        
+        return 'royal-flush',  sorted(all_ranks,
+                               key=lambda f: FACE.index(f),
+                               reverse=True)
     else:
         return False
  
@@ -604,8 +607,7 @@ hand_rank_order =  (royal_flush,
                     two_pair, 
                     one_pair, 
                     jacks_or_better,
-                    high_card
-                    )
+                    high_card)
 
 '''
 rank
@@ -752,7 +754,7 @@ if __name__ == '__main__':
     #'''
              
     
-    print("%-18s %-15s %s" % ("HAND", "CATEGORY", "TIE-BREAKER"))
+    print("%-18s %-15s %s\t\t\t\t\t\t\t%-30s" % ("HAND", "CATEGORY", "TIE-BREAKER", "PAY-OUT"))
     #sys.exit(2)
     
     #print hands[0].split()
