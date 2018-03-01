@@ -75,8 +75,8 @@ class Poker(object):
             cards = self.__poker_hand_utility.get_converted_current_hand_string()
             
             # Now, call the poker hand utility class to evaluate the current hand
-            r = self.__poker_hand_utility.rank(cards)
-            return r
+            rank_result = self.__poker_hand_utility.rank(cards)
+            return rank_result
 
         
     def reset_table(self):

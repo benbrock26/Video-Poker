@@ -50,6 +50,20 @@ class PokerHandUtility(object):
             "Queen":"q",
             "King" :"k"}
     
+    HAND_PAYOUT_MULTIPLIER = dict(
+            royal_flush = 250,
+            straight_flush = 50,
+            four_of_a_kind = 25,
+            full_house = 9,
+            flush = 6,
+            straight = 4,
+            three_of_a_kind = 3,
+            two_pair = 2,
+            one_pair = 1,
+            jacks_or_better = 0.5,
+            high_card = 0.75)
+    
+    
     
     def __init__(self):
         self.__hand = None
@@ -95,7 +109,9 @@ class PokerHandUtility(object):
         
         if self.__hand:
             
+            # 1st convert the hand to a list of cards
             self.convert_hand_to_list()
+            
             # build a list of strings, separated by a space, then join them
             # Here we used List Compression
             self.__converted_current_hand_string = ' '.join([str for str in self.__converted_current_hand_list])
