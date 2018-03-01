@@ -150,7 +150,14 @@ class Card(object):
     '''
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
-
+    
+    def get_rank(self):
+        return self.rank
+    
+    def get_suit(self):
+        return self.suit_type
+    
+    
 ## Unit Test of the Card Class ####
 def main():
     from Card import Card

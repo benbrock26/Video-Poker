@@ -68,14 +68,17 @@ class Poker(object):
         pass
     
     def evaluate_hand(self):
-        pass
     
-    def get_straight_type(self, values):
-        pass
-    
-    def get_kind(self, values):
-        pass
-    
+        if self.__poker_game_theory_strategy:
+            
+            # get the current card hand in string format
+            cards = self.__poker_hand_utility.get_converted_current_hand_string()
+            
+            # Now, call the poker hand utility class to evaluate the current hand
+            r = self.__poker_hand_utility.rank(cards)
+            return r
+
+        
     def reset_table(self):
         pass
     
@@ -87,6 +90,9 @@ class Poker(object):
     
     def get_game_view(self):
         return self.game_view
+    
+    def get_poker_hand_utility(self):
+        return self.__poker_hand_utility
     
     
     def player_card_keep_delete_position_management(self):
@@ -149,6 +155,7 @@ class Poker(object):
                 # Update poker game player user experience or hand summary
                 self.__game_view.display_players_five_card_stud_hand_table_summary()
                 
+                self.__poker_hand_utility.set_poker_hand(self.__player.get_hand())
                 '''
                 Based on the "n" cards that were discarded by the user, 
                 Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
@@ -156,6 +163,11 @@ class Poker(object):
                 '''
                 # add the discarded cars back to the Deck
                 self.add_discarded_cards_back_to_deck()
+                
+            #elif self.__number_of_replacement_cards == 0:
+            else:
+                self.__poker_hand_utility.set_poker_hand(self.__player.get_hand())
+                
                     
         else:
             print "CANNOT KEEP OR DISCARD MANAGEMENT OF PLAYERS' HAND ==> PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
@@ -225,12 +237,126 @@ def main():
     print "\nUnit Testing of the Poker Class.....\n"
     
     print "\n.... This is where most of the complex logic will be located for the Poker Game...\n"
+       
+    print "\nUnit Testing of the PokerGameInterface Class.....\n"
     
-    print "\nCreate a Poker object"
+    print "\n.... This is where most of the Poker Game Interface logic will be located for the Poker Game presentation...\n"
+    
+    from PokerGameInterface import PokerGameInterface
+    
+    # create a poker game "controller"
     poker = Poker()
     
+    # add a 'view' to the "controller"
+    poker_game_interface = PokerGameInterface(poker)
+    
+    poker.add_view(poker_game_interface)
+    
+    print "\nNow Going Thru Scenario 2\n"
+    bob = Player("bob")
+    print "Players name:\t{}\n".format(bob.get_name())
+    
+    print "The number of cards in the deck of cards:\t{}".format(poker.get_deck().get_deck_size())
     
     
+    '''
+    Add a player to the PokerGame
+    '''
+    print "\n...Adding Bob hand to the poker game via 'game.add_player() method .....\n"
+    poker.add_player(bob)
+    
+    poker_game_interface.display_welcome()
+    
+    poker_game_interface.display_new_game()
+    
+    # Ask the player to add funds
+    deposit_amount = poker_game_interface.get_deposit();
+    poker.get_player().add_funds(deposit_amount);
+    
+    poker_game_interface.display_new_game()
+    poker_game_interface.display_bank_roll()
+    
+    
+    bet_amount = poker_game_interface.get_bet()
+    
+    
+    for i in range(0, 5):
+        poker.get_player().add_card(poker.get_deck().draw_card())
+    
+        
+    '''
+    List Comprehension
+    The above command is coded up in the Pythonic way listed below.
+    '''
+    
+    #[game.get_player().add_card(game.get_deck().draw_card()) for i in range(0, 5)]
+        
+    poker_game_interface.display_players_five_card_stud_hand_table_summary()
             
+    print "The number of cards in the deck of cards:\t{}".format(poker.get_deck().get_deck_size())
+    
+    # Card Position Keep/Delete Card Management
+    poker.player_card_keep_delete_position_management()
+    
+    hand = poker.get_player_hand()
+    #print "POKER HAND {}".format(hand)
+    #print "CONVERTED HAND IS {}".format(poker.get_poker_hand_utility().get_hand())
+    
+    '''
+    This is awkward for the user to do this task.  This should be done automatically.
+    '''
+    #poker.get_poker_hand_utility().convert_hand_to_list()
+    #poker.get_poker_hand_utility().convert_hand_to_string()
+    
+    print "CONVERTED HAND LIST IS {}".format(poker.get_poker_hand_utility().get_converted_current_hand_list())
+    print "CONVERTED HAND STRING IS {}".format(poker.get_poker_hand_utility().get_converted_current_hand_string())
+
+   
+    cards = poker.get_poker_hand_utility().get_converted_current_hand_string()
+
+    r = poker.evaluate_hand()
+    
+    print("%-18r %-15s %r" % (cards, r[0], r[1]))
+    
+    '''
+    CARD_SUIT = dict(
+           Spades   = "s",
+           Clubs    = "c",
+           Diamonds = "d",
+           Hearts   = "h")
+  
+    ORDERED_RANK = {
+            "Ace":"a", 
+            "2":2,
+            "3":3,
+            "4":4,
+            "5":5,
+            "6":6,
+            "7":7,
+            "8":8,
+            "9":9,
+            "10":10,
+            "Jack":"j",
+            "Queen":"q",
+            "King" :"k"}
+    
+    card_hand = []
+    for card in hand.get_cards():
+        card.print_card()
+        print"{}{}".format(ORDERED_RANK[card.get_rank()], CARD_SUIT[card.get_suit()])
+        deal = '{}{}'.format(ORDERED_RANK[card.get_rank()], CARD_SUIT[card.get_suit()])
+        card_hand.append(deal)
+        
+    print card_hand
+    '''
+    
+    '''    
+    for key in CARD_SUIT:
+        print CARD_SUIT[key]
+    
+    for key in ORDERED_RANK:
+        print ORDERED_RANK[key]
+    '''
+    
 if __name__ == '__main__':
     main()

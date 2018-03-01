@@ -756,7 +756,9 @@ if __name__ == '__main__':
      'qh   qc 2s 3c 4h',
      'kh   kc 2s 3c 4h',
      'ah   ac 2s 3c 4h',
-     '10s  8h 7d 7s 8d'
+     '10s  8h 7d 7s 8d',
+     '9s  10s js qs ks',
+     '10s  js qs ks as'
       ]
     #'''
              

@@ -96,7 +96,7 @@ class PokerGameInterface (object):
         print 
         print "-----Display players 5 card stud hand table summary ------"
         print 
-        #game.get_player().show_hand()
+        #self.__game.get_player().show_hand()
         "Hand:\t{}\n".format(self.__game.get_player().show_hand_by_index())
         print "-----------------------------------------------------------\n"
         print "Positions:\t\t  0 |   1 |   2 |   3 |   4\n\n"
@@ -431,6 +431,19 @@ def main():
     
     # Card Position Keep/Delete Card Management
     game.player_card_keep_delete_position_management()
+    
+    game_view.display_players_five_card_stud_hand_table_summary()
+            
+    print "The number of cards in the deck of cards:\t{}".format(game.get_deck().get_deck_size())
+    
+    print "\nCONVERTED HAND LIST IS {}".format(game.get_poker_hand_utility().get_converted_current_hand_list())
+    print "CONVERTED HAND STRING IS {}\n".format(game.get_poker_hand_utility().get_converted_current_hand_string())
+
+    cards = game.get_poker_hand_utility().get_converted_current_hand_string()
+
+    r = game.evaluate_hand()
+    
+    print("%-18r %-15s %r" % (cards, r[0], r[1]))
     
 if __name__ == '__main__':
     main()
