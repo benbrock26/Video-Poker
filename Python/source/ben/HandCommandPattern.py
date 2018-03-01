@@ -37,6 +37,14 @@ class HandCommandPattern(object):
 
     def setDebugFlag (self, flag):
         self.__debug = flag
-
+        
+    def get_bet_amount(self):
+        return self.__bet_amount 
+    
+    def get_payout_multiplier(self):
+        return self.__payout_multiplier
+    
+    def get_rank(self):
+        return self.__rank
 
     
