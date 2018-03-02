@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 """
+
+NOTE:
+    Will follow the Google Python Style Guide for the coding standards.
+    
+    https://google.github.io/styleguide/pyguide.html
+    
 Created on Wed Feb 28 07:51:44 2018
 
 @author: Ben Brock and Shazia Zaman
@@ -675,7 +681,7 @@ class PokerHandUtility(object):
     
     
     '''
-    List of functional objects used for the poker hand evalution.  The function 
+    List of function objects used for the poker hand evalution.  The function 
     objects are listed in Poker hand priority order, i.e., from highest to lowest.
     '''
     def hand_rank_order_fnc_obs(self):
@@ -816,9 +822,9 @@ def main():
         print("%-18r %-15s %r" % (cards, r[0], r[1]))
         
         
-    print poker_hand_utility.HAND_PAYOUT_MULTIPLIER.keys()
+    #print poker_hand_utility.HAND_PAYOUT_MULTIPLIER.keys()
     
-    print poker_hand_utility.POKER_HAND_RANK.keys()
+    #print poker_hand_utility.POKER_HAND_RANK.keys()
         
 if __name__ == '__main__':
     main()
