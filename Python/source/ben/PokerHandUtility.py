@@ -6,7 +6,7 @@ Created on Wed Feb 28 07:51:44 2018
 """
 
 
-from Hand import Hand
+#from Hand import Hand
 
 from collections import namedtuple
 import sys
@@ -51,18 +51,30 @@ class PokerHandUtility(object):
             "King" :"k"}
     
     HAND_PAYOUT_MULTIPLIER = dict(
-            royal_flush = 250,
-            straight_flush = 50,
-            four_of_a_kind = 25,
-            full_house = 9,
-            flush = 6,
-            straight = 4,
+            royal_flush     = 250,
+            straight_flush  = 50,
+            four_of_a_kind  = 25,
+            full_house      = 9,
+            flush           = 6,
+            straight        = 4,
             three_of_a_kind = 3,
-            two_pair = 2,
-            one_pair = 1,
-            jacks_or_better = 0.5,
-            high_card = 0.75)
+            two_pair        = 2,
+            one_pair        = 1,
+            jacks_or_better = 0.75,
+            high_card       = 0.50)
     
+    POKER_HAND_RANK = dict(
+            royal_flush     = 1,
+            straight_flush  = 2,
+            four_of_a_kind  = 3,
+            full_house      = 4,
+            flush           = 5,
+            straight        = 6,
+            three_of_a_kind = 7,
+            two_pair        = 8,
+            one_pair        = 9,
+            jacks_or_better = 10,
+            high_card       = 11)
     
     
     def __init__(self):
@@ -169,7 +181,7 @@ class PokerHandUtility(object):
         
         if all_suit_types == 1 and len(all_rank_types) == 5 and sum(values) == 60:
             
-            return 'royal-flush',  sorted(all_ranks,
+            return 'royal_flush',  sorted(all_ranks,
                                key=lambda f: FACE.index(f),
                                reverse=True)
         else:
@@ -227,7 +239,7 @@ class PokerHandUtility(object):
         
         if ( all(card.suit == first.suit for card in rest) and
              ' '.join(card.face for card in ordered) in fs ):
-            return 'straight-flush', ordered[-1].face
+            return 'straight_flush', ordered[-1].face
         return False
     
     '''
@@ -272,7 +284,7 @@ class PokerHandUtility(object):
         for f in all_rank_types:
             if all_ranks.count(f) == 4:
                 all_rank_types.remove(f)
-                return 'four-of-a-kind', [f, all_rank_types.pop()]
+                return 'four_of_a_kind', [f, all_rank_types.pop()]
         else:
             return False
         
@@ -309,7 +321,7 @@ class PokerHandUtility(object):
         for f in all_rank_types:
             if all_ranks.count(f) == 3:
                 all_rank_types.remove(f)
-                return 'full-house', [f, all_rank_types.pop()]
+                return 'full_house', [f, all_rank_types.pop()]
         else:
             return False
     
@@ -423,7 +435,7 @@ class PokerHandUtility(object):
         for f in all_rank_types:
             if all_ranks.count(f) == 3:
                 all_rank_types.remove(f)
-                return ('three-of-a-kind', [f] +
+                return ('three_of_a_kind', [f] +
                          sorted(all_rank_types,
                                 key=lambda f: FACE.index(f),
                                 reverse=True))
@@ -470,7 +482,7 @@ class PokerHandUtility(object):
             return False
         p0, p1 = pairs
         other = [(all_rank_types - set(pairs)).pop()]
-        return 'two-pair', pairs + other if FACE.index(p0) > FACE.index(p1) else pairs[::-1] + other
+        return 'two_pair', pairs + other if FACE.index(p0) > FACE.index(p1) else pairs[::-1] + other
 
 
     '''
@@ -521,7 +533,7 @@ class PokerHandUtility(object):
             return False
         
         all_rank_types.remove(pairs[0])
-        return 'one-pair', pairs + sorted(all_rank_types,
+        return 'one_pair', pairs + sorted(all_rank_types,
                                           key=lambda f: FACE.index(f),
                                           reverse=True)
     '''
@@ -555,7 +567,7 @@ class PokerHandUtility(object):
     '''
     def high_card(self, hand):
         all_ranks = [f for f,s in hand]
-        return 'high-card', sorted(all_ranks,
+        return 'high_card', sorted(all_ranks,
                                    key=lambda f: FACE.index(f),
                                    reverse=True)
 
@@ -623,7 +635,7 @@ class PokerHandUtility(object):
             return False
         
         all_rank_types.remove(pairs[0])
-        return 'jacks or better', pairs + sorted(all_rank_types,
+        return 'jacks_or_better', pairs + sorted(all_rank_types,
                                           key=lambda f: FACE.index(f),
                                           reverse=True)
 
@@ -747,7 +759,7 @@ def main():
     poker_hand_utility = PokerHandUtility()
     
     print "START of UNIT TESTING OF POKER HAND UTILITY CLASS\n"
-    #hands = ["7h 7c 2s 3c 4h"]
+    #hands = ["10s js qs ks as"]
     
     #'''
     hands = [
@@ -802,6 +814,11 @@ def main():
         #sys.exit(2)
         r = poker_hand_utility.rank(cards)
         print("%-18r %-15s %r" % (cards, r[0], r[1]))
+        
+        
+    print poker_hand_utility.HAND_PAYOUT_MULTIPLIER.keys()
+    
+    print poker_hand_utility.POKER_HAND_RANK.keys()
         
 if __name__ == '__main__':
     main()

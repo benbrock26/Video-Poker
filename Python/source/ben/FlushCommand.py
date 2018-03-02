@@ -8,7 +8,7 @@ Created on Thu Mar 01 16:58:49 2018
 from HandCommandPattern import HandCommandPattern
 from PokerHandUtility import PokerHandUtility
 
-class RoyalFlushCommand(HandCommandPattern):
+class FlushCommand(HandCommandPattern):
 
     def __init__ (self, 
                   bet_amount,
@@ -47,28 +47,28 @@ class RoyalFlushCommand(HandCommandPattern):
 def main():
 
     bet_amount = 1
-    multiplier = PokerHandUtility.HAND_PAYOUT_MULTIPLIER['royal_flush']
-    rank = PokerHandUtility.POKER_HAND_RANK['royal_flush']
-    command_name = 'royal_flush'
-    hand_list_format = ["10s", "js", "qs", "ks", "as"]
-    hand_string_format = "10s js qs ks as"
-    tie_breaker = ['a', 'k', 'q', 'j', '10']
+    multiplier = PokerHandUtility.HAND_PAYOUT_MULTIPLIER['flush']
+    rank = PokerHandUtility.POKER_HAND_RANK['flush']
+    command_name = 'flush'
+    hand_list_format = ["jd", "9d", "8d", "4d", "3d"]
+    hand_string_format = "jd 9d 8d 4d 3d"
+    tie_breaker = ['j', '9', '8', '4', '3']
     
-    royal_flush_command = RoyalFlushCommand(bet_amount,
-                                            multiplier,
-                                            rank,
-                                            command_name,
-                                            hand_list_format,
-                                            hand_string_format,
-                                            tie_breaker)
+    flush_command = FlushCommand(bet_amount,
+                                 multiplier,
+                                 rank,
+                                 command_name,
+                                 hand_list_format,
+                                 hand_string_format,
+                                 tie_breaker)
     
-    print royal_flush_command.get_bet_amount()
-    print royal_flush_command.get_rank()
-    print royal_flush_command.get_payout_multiplier()
-    print royal_flush_command.getCommandName()
-    print royal_flush_command.calculate_payout()
-    print royal_flush_command.get_hand_list_format()
-    print royal_flush_command.get_hand_string_format()
+    print flush_command.get_bet_amount()
+    print flush_command.get_rank()
+    print flush_command.get_payout_multiplier()
+    print flush_command.getCommandName()
+    print flush_command.calculate_payout()
+    print flush_command.get_hand_list_format()
+    print flush_command.get_hand_string_format()
 
 if __name__ == '__main__':
     main()
