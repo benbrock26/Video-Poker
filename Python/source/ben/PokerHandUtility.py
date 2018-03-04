@@ -13,6 +13,18 @@ Created on Wed Feb 28 07:51:44 2018
 
 
 #from Hand import Hand
+from HandCommandPattern import HandCommandPattern
+from PokerCommands import RoyalFlushCommand
+from PokerCommands import StraightFlushCommand
+from PokerCommands import FourOfAKindCommand
+from PokerCommands import FullHouseCommand
+from PokerCommands import FlushCommand
+from PokerCommands import StraightCommand
+from PokerCommands import ThreeOfAKindCommand
+from PokerCommands import TwoPairCommand
+from PokerCommands import OnePairCommand
+from PokerCommands import HighCardCommand
+from PokerCommands import JacksOrBetterCommand
 
 from collections import namedtuple
 import sys
@@ -83,10 +95,25 @@ class PokerHandUtility(object):
             high_card       = 11)
     
     
+    POKER_HAND_COMMAND_NAME = dict(
+            royal_flush     = "royal_flush",
+            straight_flush  = "straight_flush",
+            four_of_a_kind  = "four_of_a_kind",
+            full_house      = "full_house",
+            flush           = "flush",
+            straight        = "straight",
+            three_of_a_kind = "three_of_a_kind",
+            two_pair        = "two_pair",
+            one_pair        = "one_pair",
+            jacks_or_better = "jacks_or_better",
+            high_card       = "high_card")
+    
+    
     def __init__(self):
         self.__hand = None
         self.__converted_current_hand_list = None
         self.__converted_current_hand_string = ""
+        self.__bet_amount = None
         
     def get_hand(self):
         return self.__hand
@@ -101,27 +128,61 @@ class PokerHandUtility(object):
         
         #print "ENTER SET POKER HAND"
         self.__hand = hand
-        #print "PokerHandUtility::set poker_hand() POKER HAND IS {}".format(self.__hand)
+        #print "PokerHandUtility::set poker_hand() POKER HAND IS<<<{}>>>".format(self.__hand)
         #print "EXIT SET POKER HAND"
         
         self.convert_hand_to_list()
         self.convert_hand_to_string()
+        
+
+        
+        
+    def set_poker_hand_on_fly(self, hand):
+        
+        self.__hand = hand
+        
+        self.convert_hand_on_fly_to_list()
+        
+        #print "SET POKER HAND ON FLY is {}".format(self.__converted_current_hand_list)
+        
+        '''
+        This code was cheesy to do but I wanted to get this function done quickly.
+        I tried to do this code in a one liner but I kept getting syntax errors.
+        I fixed the bug for now and I will revisit this problem later.
+        '''
+        element_string = ""
+        for elem in self.__converted_current_hand_list:
+            #print elem
+            element_string = str(elem) + " " + str(element_string)
+            
+        element_string = element_string.rstrip()  
+        #print "FINAL <<<{}>>>".format(element_string.rstrip())
+        #self.__converted_current_hand_string = ' '.join([elem for elem in self.__hand])
+        
+        self.__converted_current_hand_string = element_string
         
     def convert_hand_to_list(self):
         
         if self.__hand:
             
             current_hand_list = []
-            for card in self.__hand.get_cards():
-                #card.print_card()
+            for card in self.__hand:
+                #card.print card
                 ##print"{}{}".format(PokerHandUtility.ORDERED_RANK[card.get_rank()], 
                 ##               PokerHandUtility.CARD_SUIT[card.get_suit()])
                 dealt_card = '{}{}'.format(PokerHandUtility.ORDERED_RANK[card.get_rank()], 
                                  PokerHandUtility.CARD_SUIT[card.get_suit()])
                 current_hand_list.append(dealt_card)
-            
+                
             self.__converted_current_hand_list = current_hand_list
     
+    
+    def convert_hand_on_fly_to_list(self):
+        
+        if self.__hand:
+            
+           self.__converted_current_hand_list = self.__hand
+        
     
     def convert_hand_to_string(self):
         
@@ -132,7 +193,7 @@ class PokerHandUtility(object):
             
             # build a list of strings, separated by a space, then join them
             # Here we used List Compression
-            self.__converted_current_hand_string = ' '.join([str for str in self.__converted_current_hand_list])
+            self.__converted_current_hand_string = ' '.join([x for x in self.__converted_current_hand_list])
     
     '''
     Royal Flush
@@ -187,9 +248,18 @@ class PokerHandUtility(object):
         
         if all_suit_types == 1 and len(all_rank_types) == 5 and sum(values) == 60:
             
-            return 'royal_flush',  sorted(all_ranks,
-                               key=lambda f: FACE.index(f),
-                               reverse=True)
+            royal_flush_command = RoyalFlushCommand(self.__bet_amount, 
+                                     PokerHandUtility.HAND_PAYOUT_MULTIPLIER['royal_flush'],
+                                     PokerHandUtility.POKER_HAND_RANK['royal_flush'],
+                                     'royal_flush',
+                                     self.__converted_current_hand_list,
+                                     self.__converted_current_hand_string,
+                                     sorted(all_ranks,
+                                            key=lambda f: FACE.index(f),
+                                            reverse=True))
+            
+            return royal_flush_command
+                                          
         else:
             return False
             
@@ -245,7 +315,16 @@ class PokerHandUtility(object):
         
         if ( all(card.suit == first.suit for card in rest) and
              ' '.join(card.face for card in ordered) in fs ):
-            return 'straight_flush', ordered[-1].face
+            
+            straight_flush_command = StraightFlushCommand(self.__bet_amount, 
+                                                          PokerHandUtility.HAND_PAYOUT_MULTIPLIER['straight_flush'],
+                                                          PokerHandUtility.POKER_HAND_RANK['straight_flush'],
+                                                          'straight_flush',
+                                                          self.__converted_current_hand_list,
+                                                          self.__converted_current_hand_string,
+                                                          ordered[-1].face)
+            return straight_flush_command
+
         return False
     
     '''
@@ -290,7 +369,17 @@ class PokerHandUtility(object):
         for f in all_rank_types:
             if all_ranks.count(f) == 4:
                 all_rank_types.remove(f)
-                return 'four_of_a_kind', [f, all_rank_types.pop()]
+                
+                four_of_a_kind_cmd = FourOfAKindCommand(self.__bet_amount, 
+                                       PokerHandUtility.HAND_PAYOUT_MULTIPLIER['four_of_a_kind'],
+                                       PokerHandUtility.POKER_HAND_RANK['four_of_a_kind'],
+                                      'four_of_a_kind',
+                                      self.__converted_current_hand_list,
+                                      self.__converted_current_hand_string,
+                                      [f, all_rank_types.pop()])
+                
+                return four_of_a_kind_cmd
+
         else:
             return False
         
@@ -327,7 +416,16 @@ class PokerHandUtility(object):
         for f in all_rank_types:
             if all_ranks.count(f) == 3:
                 all_rank_types.remove(f)
-                return 'full_house', [f, all_rank_types.pop()]
+                
+                full_house_command = FullHouseCommand(self.__bet_amount, 
+                                       PokerHandUtility.HAND_PAYOUT_MULTIPLIER['full_house'],
+                                       PokerHandUtility.POKER_HAND_RANK['full_house'],
+                                      'full_house',
+                                      self.__converted_current_hand_list,
+                                      self.__converted_current_hand_string,
+                                      [f, all_rank_types.pop()])
+                
+                return full_house_command
         else:
             return False
     
@@ -365,9 +463,18 @@ class PokerHandUtility(object):
         all_suit_types = {s for f, s in hand}
         if len(all_suit_types) == 1:
             all_ranks = [f for f,s in hand]
-            return 'flush', sorted(all_ranks,
-                                   key=lambda f: FACE.index(f),
-                                   reverse=True)
+            
+            flush_command = FlushCommand(self.__bet_amount, 
+                                       PokerHandUtility.HAND_PAYOUT_MULTIPLIER['flush'],
+                                       PokerHandUtility.POKER_HAND_RANK['flush'],
+                                      'flush',
+                                      self.__converted_current_hand_list,
+                                      self.__converted_current_hand_string,
+                                      sorted(all_ranks,
+                                             key=lambda f: FACE.index(f),
+                                             reverse=True))
+            return flush_command
+        
         return False
     
     
@@ -404,7 +511,17 @@ class PokerHandUtility(object):
         ordered = sorted(hand, key=lambda card: (f.index(card.face), card.suit))
         first, rest = ordered[0], ordered[1:]
         if ' '.join(card.face for card in ordered) in fs:
-            return 'straight', ordered[-1].face
+            
+            straight_command = StraightCommand(self.__bet_amount, 
+                                       PokerHandUtility.HAND_PAYOUT_MULTIPLIER['straight'],
+                                       PokerHandUtility.POKER_HAND_RANK['straight'],
+                                      'straight',
+                                      self.__converted_current_hand_list,
+                                      self.__converted_current_hand_string,
+                                      ordered[-1].face)
+            
+            return straight_command
+        
         return False
     
     '''
@@ -441,10 +558,18 @@ class PokerHandUtility(object):
         for f in all_rank_types:
             if all_ranks.count(f) == 3:
                 all_rank_types.remove(f)
-                return ('three_of_a_kind', [f] +
-                         sorted(all_rank_types,
-                                key=lambda f: FACE.index(f),
-                                reverse=True))
+                
+                three_of_a_kind_command = ThreeOfAKindCommand(self.__bet_amount, 
+                                             PokerHandUtility.HAND_PAYOUT_MULTIPLIER['three_of_a_kind'],
+                                             PokerHandUtility.POKER_HAND_RANK['three_of_a_kind'],
+                                             'three_of_a_kind',
+                                             self.__converted_current_hand_list,
+                                             self.__converted_current_hand_string,
+                                             [f] + sorted(all_rank_types,
+                                                   key=lambda f: FACE.index(f),
+                                                   reverse=True))
+            
+                return three_of_a_kind_command
         else:
             return False
     
@@ -488,7 +613,16 @@ class PokerHandUtility(object):
             return False
         p0, p1 = pairs
         other = [(all_rank_types - set(pairs)).pop()]
-        return 'two_pair', pairs + other if FACE.index(p0) > FACE.index(p1) else pairs[::-1] + other
+        
+        two_pair_command = TwoPairCommand(self.__bet_amount, 
+                                     PokerHandUtility.HAND_PAYOUT_MULTIPLIER['two_pair'],
+                                     PokerHandUtility.POKER_HAND_RANK['two_pair'],
+                                     'two_pair',
+                                     self.__converted_current_hand_list,
+                                     self.__converted_current_hand_string,
+                                     pairs + other if FACE.index(p0) > FACE.index(p1) else pairs[::-1] + other)
+                
+        return two_pair_command
 
 
     '''
@@ -539,9 +673,20 @@ class PokerHandUtility(object):
             return False
         
         all_rank_types.remove(pairs[0])
-        return 'one_pair', pairs + sorted(all_rank_types,
-                                          key=lambda f: FACE.index(f),
-                                          reverse=True)
+        
+        one_pair_command = OnePairCommand(self.__bet_amount, 
+                                     PokerHandUtility.HAND_PAYOUT_MULTIPLIER['one_pair'],
+                                     PokerHandUtility.POKER_HAND_RANK['one_pair'],
+                                     'one_pair',
+                                     self.__converted_current_hand_list,
+                                     self.__converted_current_hand_string,
+                                     pairs + sorted(all_rank_types,
+                                                    key=lambda f: FACE.index(f),
+                                                    reverse=True))
+       
+        return one_pair_command
+    
+    
     '''
     High Card
     Othewise unrelated cards ranked by the highest single card.
@@ -573,9 +718,18 @@ class PokerHandUtility(object):
     '''
     def high_card(self, hand):
         all_ranks = [f for f,s in hand]
-        return 'high_card', sorted(all_ranks,
-                                   key=lambda f: FACE.index(f),
-                                   reverse=True)
+        
+        high_card_command = HighCardCommand(self.__bet_amount, 
+                                     PokerHandUtility.HAND_PAYOUT_MULTIPLIER['high_card'],
+                                     PokerHandUtility.POKER_HAND_RANK['high_card'],
+                                     'high_card',
+                                     self.__converted_current_hand_list,
+                                     self.__converted_current_hand_string,
+                                     sorted(all_ranks,
+                                            key=lambda f: FACE.index(f),
+                                            reverse=True))
+        
+        return high_card_command
 
     '''
     jacks or better
@@ -641,9 +795,18 @@ class PokerHandUtility(object):
             return False
         
         all_rank_types.remove(pairs[0])
-        return 'jacks_or_better', pairs + sorted(all_rank_types,
-                                          key=lambda f: FACE.index(f),
-                                          reverse=True)
+        
+        jacks_or_better_command = JacksOrBetterCommand(self.__bet_amount, 
+                                        PokerHandUtility.HAND_PAYOUT_MULTIPLIER['jacks_or_better'],
+                                        PokerHandUtility.POKER_HAND_RANK['jacks_or_better'],
+                                        'jacks_or_better',
+                                        self.__converted_current_hand_list,
+                                        self.__converted_current_hand_string,
+                                        pairs + sorted(all_rank_types,
+                                                    key=lambda f: FACE.index(f),
+                                                    reverse=True))
+        
+        return jacks_or_better_command
 
 
     '''
@@ -710,8 +873,15 @@ class PokerHandUtility(object):
     1st digit - encoded card value  or encoded rank 
     2nd digit - suit
     ''' 
-    def rank(self, cards):
+    def rank(self, cards, bet_amount):
+        
         hand = self.handy(cards)
+        
+        self.__bet_amount = bet_amount
+        
+        self.set_poker_hand_on_fly(hand)
+        
+        #print "RANK HAND is <<<{}>>>>".format(hand)
         for ranker in self.hand_rank_order_fnc_obs():
             
             rank = ranker(hand)
@@ -763,10 +933,11 @@ def main():
     pass
 
     poker_hand_utility = PokerHandUtility()
+    bet_amount = 4
     
     print "START of UNIT TESTING OF POKER HAND UTILITY CLASS\n"
-    #hands = ["10s js qs ks as"]
-    
+    #hands = ["jh jc 2s 5c 3h"]
+
     #'''
     hands = [
      "2h 2d 2c kc qd",
@@ -810,7 +981,7 @@ def main():
       ]
     #'''
     
-    print("%-18s %-15s %s\t\t\t\t\t\t\t%-30s" % ("HAND", "CATEGORY", "TIE-BREAKER", "PAY-OUT"))
+    print("%-18s %-15s %s" % ("HAND", "CATEGORY", "TIE-BREAKER"))
     
     for cards in hands:
         #print cards.capitalize()
@@ -818,9 +989,16 @@ def main():
         #print len(cards.split())
         #print cards.count()
         #sys.exit(2)
-        r = poker_hand_utility.rank(cards)
-        print("%-18r %-15s %r" % (cards, r[0], r[1]))
+        cmd = poker_hand_utility.rank(cards, bet_amount)
+        #hand_command_pattern = r[2]
+        #print("%-18r %-15s %r" % (cards, r[0], r[1]))
+        print("%-18r %-15s %r" % (cards, cmd.getCommandName(), cmd.getTieBreaker()))
+        #print("%-18r %-15s %r" % (cards, 
+        #                          hand_command_pattern.getCommandName(), 
+        #                          hand_command_pattern.getTieBreaker()))
         
+    #print hand_command_pattern.getCommandName()
+    #print hand_command_pattern.calculate_payout()
         
     #print poker_hand_utility.HAND_PAYOUT_MULTIPLIER.keys()
     

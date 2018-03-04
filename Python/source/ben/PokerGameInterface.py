@@ -441,9 +441,11 @@ def main():
 
     cards = game.get_poker_hand_utility().get_converted_current_hand_string()
 
-    r = game.evaluate_hand()
+    cmd = game.evaluate_hand(bet_amount)
     
-    print("%-18r %-15s %r" % (cards, r[0], r[1]))
+    print("%-18r %-15s %r" % (cards, cmd.getCommandName(), cmd.getTieBreaker()))
+    
+    print "\nPAYOUT is {}".format(cmd.calculate_payout())
     
 if __name__ == '__main__':
     main()

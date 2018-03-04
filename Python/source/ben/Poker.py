@@ -67,7 +67,7 @@ class Poker(object):
     def is_bet_valid(self, amount):
         pass
     
-    def evaluate_hand(self):
+    def evaluate_hand(self, bet_amount):
     
         if self.__poker_game_theory_strategy:
             
@@ -75,7 +75,7 @@ class Poker(object):
             cards = self.__poker_hand_utility.get_converted_current_hand_string()
             
             # Now, call the poker hand utility class to evaluate the current hand
-            rank_result = self.__poker_hand_utility.rank(cards)
+            rank_result = self.__poker_hand_utility.rank(cards, bet_amount)
             return rank_result
 
         
@@ -155,7 +155,8 @@ class Poker(object):
                 # Update poker game player user experience or hand summary
                 self.__game_view.display_players_five_card_stud_hand_table_summary()
                 
-                self.__poker_hand_utility.set_poker_hand(self.__player.get_hand())
+                self.__poker_hand_utility.set_poker_hand(self.__player.get_hand().get_cards())
+              
                 '''
                 Based on the "n" cards that were discarded by the user, 
                 Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
@@ -166,7 +167,8 @@ class Poker(object):
                 
             #elif self.__number_of_replacement_cards == 0:
             else:
-                self.__poker_hand_utility.set_poker_hand(self.__player.get_hand())
+                self.__poker_hand_utility.set_poker_hand(self.__player.get_hand().get_cards())
+            
                 
                     
         else:
@@ -233,6 +235,10 @@ class Poker(object):
         
 ## Unit Test of the Poker Class ####
 def main():
+    
+    from HandCommandPattern import HandCommandPattern
+    #from PokerHandUtility import PokerHandUtility
+    #from PokerCommands import RoyalFlushCommand
     
     print "\nUnit Testing of the Poker Class.....\n"
     
@@ -314,9 +320,17 @@ def main():
    
     cards = poker.get_poker_hand_utility().get_converted_current_hand_string()
 
-    r = poker.evaluate_hand()
+    cmd = poker.evaluate_hand(bet_amount)
+
     
-    print("%-18r %-15s %r" % (cards, r[0], r[1]))
+    #print("%-18r %-15s %r" % (cards, r[0], r[1]))
+    print("%-18r %-15s %r" % (cards, 
+                              cmd.getCommandName(), 
+                              cmd.getTieBreaker()))
+    
+    print "HAND TYPE IS:\t{}:".format(PokerHandUtility.POKER_HAND_COMMAND_NAME[cmd.getCommandName()])
+    
+    print "\nCALCULATE PAYOUT IS {}".format(cmd.calculate_payout())
     
     '''
     CARD_SUIT = dict(
