@@ -35,6 +35,7 @@ class Poker(object):
         # instantiate the objects controlled by the Poker object
         self.__deck = Deck()        ## 1 deck of cards
         self.__player = None        ## 1 to many player's
+        self.__players = []
         self.__game_view = None     ## 1 PokerGameInterface
         self.__poker_game_theory_strategy   = PokerGameTheoryStrategy()  # Nash Equilibrium Game Theory
         self.__poker_hand_utility = PokerHandUtility()   # Poker Hand Utility object which evaluates any 5 card hand
@@ -56,7 +57,39 @@ class Poker(object):
         self.__player = player
     
     def play(self):
-        pass
+    
+        self.start_game_get_player_names()
+        
+        play_game = True
+        while play_game == True:
+          
+            i = 1;
+            for player in self.__players:
+                print "Player's {} name is {}".format(i, player.get_name())
+                i = i + 1
+            
+                # display players' bank roll
+                self.__game_view.display_player_bank_roll(player)
+                
+                # query user for the current HAND bet amount and set the bet amount
+                self.get__and_set_current_player_bet(player)
+                
+                # deal the five card poker hand to the current player
+                self.__deal_poker_hand(player)
+                
+                # display the current players' hand
+                self.__game_view.display_current_player_five_card_stud_hand_table_summary(player)
+                
+                # Current Player HAND Manipulation --- Card Position Keep/Delete Card Management
+                # must refactor the function below to go on player by player basis versus just one player.
+                # This is easy to fix but need to make sure I am careful.
+                #self.player_card_keep_delete_position_management()
+                
+                # query user for continue/deposit/quit action
+                play_game = self.get_continue_deposit_quit_action()
+                
+
+                
     
     def get_player_funds(self):
         return self.__player.get_funds()
@@ -175,6 +208,8 @@ class Poker(object):
             print "CANNOT KEEP OR DISCARD MANAGEMENT OF PLAYERS' HAND ==> PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"
             
         
+        
+        
     def add_new_cards_to_hand(self):
         
         #[ self.__player.get_hand().add_card(self.__deck.draw_card()) for index in range(0, self.__number_of_replacement_cards) ]
@@ -232,7 +267,134 @@ class Poker(object):
         if debug == 1:
             print "\n\nPLAYERS CURRENT HAND -- AFTER --\n\n"
             self.__player.show_hand()
+            
+    '''
+    exitCommand
+    Allow the customer to exit the Poker Game Simulator.
+  
+    
+    @params:    none
+    @return     none
+    ''' 
+    def exitCommand(self):
+        print '\nThank you for your business!\n' 
         
+        
+    '''
+    exitCommand
+    Allow the customer to exit the Poker Game Simulator.
+  
+    
+    @params:    none
+    @return     none
+    ''' 
+    def exitAddingPlayerCommand(self):
+        print '\nFinished adding players to poker game!\n' 
+        
+        print "Number of Poker players is {}".format(len(self.__players))
+        
+        i = 1
+        for name in self.__players:
+            print "{}: Players Name: {}\tAvailable Funds: {}".format(i, name.get_name(), name.get_funds())
+            i = i + 1
+    
+        
+    def start_game_get_player_names(self):
+        self.__game_view.display_welcome()
+
+        get_player_names_flag = True
+        while get_player_names_flag == True:
+        
+            action =  self.get_add_player_action() 
+            
+            if action.isalpha() and str(action) in ['add']:
+                #print("Valid selection. You selected action:\t{}".format(action))
+
+                get_player_names_flag = True
+       
+                # get the players name
+                name = self.get_name_action()
+                player = Player(name)
+                
+                # Ask the player to add funds
+                deposit_amount = self.__game_view.get_deposit();
+                player.add_funds(deposit_amount);
+                
+                # add player to the players list
+                self.__players.append(player)
+                
+            elif action.isalpha() and str(action) in ['quit']: 
+                self.exitAddingPlayerCommand()
+                get_player_names_flag = False
+        
+        if len(self.__players) >= 1:        
+            self.__game_view.display_new_game()
+        else:
+            print "\n\nMUST HAVE AT LEAST ONE POKER PLAYER!"
+            print "CURRENTLY, THERE ARE NO POKERS PLAYER'S IN THE GAME"
+            self.exitCommand()
+            sys.exit()
+        
+    '''
+    get_end_of_game_action
+    Get the player's action for the end of a game
+    
+    Valid actions: 'Continue', 'Deposit', or 'Quit'
+
+    @param: self
+    @return: string : The action that the player would like to perform
+    '''
+    def get_add_player_action(self):
+        
+        ## Read raw input from the key board via ~ Python 2.7 Style
+        action = raw_input("Would you like to 'add' a new player or 'quit':  ")
+        if action.isalpha() and str(action) in ['add', 'quit']:
+            #print("Valid selection. You selected action:\t{}".format(action))
+            return action
+        else:
+            print("Invalid Action Entered! Please be more careful and re-enter a valid action.")
+            return self.get_add_player_action()
+    
+    
+    def get_name_action(self):
+        
+        ## Read raw input from the key board via ~ Python 2.7 Style
+        action = raw_input("Enter the player's name:  ")
+        if action.isalpha():
+            #print("Valid selection. You selected action:\t{}".format(action))
+            return action.lower()
+        else:
+            print("Invalid Action Entered! Please be more careful and re-enter a valid action.")
+            return self.get_name_action()
+        
+        
+    def get_continue_deposit_quit_action(self):
+        
+        action =  self.__game_view.get_end_of_game_action() 
+        
+        if action.isalpha() and str(action) in ['continue', 'deposit']:
+            print("Valid selection. You selected action:\t{}".format(action))
+            play_game_flag = True
+            
+        elif action.isalpha() and str(action) in ['quit']: 
+            self.exitCommand()
+            play_game_flag = False
+            
+        return play_game_flag
+    
+    
+    def get__and_set_current_player_bet(self, player):
+        
+        bet_amount = self.__game_view.get_bet()
+        player.set_bet_amount(bet_amount)
+        
+    
+    def __deal_poker_hand(self, player):
+        
+        # deals 5 random cards for the players' Poker 5 card Hand
+        for i in range(0, 5):
+            player.add_card(self.get_deck().draw_card())
+
 ## Unit Test of the Poker Class ####
 def main():
     
@@ -286,6 +448,7 @@ def main():
     bet_amount = poker_game_interface.get_bet()
     
     
+    # deals 5 random cards for the players' Poker 5 card Hand
     for i in range(0, 5):
         poker.get_player().add_card(poker.get_deck().draw_card())
     
@@ -314,8 +477,8 @@ def main():
     #poker.get_poker_hand_utility().convert_hand_to_list()
     #poker.get_poker_hand_utility().convert_hand_to_string()
     
-    print "CONVERTED HAND LIST IS {}".format(poker.get_poker_hand_utility().get_converted_current_hand_list())
-    print "CONVERTED HAND STRING IS {}".format(poker.get_poker_hand_utility().get_converted_current_hand_string())
+    #print "CONVERTED HAND LIST IS {}".format(poker.get_poker_hand_utility().get_converted_current_hand_list())
+    #print "CONVERTED HAND STRING IS {}".format(poker.get_poker_hand_utility().get_converted_current_hand_string())
 
    
     cards = poker.get_poker_hand_utility().get_converted_current_hand_string()
@@ -328,9 +491,33 @@ def main():
                               cmd.getCommandName(), 
                               cmd.getTieBreaker()))
     
-    print "HAND TYPE IS:\t{}:".format(PokerHandUtility.POKER_HAND_COMMAND_NAME[cmd.getCommandName()])
+    print "\nHAND TYPE IS:\t{}:".format(PokerHandUtility.POKER_HAND_COMMAND_NAME[cmd.getCommandName()])
     
-    print "\nCALCULATE PAYOUT IS {}".format(cmd.calculate_payout())
+    
+    print "\nAMOUNT OF BET:{}".format(cmd.get_bet_amount())
+    print "PAYOUT MULTIPLIER:{}".format(cmd.get_payout_multiplier())
+    print "PAYOUT CALCULATION:{}".format(cmd.calculate_payout())
+    print "\nCALCULATE PAYOUT IS {} for HAND TYPE {}".format(cmd.calculate_payout(), 
+                                                             PokerHandUtility.POKER_HAND_COMMAND_NAME[cmd.getCommandName()])
+    
+    ## Store the Poker Hand on the Players' list
+    poker.get_player().add_hand_to_list_of_players_hands(cmd)
+    
+    print "\nNUMBER OF HANDS IN THE PLAYERS HISTORY OF COMMANDS:\t{}".format(poker.get_player().get_list_of_players_hands_size())
+    
+    winnings = cmd.calculate_payout()
+    
+    poker.get_player().add_funds(winnings)
+    
+    poker_game_interface.display_winnings(winnings)
+    poker_game_interface.display_bank_roll()
+    
+    #poker.play()
+    
+    '''
+    gameView->displayWinnings(winnings);
+            gameView->displayBankroll();
+    '''
     
     '''
     CARD_SUIT = dict(

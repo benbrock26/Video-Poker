@@ -733,7 +733,7 @@ class PokerHandUtility(object):
 
     '''
     jacks or better
-    Exactly on pair of Jacks, Queens, Kings, or Aces, and nothing else of interest.
+    Exactly one pair of Jacks, Queens, Kings, or Aces, and nothing else of interest.
     
     Here after converting the card value or rank value to actual ordinal number 
     in the list for this particular hand.
@@ -936,9 +936,12 @@ def main():
     bet_amount = 4
     
     print "START of UNIT TESTING OF POKER HAND UTILITY CLASS\n"
-    #hands = ["jh jc 2s 5c 3h"]
+    hands = ["qs qd 10c 5d 4c",
+             "ks 7s 6s 5h 2c",
+             "ah js 5d 3h 2h",
+             "qh jc jh 5h 3d"]
 
-    #'''
+    '''
     hands = [
      "2h 2d 2c kc qd",
      "2h 5h 7d 8c 9h",
@@ -979,7 +982,7 @@ def main():
      '9s  10s js qs ks',
      '10s  js qs ks as'
       ]
-    #'''
+    '''
     
     print("%-18s %-15s %s" % ("HAND", "CATEGORY", "TIE-BREAKER"))
     

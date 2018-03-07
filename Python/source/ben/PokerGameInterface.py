@@ -102,6 +102,23 @@ class PokerGameInterface (object):
         print "Positions:\t\t  0 |   1 |   2 |   3 |   4\n\n"
         #print "\nEXIT PokerGameInterface::display_players_five_card_stud_hand_table_summary()\n"
         
+    '''
+    display_players_five_card_stud_hand_table_summary
+    Displays the current table for the current player
+    @param: self
+    @return: NONE
+    '''
+    def display_current_player_five_card_stud_hand_table_summary(self, player):
+        #print "\nENTER PokerGameInterface::display_current_player_five_card_stud_hand_table_summary()\n"
+        print 
+        print "-----Display players 5 card stud hand table summary ------"
+        print 
+        #self.__game.get_player().show_hand()
+        "Hand:\t{}\n".format(player.show_hand_by_index())
+        print "-----------------------------------------------------------\n"
+        print "Positions:\t\t  0 |   1 |   2 |   3 |   4\n\n"
+        #print "\nEXIT PokerGameInterface::display_current_player_five_card_stud_hand_table_summary()\n"
+        
         
     '''
     display_winnings
@@ -125,6 +142,18 @@ class PokerGameInterface (object):
         print "Bankroll:\t{} coins\n\n".format(self.__game.get_player_funds())
     
     
+
+    '''
+    display_player_bank_roll
+    Displays the player's current bankroll
+    @param: self
+    @param: amount: The amount the player won
+    @return: NONE
+    '''
+    def display_player_bank_roll(self, player):
+        print "{}'s bank roll is {} coins\n\n".format(player.get_name(), player.get_funds())
+
+
     '''
     display_action_result
     Displays the result of the player's action
