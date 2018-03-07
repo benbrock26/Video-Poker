@@ -24,6 +24,7 @@ class Player(object):
          self.__name = name
          self.__current_hand = Hand()
          self.__list_of_hands = []
+         self.__poker_hands = []
          self.__bank_roll = 0
          self.__bet_amount = 0
          self.__current_hand_size = 0
@@ -44,6 +45,9 @@ class Player(object):
     
      def get_poker_hand_utility(self):
         return self.__poker_hand_utility
+     
+     def get_poker_hands(self):
+         return self.__poker_hands
     
      '''
      add_card

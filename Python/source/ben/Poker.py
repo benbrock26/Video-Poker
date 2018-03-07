@@ -37,6 +37,7 @@ class Poker(object):
         self.__player = None        ## 1 to many player's
         self.__players = []
         self.__game_view = None     ## 1 PokerGameInterface
+        self.__player_poker_hands = []
         self.__poker_game_theory_strategy   = PokerGameTheoryStrategy()  # Nash Equilibrium Game Theory
         self.__poker_hand_utility = PokerHandUtility()   # Poker Hand Utility object which evaluates any 5 card hand
     
@@ -86,9 +87,28 @@ class Poker(object):
                 # This is easy to fix but need to make sure I am careful.
                 self.current_player_card_keep_delete_position_management(player)
                 
+                
+                command = self.evaluate_hand(player.get_bet_amount())
+                
+                # save players hand
+                player.get_poker_hands().append(command)
+                
+                # save all players hands
+                self.__player_poker_hands.append(command)
+                
+                print "\nHAND TYPE IS:\t{}:".format(PokerHandUtility.POKER_HAND_COMMAND_NAME[command.getCommandName()])
+                print "\nAMOUNT OF BET:{}".format(command.get_bet_amount())
+                print "PAYOUT MULTIPLIER:{}".format(command.get_payout_multiplier())
+                print "PAYOUT CALCULATION:{}".format(command.calculate_payout())
+                print "\nCALCULATE PAYOUT IS {} for HAND TYPE {}".format(command.calculate_payout(), 
+                                                                         PokerHandUtility.POKER_HAND_COMMAND_NAME[command.getCommandName()])
+                print "HAND STRING FORMAT: {}".format(command.get_hand_string_format())
+                print "TIE BREAKER: {}".format(command.getTieBreaker())
+                
                 # query user for continue/deposit/quit action
                 play_game = self.get_continue_deposit_quit_action()
                 
+                # clear bet and hand so you will start fresh the next go around
                 player.reset()
                 
 
