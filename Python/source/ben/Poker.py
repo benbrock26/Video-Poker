@@ -67,6 +67,7 @@ class Poker(object):
             for player in self.__players:
                 print "Player's {} name is {}".format(i, player.get_name())
                 i = i + 1
+                
             
                 # display players' bank roll
                 self.__game_view.display_player_bank_roll(player)
@@ -83,10 +84,12 @@ class Poker(object):
                 # Current Player HAND Manipulation --- Card Position Keep/Delete Card Management
                 # must refactor the function below to go on player by player basis versus just one player.
                 # This is easy to fix but need to make sure I am careful.
-                #self.player_card_keep_delete_position_management()
+                self.current_player_card_keep_delete_position_management(player)
                 
                 # query user for continue/deposit/quit action
                 play_game = self.get_continue_deposit_quit_action()
+                
+                player.reset()
                 
 
                 
@@ -223,6 +226,18 @@ class Poker(object):
             self.__player.get_hand().add_card(self.__deck.draw_card())
 
     
+    def add_new_cards_to_current_player_hand(self, player):
+        
+        #[ self.__player.get_hand().add_card(self.__deck.draw_card()) for index in range(0, self.__number_of_replacement_cards) ]
+        
+        if debug == 1:
+            print
+            for index in range(0, self.__number_of_replacement_cards):
+                print "MUST ADD NEW CARD: CALL NUMBER: {}".format(index)
+            
+        for i in range(0, self.__number_of_replacement_cards):
+            player.get_hand().add_card(self.__deck.draw_card())
+            
     '''
     Go thru the design to make sure the cards dealt to the Player is from the Pokers' object point of view.
     '''
@@ -267,6 +282,110 @@ class Poker(object):
         if debug == 1:
             print "\n\nPLAYERS CURRENT HAND -- AFTER --\n\n"
             self.__player.show_hand()
+            
+            
+    def remove_cards_from_current_player_hand(self, player):
+        
+        if debug == 1:
+            print "\nREMOVE THE FOLLOWING CARDS FROM THE PLAYER's HAND\n"
+            
+            [ card.print_card()  for card in self.__discard_card_list ]
+    
+        
+            print "\n\nPLAYERS CURRENT HAND -- BFORE --\n\n"
+            player.show_hand()
+        
+            print player.get_hand().get_cards()
+        
+            print "\n..... DELETE CARDS FROM HAND BASED ON USER's REQUEST ....."
+        
+        [ player.get_hand().get_cards().remove(card) for card in self.__discard_card_list ]
+    
+        if debug == 1:
+            print "\n\nPLAYERS CURRENT HAND -- AFTER --\n\n"
+            player.show_hand()
+            
+            
+            
+    def current_player_card_keep_delete_position_management(self, player):
+        
+        self.__discard_indices_list = []
+        self.__discard_card_list = []
+        self.__number_of_replacement_cards = 0
+        
+        if player.get_hand():
+            
+            for idx in range(Poker.STARTING_CARD_SIZE, Poker.MAX_CARD_HAND_SIZE):
+                
+                action  = self.__game_view.get_action(idx)
+                
+                if action in ['k', 'd']:
+                    
+                    if action == 'k':
+                        
+                        if debug == 1:
+                            print "ACTION is {}\n".format(action)
+                        #do nothing
+                        pass
+                    elif action == 'd':
+                        
+                        if debug == 1:
+                            print "ACTION is {}\n".format(action)
+                        
+                        # add index to discard_indices_list
+                        self.__discard_indices_list.append(idx)
+                        
+                        # get the value to be removed from the crd list
+                        temp_card = player.get_hand().get_cards()[idx]
+                        
+                        # now add card to be removed it to the discard_card_list
+                        self.__discard_card_list.append(temp_card)
+                        self.__number_of_replacement_cards = self.__number_of_replacement_cards + 1
+              
+            if debug == 1:
+                if self.__discard_indices_list:
+                    print "\nDISCARD INDICES  LIST is {}\n".format(self.__discard_indices_list)
+                else:
+                    print "\nDISCARD INDICES LIST IS EMPTY\n" 
+                if self.__discard_card_list:
+                    print "\nDISCARD CARD LIST is {}\n".format(self.__discard_card_list)
+                    [card.print_card()  for card in self.__discard_card_list]
+                else:
+                    print "\nDISCARD CARD LIST IS EMPTY\n" 
+             
+                print "\n\nNumber of Replacement Cards:\t{}".format(self.__number_of_replacement_cards)            
+            
+            
+            if self.__number_of_replacement_cards > 0:
+                
+                # removed the player's requested cards from the player's current hand
+                self.remove_cards_from_current_player_hand(player)
+                
+                # add new random card or cards to the players hand
+                self.add_new_cards_to_current_player_hand(player)
+                
+                # Update poker game player user experience or hand summary
+                self.__game_view.display_current_player_five_card_stud_hand_table_summary(player)
+                
+                self.__poker_hand_utility.set_poker_hand(player.get_hand().get_cards())
+              
+                '''
+                Based on the "n" cards that were discarded by the user, 
+                Now must add the "n" card random cards back to the deck of cards to replace the cards removed.
+                ==> Will not have duplicate cards in the deck.
+                '''
+                # add the discarded cars back to the Deck
+                self.add_discarded_cards_back_to_deck()
+                
+            #elif self.__number_of_replacement_cards == 0:
+            else:
+                self.__poker_hand_utility.set_poker_hand(player.get_hand().get_cards())
+            
+                
+                    
+        else:
+            print "CANNOT KEEP OR DISCARD MANAGEMENT OF PLAYERS' HAND ==> PLAYERS HAND IS EMPTY NO CARDS ARE IN THE HAND\n"            
+            
             
     '''
     exitCommand
