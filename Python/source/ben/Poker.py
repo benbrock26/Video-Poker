@@ -87,23 +87,12 @@ class Poker(object):
                 # This is easy to fix but need to make sure I am careful.
                 self.current_player_card_keep_delete_position_management(player)
                 
-                
+                # evaluate the poker hand in poker terminology or terms.
                 command = self.evaluate_hand(player.get_bet_amount())
                 
-                # save players hand
-                player.get_poker_hands().append(command)
+                self.save_players_hand(command, player)
                 
-                # save all players hands
-                self.__player_poker_hands.append(command)
-                
-                print "\nHAND TYPE IS:\t{}:".format(PokerHandUtility.POKER_HAND_COMMAND_NAME[command.getCommandName()])
-                print "\nAMOUNT OF BET:{}".format(command.get_bet_amount())
-                print "PAYOUT MULTIPLIER:{}".format(command.get_payout_multiplier())
-                print "PAYOUT CALCULATION:{}".format(command.calculate_payout())
-                print "\nCALCULATE PAYOUT IS {} for HAND TYPE {}".format(command.calculate_payout(), 
-                                                                         PokerHandUtility.POKER_HAND_COMMAND_NAME[command.getCommandName()])
-                print "HAND STRING FORMAT: {}".format(command.get_hand_string_format())
-                print "TIE BREAKER: {}".format(command.getTieBreaker())
+                self.pretty_print_command_results(command)
                 
                 # query user for continue/deposit/quit action
                 play_game = self.get_continue_deposit_quit_action()
@@ -134,7 +123,24 @@ class Poker(object):
             rank_result = self.__poker_hand_utility.rank(cards, bet_amount)
             return rank_result
 
+    def pretty_print_command_results(self, command):
+        print "\nHAND TYPE IS:\t{}:".format(PokerHandUtility.POKER_HAND_COMMAND_NAME[command.getCommandName()])
+        print "\nAMOUNT OF BET:{}".format(command.get_bet_amount())
+        print "PAYOUT MULTIPLIER:{}".format(command.get_payout_multiplier())
+        print "PAYOUT CALCULATION:{}".format(command.calculate_payout())
+        print "\nCALCULATE PAYOUT IS {} for HAND TYPE {}".format(command.calculate_payout(), 
+                                                                 PokerHandUtility.POKER_HAND_COMMAND_NAME[command.getCommandName()])
+        print "HAND STRING FORMAT: {}".format(command.get_hand_string_format())
+        print "TIE BREAKER: {}".format(command.getTieBreaker())
         
+        
+    def save_players_hand(self, command, player):
+        # save players hand
+        player.get_poker_hands().append(command)
+                
+        # save all players hands
+        self.__player_poker_hands.append(command)
+                
     def reset_table(self):
         pass
     
