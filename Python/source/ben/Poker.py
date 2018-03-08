@@ -97,6 +97,16 @@ class Poker(object):
                 # query user for continue/deposit/quit action
                 play_game = self.__get_continue_deposit_quit_action()
                 
+                '''
+                # TO DO
+                # Need add code to check each players hand or compare hands
+                # to see who actually won the poker game for this iteration of
+                # the game.
+                #  --> This functionality should listed in the PokerHandUtility
+                # class.  
+                '''
+                
+                
                 # clear bet and hand so you will start fresh the next go around
                 player.reset()
                 
