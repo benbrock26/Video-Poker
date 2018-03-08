@@ -59,8 +59,11 @@ class Poker(object):
     
     def play(self):
     
+        # Meet the Browns or get a chance to greet and meet the poker players
+        # Query name and amount to put in their bank roll
         self.start_game_get_player_names()
         
+        # Let the poker games begin!!!!
         play_game = True
         while play_game == True:
           
