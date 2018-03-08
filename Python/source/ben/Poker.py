@@ -69,7 +69,6 @@ class Poker(object):
                 print "Player's {} name is {}".format(i, player.get_name())
                 i = i + 1
                 
-            
                 # display players' bank roll
                 self.__game_view.display_player_bank_roll(player)
                 
@@ -83,8 +82,6 @@ class Poker(object):
                 self.__game_view.display_current_player_five_card_stud_hand_table_summary(player)
                 
                 # Current Player HAND Manipulation --- Card Position Keep/Delete Card Management
-                # must refactor the function below to go on player by player basis versus just one player.
-                # This is easy to fix but need to make sure I am careful.
                 self.current_player_card_keep_delete_position_management(player)
                 
                 # evaluate the poker hand in poker terminology or terms.
