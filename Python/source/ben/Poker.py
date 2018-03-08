@@ -73,7 +73,7 @@ class Poker(object):
                 self.__game_view.display_player_bank_roll(player)
                 
                 # query user for the current HAND bet amount and set the bet amount
-                self.get__and_set_current_player_bet(player)
+                self.__get__and_set_current_player_bet(player)
                 
                 # deal the five card poker hand to the current player
                 self.__deal_poker_hand(player)
@@ -82,17 +82,17 @@ class Poker(object):
                 self.__game_view.display_current_player_five_card_stud_hand_table_summary(player)
                 
                 # Current Player HAND Manipulation --- Card Position Keep/Delete Card Management
-                self.current_player_card_keep_delete_position_management(player)
+                self.__current_player_card_keep_delete_position_management(player)
                 
                 # evaluate the poker hand in poker terminology or terms.
                 command = self.evaluate_hand(player.get_bet_amount())
                 
-                self.save_players_hand(command, player)
+                self.__save_players_hand(command, player)
                 
-                self.pretty_print_command_results(command)
+                self.__pretty_print_command_results(command)
                 
                 # query user for continue/deposit/quit action
-                play_game = self.get_continue_deposit_quit_action()
+                play_game = self.__get_continue_deposit_quit_action()
                 
                 # clear bet and hand so you will start fresh the next go around
                 player.reset()
@@ -120,7 +120,7 @@ class Poker(object):
             rank_result = self.__poker_hand_utility.rank(cards, bet_amount)
             return rank_result
 
-    def pretty_print_command_results(self, command):
+    def __pretty_print_command_results(self, command):
         print "\nHAND TYPE IS:\t{}:".format(PokerHandUtility.POKER_HAND_COMMAND_NAME[command.getCommandName()])
         print "\nAMOUNT OF BET:{}".format(command.get_bet_amount())
         print "PAYOUT MULTIPLIER:{}".format(command.get_payout_multiplier())
@@ -131,7 +131,7 @@ class Poker(object):
         print "TIE BREAKER: {}".format(command.getTieBreaker())
         
         
-    def save_players_hand(self, command, player):
+    def __save_players_hand(self, command, player):
         # save players hand
         player.get_poker_hands().append(command)
                 
@@ -330,7 +330,7 @@ class Poker(object):
             
             
             
-    def current_player_card_keep_delete_position_management(self, player):
+    def __current_player_card_keep_delete_position_management(self, player):
         
         self.__discard_indices_list = []
         self.__discard_card_list = []
@@ -510,7 +510,7 @@ class Poker(object):
             return self.get_name_action()
         
         
-    def get_continue_deposit_quit_action(self):
+    def __get_continue_deposit_quit_action(self):
         
         action =  self.__game_view.get_end_of_game_action() 
         
@@ -525,7 +525,7 @@ class Poker(object):
         return play_game_flag
     
     
-    def get__and_set_current_player_bet(self, player):
+    def __get__and_set_current_player_bet(self, player):
         
         bet_amount = self.__game_view.get_bet()
         player.set_bet_amount(bet_amount)
