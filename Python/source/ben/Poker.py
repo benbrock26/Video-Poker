@@ -113,6 +113,7 @@ class Poker(object):
                     self.determine_players_poker_hand_winner()
                     
                     if debug == 1:
+                        # print the player poker hand management dictionary to see the active current round of poker players
                         print self.__player_poker_hand_management
                     
                     '''
