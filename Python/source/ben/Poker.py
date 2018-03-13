@@ -622,7 +622,7 @@ class Poker(object):
             
             
             #print "\n\n ***** Let's see who won!!!  *********"
-            print "****  The winner player of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name(),
+            print "****  The winner player of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name().capitalize(),
                                                                                                                                                             winner.getCommandName(),
                                                                                                                                                             winner.getTotalPokerHandCardValue())
             #print "PLAYER's NAME: {}".format(self.__player_poker_hand_management[winner].get_name())
