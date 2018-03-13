@@ -32,7 +32,7 @@ class Poker(object):
         self.__discard_card_list = []
         self.__number_of_replacement_cards = 0
         self.__players_current_round_of_poker_hands = []
-        self.__player_poker_hand_management = {}     # player poker's hand to player management
+        self.__player_poker_hand_management_dict = {}     # player poker's hand to player management
         
         # instantiate the objects controlled by the Poker object
         self.__deck = Deck()        ## 1 deck of cards
@@ -119,14 +119,14 @@ class Poker(object):
                     
                     if debug == 1:
                         # print the player poker hand management dictionary to see the active current round of poker players
-                        print self.__player_poker_hand_management
+                        print self.__player_poker_hand_management_dict
                     
                     '''
                     After determining the winner for the players in the game current round of poker hands, you must reset or clear 
                     this variable to get ready for the next poker round
                     '''
                     self.__players_current_round_of_poker_hands = []
-                    self.__player_poker_hand_management = {}
+                    self.__player_poker_hand_management_dict = {}
                     i = 1
                     
                 else:
@@ -182,7 +182,7 @@ class Poker(object):
         # save the current round of players poker hands
         self.__players_current_round_of_poker_hands.append(command)
         
-        self.__player_poker_hand_management[command] = player
+        self.__player_poker_hand_management_dict[command] = player
                 
     def reset_table(self):
         pass
@@ -603,7 +603,7 @@ class Poker(object):
                 print "\n\n **** WINNING COMMAND POKER HAND TYPE IS {} ****".format(winner_command_type)
                 print " **** THE NUMBER OF {} WINNERS is {}".format(winner_command_type, len(winning_poker_hands))
                 
-                print "****  The winner of this round of poker is '{}' with poker hand of a {}".format(self.__player_poker_hand_management[winner].get_name().capitalize(),
+                print "****  The winner of this round of poker is '{}' with poker hand of a {}".format(self.__player_poker_hand_management_dict[winner].get_name().capitalize(),
                                                                                                        winner.getCommandName())
 
                 
@@ -618,7 +618,7 @@ class Poker(object):
                         print command
                             
                 for winner in winning_poker_hands:
-                    print "ROYAL FLUSH WINNERS ARE PLAYER NAMED {}".format(self.__player_poker_hand_management[winner].get_name().capitalize())
+                    print "ROYAL FLUSH WINNERS ARE PLAYER NAMED {}".format(self.__player_poker_hand_management_dict[winner].get_name().capitalize())
                     
                     
         elif winner_command_type != PokerHandUtility.POKER_HAND_COMMAND_NAME["royal_flush"]:
@@ -637,10 +637,10 @@ class Poker(object):
             
             
             #print "\n\n ***** Let's see who won!!!  *********"
-            print "****  The winner of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name().capitalize(),
+            print "****  The winner of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management_dict[winner].get_name().capitalize(),
                                                                                                                                                        winner.getCommandName(),
                                                                                                                                                        winner.getTotalPokerHandCardValue())
-            #print "PLAYER's NAME: {}".format(self.__player_poker_hand_management[winner].get_name())
+            #print "PLAYER's NAME: {}".format(self.__player_poker_hand_management_dict[winner].get_name())
         
 
                                           
