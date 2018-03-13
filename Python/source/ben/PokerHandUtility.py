@@ -41,9 +41,12 @@ SUIT = 'h d c s'.split()
 FACES    = '2 3 4 5 6 7 8 9 10 j q k a'
 LOW_ACES = 'a 2 3 4 5 6 7 8 9 10 j q k'
 
+ORDERED_HAND_RANKS = 'royal_flush straight_flush four_of_a_kind full_house flush straight three_of_a_kind two_pair one_pair jacks_or_better high_card'
+
 # faces as lists
 FACE    = FACES.split()
 LOW_ACE = LOW_ACES.split()
+ORDERED_HAND_RANK = ORDERED_HAND_RANKS.split()
 
 class PokerHandUtility(object):
     
@@ -108,6 +111,18 @@ class PokerHandUtility(object):
             jacks_or_better = "jacks_or_better",
             high_card       = "high_card")
     
+    POKER_HAND_RANK_DIC = dict(
+        royal_flush     = "RoyalFlushCommand",
+        straight_flush  = "StraightFlushCommand",
+        four_of_a_kind  = "FourOfAKindCommand",
+        full_house      = "FullHouseCommand",
+        flush           = "FlushCommand",
+        straight        = "StraightCommand",
+        three_of_a_kind = "ThreeOfAKindCommand",
+        two_pair        = "TwoPairCommand",
+        one_pair        = "OnePairCommand",
+        jacks_or_better = "JacksOrBetterCommand",
+        high_card       = "HighCardCommand")
     
     def __init__(self):
         self.__hand = None
@@ -245,6 +260,8 @@ class PokerHandUtility(object):
         
         #print "ROYAL FLUSH: HAND:\t{}".format(hand)
         values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        #print "ROYAL FLUSH HAND POKER HAND CARD VALUE LIST:\t{}".format(values)
+        #print "ROYAL FLUSH HAND TOTAL POKER HAND CARD VALUE:\t{}".format(sum(values))
         
         if all_suit_types == 1 and len(all_rank_types) == 5 and sum(values) == 60:
             
@@ -257,6 +274,9 @@ class PokerHandUtility(object):
                                      sorted(all_ranks,
                                             key=lambda f: FACE.index(f),
                                             reverse=True))
+            
+            # save the total poker hand card value
+            royal_flush_command.setTotalPokerHandCardValue(sum(values))
             
             return royal_flush_command
                                           
@@ -308,6 +328,9 @@ class PokerHandUtility(object):
     2nd digit - suit
     '''
     def straight_flush(self, hand):
+        
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         f,fs = ( (LOW_ACE, LOW_ACES) if any(card.face == '2' for card in hand)
                  else (FACE, FACES) )
         ordered = sorted(hand, key=lambda card: (f.index(card.face), card.suit))
@@ -323,6 +346,9 @@ class PokerHandUtility(object):
                                                           self.__converted_current_hand_list,
                                                           self.__converted_current_hand_string,
                                                           ordered[-1].face)
+            
+            straight_flush_command.setTotalPokerHandCardValue(sum(values))
+            
             return straight_flush_command
 
         return False
@@ -361,6 +387,8 @@ class PokerHandUtility(object):
         all_suits = [s for f, s in hand]
         all_suit_types = set(all_suits)
         
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         # Only support 2 face types or two ranks of with respect to the card face
         # values
         #  "qs qd qc qh 3c"  ==> face types == 2
@@ -377,6 +405,8 @@ class PokerHandUtility(object):
                                       self.__converted_current_hand_list,
                                       self.__converted_current_hand_string,
                                       [f, all_rank_types.pop()])
+                
+                four_of_a_kind_cmd.setTotalPokerHandCardValue(sum(values))
                 
                 return four_of_a_kind_cmd
 
@@ -411,6 +441,9 @@ class PokerHandUtility(object):
     def full_house(self, hand):
         all_ranks = [f for f,s in hand]
         all_rank_types = set(all_ranks)
+        
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         if len(all_rank_types) != 2:
             return False
         for f in all_rank_types:
@@ -424,6 +457,8 @@ class PokerHandUtility(object):
                                       self.__converted_current_hand_list,
                                       self.__converted_current_hand_string,
                                       [f, all_rank_types.pop()])
+                
+                full_house_command.setTotalPokerHandCardValue(sum(values))
                 
                 return full_house_command
         else:
@@ -460,6 +495,9 @@ class PokerHandUtility(object):
     2nd digit - suit
     '''
     def flush(self, hand):
+        
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         all_suit_types = {s for f, s in hand}
         if len(all_suit_types) == 1:
             all_ranks = [f for f,s in hand]
@@ -473,6 +511,9 @@ class PokerHandUtility(object):
                                       sorted(all_ranks,
                                              key=lambda f: FACE.index(f),
                                              reverse=True))
+            
+            flush_command.setTotalPokerHandCardValue(sum(values))
+            
             return flush_command
         
         return False
@@ -506,6 +547,9 @@ class PokerHandUtility(object):
     2nd digit - suit
     '''
     def straight(self, hand):
+        
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         f,fs = ( (LOW_ACE, LOW_ACES) if any(card.face == '2' for card in hand)
                  else (FACE, FACES) )
         ordered = sorted(hand, key=lambda card: (f.index(card.face), card.suit))
@@ -519,6 +563,8 @@ class PokerHandUtility(object):
                                       self.__converted_current_hand_list,
                                       self.__converted_current_hand_string,
                                       ordered[-1].face)
+            
+            straight_command.setTotalPokerHandCardValue(sum(values))
             
             return straight_command
         
@@ -553,6 +599,9 @@ class PokerHandUtility(object):
     def three_of_a_kind(self, hand):
         all_ranks = [f for f,s in hand]
         all_rank_types = set(all_ranks)
+        
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         if len(all_rank_types) <= 2:
             return False
         for f in all_rank_types:
@@ -568,6 +617,8 @@ class PokerHandUtility(object):
                                              [f] + sorted(all_rank_types,
                                                    key=lambda f: FACE.index(f),
                                                    reverse=True))
+                
+                three_of_a_kind_command.setTotalPokerHandCardValue(sum(values))
             
                 return three_of_a_kind_command
         else:
@@ -608,6 +659,9 @@ class PokerHandUtility(object):
         
         all_ranks = [f for f,s in hand]
         all_rank_types = set(all_ranks)
+        
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
         if len(pairs) != 2:
             return False
@@ -621,6 +675,8 @@ class PokerHandUtility(object):
                                      self.__converted_current_hand_list,
                                      self.__converted_current_hand_string,
                                      pairs + other if FACE.index(p0) > FACE.index(p1) else pairs[::-1] + other)
+        
+        two_pair_command.setTotalPokerHandCardValue(sum(values))
                 
         return two_pair_command
 
@@ -662,6 +718,8 @@ class PokerHandUtility(object):
         all_ranks = [f for f,s in hand]
         all_rank_types = set(all_ranks)
         
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
         if len(pairs) != 1:
             return False
@@ -683,6 +741,8 @@ class PokerHandUtility(object):
                                      pairs + sorted(all_rank_types,
                                                     key=lambda f: FACE.index(f),
                                                     reverse=True))
+        
+        one_pair_command.setTotalPokerHandCardValue(sum(values))
        
         return one_pair_command
     
@@ -719,6 +779,8 @@ class PokerHandUtility(object):
     def high_card(self, hand):
         all_ranks = [f for f,s in hand]
         
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         high_card_command = HighCardCommand(self.__bet_amount, 
                                      PokerHandUtility.HAND_PAYOUT_MULTIPLIER['high_card'],
                                      PokerHandUtility.POKER_HAND_RANK['high_card'],
@@ -728,6 +790,8 @@ class PokerHandUtility(object):
                                      sorted(all_ranks,
                                             key=lambda f: FACE.index(f),
                                             reverse=True))
+        
+        high_card_command.setTotalPokerHandCardValue(sum(values))
         
         return high_card_command
 
@@ -777,6 +841,8 @@ class PokerHandUtility(object):
         all_ranks = [f for f,s in hand]
         all_rank_types = set(all_ranks)
         
+        values, suit = self.set_cards_rank_value_to_max_rank_ordinal_value(hand)
+        
         pairs = [f for f in all_rank_types if all_ranks.count(f) == 2]
         if len(pairs) != 1:
             return False
@@ -805,6 +871,8 @@ class PokerHandUtility(object):
                                         pairs + sorted(all_rank_types,
                                                     key=lambda f: FACE.index(f),
                                                     reverse=True))
+        
+        jacks_or_better_command.setTotalPokerHandCardValue(sum(values))
         
         return jacks_or_better_command
 
@@ -837,9 +905,28 @@ class PokerHandUtility(object):
                 values.append(14)
             elif card[0] == '10':
                 values.append(10)
+            elif card[0] == '9':
+                values.append(9)
+            elif card[0] == '8':
+                values.append(8)
+            elif card[0] == '7':
+                values.append(7)
+            elif card[0] == '6':
+                values.append(6)
+            elif card[0] == '5':
+                values.append(5)
+            elif card[0] == '4':
+                values.append(4)
+            elif card[0] == '3':
+                values.append(3)
+            elif card[0] == '2':
+                values.append(2)
         
+        #print "\nOriginal player's 5 card poker hand:\t\t\t{}".format(hand)    
         #print "set_cards_rank_value_to_max_rank_ordinal_value: SUITS:\t{}".format(suits)
         #print "set_cards_rank_value_to_max_rank_ordinal_value: VALUES:\t{}".format(values)
+        #print "ordinal value of player's 5 card poker hand:\t\t{}\n".format(sum(values))
+    
         return sorted(values),suits  #values need to be sorted
     
     
@@ -927,7 +1014,101 @@ class PokerHandUtility(object):
         assert len(hand) == 5, "Invalid: Must be 5 cards in a hand, not %i" % len(hand)
         assert len(set(hand)) == 5, "Invalid: All cards in the hand must be unique %r" % cards
         return hand
+    
+    
+    
+    def determine_number_of_winning_poker_hands(self, 
+                                                winning_poker_hand, 
+                                                ordered_list_of_player_poker_hand_commands):
+        
+        if debug == 1:
+            print "\n>>>>>> ENTER PokerHandUtility::determine_number_of_winning_poker_hands()  <<<<<<<\n"
+        
+        number_of_times_winning_hand_found = 0
+        winning_poker_hands = []
+        for item in ordered_list_of_player_poker_hand_commands:
+            #print item
             
+            if winning_poker_hand in str(item):
+                number_of_times_winning_hand_found = number_of_times_winning_hand_found + 1
+                winning_poker_hands.append(item)
+                
+        if debug == 1:  
+            print "\n >>>>>> determine_number_of_winning_poker_hands::  WINNING POKER HANDS <<<<<<< \n{}".format(winning_poker_hands)
+            print "\n >>>>>> determine_number_of_winning_poker_hands::  NUMBER OF WINNERS is {} <<<<<<".format(number_of_times_winning_hand_found)
+            print "\n>>>>>> EXIT PokerHandUtility::determine_number_of_winning_poker_hands()  <<<<<<<\n"
+                
+        return number_of_times_winning_hand_found, winning_poker_hands
+
+
+    def determine_the_winning_poker_royal_flush_hand(self, ordered_list_of_player_poker_hand_commands):
+        
+        if debug == 1:
+            print "\n>>>>>> ENTER PokerHandUtility::determine_the_winning_poker_royal_flush_hand()  <<<<<<<\n"
+                
+        winning_hand_type = PokerHandUtility.POKER_HAND_RANK_DIC['royal_flush']
+        
+        num_of_winning_royal_flush_hands, winning_royal_flush_poker_hands = self.determine_number_of_winning_poker_hands(winning_hand_type, 
+                                                                                                        ordered_list_of_player_poker_hand_commands)
+        
+        if debug == 1:
+            print "\nNumber of winning Royal Flush Hands is {}".format(num_of_winning_royal_flush_hands)
+            print "\n>>>>>> EXIT PokerHandUtility::determine_the_winning_poker_royal_flush_hand()  <<<<<<<\n"
+        
+    
+        return winning_hand_type, winning_royal_flush_poker_hands
+
+
+
+    def determine_the_winning_poker_hand(self, ordered_list_of_player_poker_hand_commands):
+        
+        if debug == 1:
+            print "\n>>>>>> ENTER PokerHandUtility::determine_the_winning_poker_hand()  <<<<<<<\n"
+        
+        first_command = ordered_list_of_player_poker_hand_commands[0]
+        
+        if debug == 1:
+            print "determine_the_winning_poker_hand() WINNING POKER HAND TYPE IS {}".format(first_command.getCommandName())
+            print "determine_the_winning_poker_hand() WINNING POKER HAND COMMAND PATTERN IS {}".format(PokerHandUtility.POKER_HAND_RANK_DIC[first_command.getCommandName()])
+    
+        winning_hand_type = PokerHandUtility.POKER_HAND_RANK_DIC[first_command.getCommandName()]
+        
+        num_of_winning_hands, winning_poker_hand_types = self.determine_number_of_winning_poker_hands(winning_hand_type, \
+                                                                                                 ordered_list_of_player_poker_hand_commands)
+        
+        if debug == 1:
+            print "\nNumber of winning POKER Hands is {} with Poker Hand Command Type is a '{}'".format(num_of_winning_hands, winning_hand_type)
+            print "\n>>>>>> EXIT PokerHandUtility::determine_the_winning_poker_hand()  <<<<<<<\n"
+        
+        return first_command.getCommandName(), winning_poker_hand_types
+
+    def determine_the_winning_poker_non_royal_flush_hand(self, command, poker_hands_command_with_same_command_type):
+        
+        if debug == 1:
+            print "\n>>>>>> ENTER PokerHandUtility::determine_the_winning_poker_non_royal_flush_hand()  <<<<<<<\n"
+          
+        if debug == 1:    
+            # To return a new list, use the sorted() built-in function...
+            print "\nSORTED LIST BASED ON STYLE 1 OF USING SORTED COMMAND with total poker hand of cards values sorted in descending order\n"
+        
+        sort_ordered_hands_by_hand_card_value = sorted(poker_hands_command_with_same_command_type, 
+                                                       key=lambda command: command.getTotalPokerHandCardValue(), 
+                                                       reverse=True)
+        
+        if debug == 1:
+            for cmd in sort_ordered_hands_by_hand_card_value:
+                print "COMMAND TYPE is {} with total card hand value of {}".format(cmd.getCommandName(), cmd.getTotalPokerHandCardValue())
+                
+        winner = sort_ordered_hands_by_hand_card_value[0]
+        
+        if debug == 1:
+            print "\nTHE WINNING POKER HAND is a {} with a TOTAL HAND Card Values of {}".format(winner.getCommandName(), winner.getTotalPokerHandCardValue())
+            
+            print "\n>>>>>> EXIT PokerHandUtility::determine_the_winning_poker_non_royal_flush_hand()  <<<<<<<\n"
+        
+        return winner      
+
+  
     
 def main():
     pass
@@ -936,11 +1117,80 @@ def main():
     bet_amount = 4
     
     print "START of UNIT TESTING OF POKER HAND UTILITY CLASS\n"
-    hands = ["qs qd 10c 5d 4c",
-             "ks 7s 6s 5h 2c",
-             "ah js 5d 3h 2h",
-             "qh jc jh 5h 3d"]
-
+    
+    hands = ["2h 5h 7d 8c 9h",
+             "2h 7h 2d 3c 3d",
+             '10s  qd 7s qc 7h',
+             'qh   qc kc ks 2h',
+             '9d  10d jd qd kd', 
+             '9c  10c jc qc kc', 
+             '9h  10h jh qh kh', 
+             'qc  jc 10c 9c 8c',
+             'jc  10c 9c 8c 7c',
+             '10c  9c 8c 7c 6c']
+    
+    
+    '''
+    hands = [
+     "10s js qs ks as", # royal flush
+     "10h jh qh kh ah",
+     '10c  jc qc kc ac',
+     '10d  jd qd kd ad',
+     '9s  10s js qs ks',  # straight flush
+     '9d  10d jd qd kd', 
+     '9c  10c jc qc kc', 
+     '9h  10h jh qh kh', 
+     'qc  jc 10c 9c 8c',
+     'jc  10c 9c 8c 7c',
+     '10c  9c 8c 7c 6c',
+     '4d  5d 6d 7d 8d'] + [
+     "2h 7h 7d 7c 7s",  # four-of-a-kind
+     'qs qd qc qh 10s',
+     'as   ac ah ad 2c',
+     'as   ac ah ad kc',
+     '5c   5d 5h 5s 2d',  
+     'ks kd 3h 3s 3c', # full-house
+     "2h 3h 2d 3c 3d",
+     '6s 6h 6d kc kh',
+     'ks kh kd qc qh',
+     'as ah ad kc kh'] + [
+     "qc 10c 7c 6c 4c", # flush
+     'ad qd 6d jd 2d', 
+     'jd   9d 8d 4d 3d',
+     'ad   kd qd jd 9d',
+     'ks qd jc 10h 9s', # straight
+     "ah 2d 3c 4c 5d",
+     '10d  9s 8h 7d 6c'] + \
+     [ "2h 2d 2c kc qd", # three-of-a-kind
+     '5d js 8h 8s 8d',
+     'qc qs qh 9h 2s',
+     'kc ks kh 9h 2s',
+     'ac as ah 9h 2s',
+     'ac as ah kh qs',
+     "2h 7h 2d 3c 3d", # two pair
+     '10s  qd 7s qc 7h',
+     'jh   jc 3c 3s 2h',
+     '10s  8h 7d 7s 8d',
+     'jh   jc 3c 3s 2h',
+     'qh   qc kc ks 2h',
+     'kh   kc ac as 2h',
+     'kh   kc ac as qh'] + [
+     "4h 4c ks 5d 10s", # one-pair
+     '10c 10h 8s 7h 4c',
+     '9c 9h 8s 7h 4c',
+     '10s  jd 7s 6h 6s',
+     '10s  ad ks qh 10d'] + \
+    ['jh   jc 2s 3c 4h', # jacks or better
+     'qh   qc 2s 3c 4h',
+     'kh   kc 2s 3c 4h',
+     'ah   ac 2s 3c 4h',
+     'ah   ac ks qc jh'] + \
+    ["2h 5h 7d 8c 9h", # high-card
+     '7c 6d 4s 3h 2c',
+     'kd   qd 7s 4s 2h',
+     'as   9c 10h jd ks']
+    #'''
+    
     '''
     hands = [
      "2h 2d 2c kc qd",

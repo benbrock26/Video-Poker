@@ -31,6 +31,8 @@ class Poker(object):
         self.__discard_indices_list = []
         self.__discard_card_list = []
         self.__number_of_replacement_cards = 0
+        self.__players_current_round_of_poker_hands = []
+        self.__player_poker_hand_management = {}
         
         # instantiate the objects controlled by the Poker object
         self.__deck = Deck()        ## 1 deck of cards
@@ -56,6 +58,9 @@ class Poker(object):
     
     def add_player(self, player):
         self.__player = player
+        
+    def get_players_current_round_of_poker_hands(self):
+        return self.__players_current_round_of_poker_hands
     
     def play(self):
     
@@ -70,7 +75,6 @@ class Poker(object):
             i = 1;
             for player in self.__players:
                 print "Player's {} name is {}".format(i, player.get_name())
-                i = i + 1
                 
                 # display players' bank roll
                 self.__game_view.display_player_bank_roll(player)
@@ -94,23 +98,41 @@ class Poker(object):
                 
                 self.__pretty_print_command_results(command)
                 
-                # query user for continue/deposit/quit action
-                play_game = self.__get_continue_deposit_quit_action()
-                
                 '''
                 # TO DO
-                # Need add code to check each players hand or compare hands
+                # Need to add code to check each players hand or compare hands
                 # to see who actually won the poker game for this iteration of
                 # the game.
                 #  --> This functionality should listed in the PokerHandUtility
                 # class.  
                 '''
+                if i == len(self.__players):
+                    print "\n\n<<<<<<<< NEED TO COMPARE ALL OF THE POKER PLAYERS HANDS TO SEE WHO WON FOR THE GAME ITERATION <<<<<<<<"
+                    
+                    self.determine_players_poker_hand_winner()
+                    
+                    if debug == 1:
+                        print self.__player_poker_hand_management
+                    
+                    '''
+                    After determining the winner for the players in the game current round of poker hands, you must reset or clear 
+                    this variable to get ready for the next poker round
+                    '''
+                    self.__players_current_round_of_poker_hands = []
+                    self.__player_poker_hand_management = {}
+                    i = 1
+                    
+                else:
+                    print "\n\n++++++++ NOT READY TO COMPARE ALL OF THE POKER PLAYERS HANDS YET +++++++++"
+                    #self.__players_current_round_of_poker_hands.append(command)
+                    i = i + 1
+                
+                # query user for continue/deposit/quit action
+                play_game = self.__get_continue_deposit_quit_action()
                 
                 
                 # clear bet and hand so you will start fresh the next go around
                 player.reset()
-                
-
                 
     
     def get_player_funds(self):
@@ -145,11 +167,16 @@ class Poker(object):
         
         
     def __save_players_hand(self, command, player):
-        # save players hand
+        # save current player's hand
         player.get_poker_hands().append(command)
                 
         # save all players hands
         self.__player_poker_hands.append(command)
+        
+        # save the current round of players poker hands
+        self.__players_current_round_of_poker_hands.append(command)
+        
+        self.__player_poker_hand_management[command] = player
                 
     def reset_table(self):
         pass
@@ -549,6 +576,58 @@ class Poker(object):
         # deals 5 random cards for the players' Poker 5 card Hand
         for i in range(0, 5):
             player.add_card(self.get_deck().draw_card())
+            
+    def determine_players_poker_hand_winner(self):
+        
+        if debug == 1:
+            for hand in self.__players_current_round_of_poker_hands:
+                print hand
+            
+        sort_ordered_hands_by_poker_hand_rank = sorted(self.__players_current_round_of_poker_hands, 
+                                                       key=lambda command: command.get_rank(), 
+                                                       reverse=False)
+        winner_command_type, winning_poker_hands = \
+                                      self.__poker_hand_utility.determine_the_winning_poker_hand(sort_ordered_hands_by_poker_hand_rank)
+                                      
+        if winner_command_type == PokerHandUtility.POKER_HAND_COMMAND_NAME["royal_flush"]:
+            
+            if len(winning_poker_hands) == 1:
+                print "\n\n **** WINNING COMMAND POKER HAND TYPE IS {} ****".format(winner_command_type)
+                print " **** THE NUMBER OF {} WINNERS is {}".format(winner_command_type, len(winning_poker_hands))
+                
+            elif len(winning_poker_hands) > 1:
+                print "\n\n **** WINNING COMMAND POKER HAND TYPE IS {} ****".format(winner_command_type)
+                print " **** THE NUMBER OF {} WINNERS is {}".format(winner_command_type, len(winning_poker_hands))
+                print " **** MUST SPLIT THE WINNING POT BETWEEN ALL OF THE POKER PLAYERS WITH THE ROYAL FLUSH POKER HAND"
+                
+                if debug == 1:
+                    for command in winning_poker_hands:
+                        print command
+                    
+                    
+        elif winner_command_type != PokerHandUtility.POKER_HAND_COMMAND_NAME["royal_flush"]:
+            print "\n\nLet's Get Ready to Rumble!!!\n\n"
+            print "WINNING POKER HAND IS {}".format(winner_command_type)
+            print "NUMBER OF WINNING is {}".format(len(winning_poker_hands))
+            
+            if debug == 1:
+                for command in winning_poker_hands:
+                    print command
+            
+            print "\n\nLet investigate the list of poker hands named {}".format(winner_command_type) 
+            
+            winner = self.__poker_hand_utility.determine_the_winning_poker_non_royal_flush_hand(winner_command_type, winning_poker_hands)
+            
+            
+            #print "\n\n ***** Let's see who won!!!  *********"
+            print "****  The winner player of this round of poker is {} with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name(),
+                                                                                                                                                            winner.getCommandName(),
+                                                                                                                                                            winner.getTotalPokerHandCardValue())
+            #print "PLAYER's NAME: {}".format(self.__player_poker_hand_management[winner].get_name())
+        
+
+                                          
+                                      
 
 ## Unit Test of the Poker Class ####
 def main():
@@ -652,6 +731,7 @@ def main():
     print "\nAMOUNT OF BET:{}".format(cmd.get_bet_amount())
     print "PAYOUT MULTIPLIER:{}".format(cmd.get_payout_multiplier())
     print "PAYOUT CALCULATION:{}".format(cmd.calculate_payout())
+    print "TOTAL POKER HAND VALUE OF ORDINAL CARDS:\t{}".format(cmd.getTotalPokerHandCardValue())
     print "\nCALCULATE PAYOUT IS {} for HAND TYPE {}".format(cmd.calculate_payout(), 
                                                              PokerHandUtility.POKER_HAND_COMMAND_NAME[cmd.getCommandName()])
     

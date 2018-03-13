@@ -75,7 +75,11 @@ class Player(object):
      @return: NONE
      '''
      def remove_funds(self, amount_of_funds):
-        self.__bank_roll = self.__bank_roll - int(amount_of_funds)
+         
+        # probably should check to make sure the player as enough funds in their 
+        # bank roll before blindly deduction cash from the account.
+        # we dont want our account to go in the red or become negative
+        self.__bank_roll = self.__bank_roll - float(amount_of_funds)
     
      '''
      get_funds

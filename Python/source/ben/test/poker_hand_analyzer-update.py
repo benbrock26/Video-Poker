@@ -493,6 +493,12 @@ cards are in two digits
 '''
 def high_card(hand):
     all_ranks = [f for f,s in hand]
+    
+    print "\nHIGH-CARD: HAND:\t{}".format(hand)    
+    print "\nHIGH-CARD: ALL FACES:\t{}".format(all_ranks)
+    print "HIGH-CARD: f\t{}".format(f)
+    print "FACE:\t{}".format(FACE)
+    
     return 'high-card', sorted(all_ranks,
                                key=lambda f: FACE.index(f),
                                reverse=True)
@@ -593,9 +599,28 @@ def set_cards_rank_value_to_max_rank_ordinal_value(hand):
             values.append(14)
         elif card[0] == '10':
             values.append(10)
-        
+        elif card[0] == '9':
+            values.append(9)
+        elif card[0] == '8':
+            values.append(8)
+        elif card[0] == '7':
+            values.append(7)
+        elif card[0] == '6':
+            values.append(6)
+        elif card[0] == '5':
+            values.append(5)
+        elif card[0] == '4':
+            values.append(4)
+        elif card[0] == '3':
+            values.append(3)
+        elif card[0] == '2':
+            values.append(2)
+    
+    #print "\nOriginal player's 5 card poker hand:\t\t\t{}".format(hand)    
     #print "set_cards_rank_value_to_max_rank_ordinal_value: SUITS:\t{}".format(suits)
     #print "set_cards_rank_value_to_max_rank_ordinal_value: VALUES:\t{}".format(values)
+    #print "ordinal value of player's 5 card poker hand:\t\t{}\n".format(sum(values))
+    
     return sorted(values),suits  #values need to be sorted
  
     
@@ -718,48 +743,73 @@ if __name__ == '__main__':
     c30 = ['Jh', 'Jc', '3c', '3s', '2h']     # --> Two pairs!
     '''
     
-    #hands = ["7h 7c 2s 3c 4h"]
+    '''
+    hands = ["2h 5h 7d 8c 9h",
+             "2h 7h 2d 3c 3d",
+             '10s  qd 7s qc 7h',
+             'qh   qc kc ks 2h']
+    '''
+             
+             
     #'''
     hands = [
-     "2h 2d 2c kc qd",
-     "2h 5h 7d 8c 9h",
-     "ah 2d 3c 4c 5d",
-     "2h 3h 2d 3c 3d",
-     "2h 7h 2d 3c 3d",
-     "2h 7h 7d 7c 7s",
-     "10h jh qh kh ah"] + [
-     "4h 4c ks 5d 10s",
-     "qc 10c 7c 6c 4c"] + [
-     "10s js qs ks as",
-     '4d 5d 6d 7d 8d',
-     'qs qd qc qh 10s',
-     'ks kd 3h 3s 3c',
-     'ad qd 6d jd 2d',
-     'ks qd jc 10h 9s',
-     '5d js 8h 8s 8d',
-     '10s  qd 7s qc 7h',
-     '10s  jd 7s 6h 6s' ,
-     '7c   6d 4s 3h 2c'] + [
-     'as   ac ah ad 2c',
+     "10s js qs ks as", # royal flush
+     "10h jh qh kh ah",
+     '10c  jc qc kc ac',
+     '10d  jd qd kd ad',
+     '9s  10s js qs ks',  # straight flush
+     '9d  10d jd qd kd', 
+     '9c  10c jc qc kc', 
+     '9h  10h jh qh kh', 
+     'qc  jc 10c 9c 8c',
      'jc  10c 9c 8c 7c',
-     '5c   5d 5h 5s 2d',
-     '6s   6h 6d kc kh',
+     '10c  9c 8c 7c 6c',
+     '4d  5d 6d 7d 8d'] + [
+     "2h 7h 7d 7c 7s",  # four-of-a-kind
+     'qs qd qc qh 10s',
+     'as   ac ah ad 2c',
+     'as   ac ah ad kc',
+     '5c   5d 5h 5s 2d',  
+     'ks kd 3h 3s 3c', # full-house
+     "2h 3h 2d 3c 3d",
+     '6s 6h 6d kc kh',
+     'ks kh kd qc qh',
+     'as ah ad kc kh'] + [
+     "qc 10c 7c 6c 4c", # flush
+     'ad qd 6d jd 2d', 
      'jd   9d 8d 4d 3d',
-     '10d  9s 8h 7d 6c',
-     'qc   qs qh 9h 2s',
+     'ad   kd qd jd 9d',
+     'ks qd jc 10h 9s', # straight
+     "ah 2d 3c 4c 5d",
+     '10d  9s 8h 7d 6c'] + \
+     [ "2h 2d 2c kc qd", # three-of-a-kind
+     '5d js 8h 8s 8d',
+     'qc qs qh 9h 2s',
+     'kc ks kh 9h 2s',
+     'ac as ah 9h 2s',
+     'ac as ah kh qs',
+     "2h 7h 2d 3c 3d", # two pair
+     '10s  qd 7s qc 7h',
      'jh   jc 3c 3s 2h',
+     '10s  8h 7d 7s 8d',
+     'jh   jc 3c 3s 2h',
+     'qh   qc kc ks 2h',
+     'kh   kc ac as 2h',
+     'kh   kc ac as qh'] + [
+     "4h 4c ks 5d 10s", # one-pair
      '10c 10h 8s 7h 4c',
-     'kd   qd 7s 4s 2h',
-     'jh   jc 3c 3s 2h',
-     'as   2c 4h 5d ks',
-     'jh   jc 2s 3c 4h',
+     '9c 9h 8s 7h 4c',
+     '10s  jd 7s 6h 6s',
+     '10s  ad ks qh 10d'] + \
+    ['jh   jc 2s 3c 4h', # jacks or better
      'qh   qc 2s 3c 4h',
      'kh   kc 2s 3c 4h',
      'ah   ac 2s 3c 4h',
-     '10s  8h 7d 7s 8d',
-     '9s  10s js qs ks',
-     '10s  js qs ks as'
-      ]
+     'ah   ac ks qc jh'] + \
+    ["2h 5h 7d 8c 9h", # high-card
+     '7c 6d 4s 3h 2c',
+     'kd   qd 7s 4s 2h',
+     'as   9c 10h jd ks']
     #'''
              
     

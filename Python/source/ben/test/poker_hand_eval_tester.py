@@ -295,9 +295,9 @@ def compare_hands(h1,h2):
 
 
 
-'''
+
 a = ['QD', 'KD', '9D', 'JD', 'TD'] 
 b = ['JS', '8S', 'KS', 'AS', 'QS']
 print compare_hands(a,b)
-'''
+
 
