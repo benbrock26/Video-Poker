@@ -43,8 +43,15 @@ class Poker(object):
         self.__poker_game_theory_strategy   = PokerGameTheoryStrategy()  # Nash Equilibrium Game Theory
         self.__poker_hand_utility = PokerHandUtility()   # Poker Hand Utility object which evaluates any 5 card hand
     
+    
+    
+    '''
+    decided not to implement the destructor for the Poker class. Let the Python internal destructor free and allocate memory.
+    That is much better than just having a pas command!!!
+    
     def __del__(self):
         pass
+    '''
     
     '''
     add_view
