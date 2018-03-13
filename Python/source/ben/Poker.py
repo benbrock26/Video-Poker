@@ -598,17 +598,27 @@ class Poker(object):
         if winner_command_type == PokerHandUtility.POKER_HAND_COMMAND_NAME["royal_flush"]:
             
             if len(winning_poker_hands) == 1:
+                
+                winner =  winning_poker_hands[0]
                 print "\n\n **** WINNING COMMAND POKER HAND TYPE IS {} ****".format(winner_command_type)
                 print " **** THE NUMBER OF {} WINNERS is {}".format(winner_command_type, len(winning_poker_hands))
+                
+                print "****  The winner of this round of poker is '{}' with poker hand of a {}".format(self.__player_poker_hand_management[winner].get_name().capitalize(),
+                                                                                                       winner.getCommandName())
+
                 
             elif len(winning_poker_hands) > 1:
                 print "\n\n **** WINNING COMMAND POKER HAND TYPE IS {} ****".format(winner_command_type)
                 print " **** THE NUMBER OF {} WINNERS is {}".format(winner_command_type, len(winning_poker_hands))
                 print " **** MUST SPLIT THE WINNING POT BETWEEN ALL OF THE POKER PLAYERS WITH THE ROYAL FLUSH POKER HAND"
                 
+                
                 if debug == 1:
                     for command in winning_poker_hands:
                         print command
+                            
+                for winner in winning_poker_hands:
+                    print "ROYAL FLUSH WINNERS ARE PLAYER NAMED {}".format(self.__player_poker_hand_management[winner].get_name().capitalize())
                     
                     
         elif winner_command_type != PokerHandUtility.POKER_HAND_COMMAND_NAME["royal_flush"]:
@@ -627,9 +637,9 @@ class Poker(object):
             
             
             #print "\n\n ***** Let's see who won!!!  *********"
-            print "****  The winner player of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name().capitalize(),
-                                                                                                                                                            winner.getCommandName(),
-                                                                                                                                                            winner.getTotalPokerHandCardValue())
+            print "****  The winner of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name().capitalize(),
+                                                                                                                                                       winner.getCommandName(),
+                                                                                                                                                       winner.getTotalPokerHandCardValue())
             #print "PLAYER's NAME: {}".format(self.__player_poker_hand_management[winner].get_name())
         
 
