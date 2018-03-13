@@ -106,6 +106,11 @@ class Poker(object):
                 #    --> There is a difference between the two when you see who actually won the current poker round
                
                 '''
+                # Here we are really doing modulus math, that is, 
+                # number % len(self.__players)  == 0, indicating we have received all poker hands in the current round
+                #
+                # poker round is complete when --> (number % len(self.__players)) == 0
+                #
                 if i == len(self.__players):
                     print "\n\n<<<<<<<< NEED TO COMPARE ALL OF THE POKER PLAYERS HANDS TO SEE WHO WON FOR THE GAME ITERATION <<<<<<<<"
                     
