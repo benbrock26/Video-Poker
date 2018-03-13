@@ -99,16 +99,17 @@ class Poker(object):
                 self.__pretty_print_command_results(command)
                 
                 '''
-                # TO DO
-                # Need to add code to check each players hand or compare hands
-                # to see who actually won the poker game for this iteration of
-                # the game.
-                #  --> This functionality should listed in the PokerHandUtility
-                # class.  
+                #
+                # Check each players hand or compare all of the player's hands to see who won the current round
+                # Based on the poker hand rule requirements
+                # - Royal Flush Hand versus Non-Royal Hands
+                #    --> There is a difference between the two when you see who actually won the current poker round
+               
                 '''
                 if i == len(self.__players):
                     print "\n\n<<<<<<<< NEED TO COMPARE ALL OF THE POKER PLAYERS HANDS TO SEE WHO WON FOR THE GAME ITERATION <<<<<<<<"
                     
+                    # Let's get ready to rumble and see which player won the current of poker
                     self.determine_players_poker_hand_winner()
                     
                     if debug == 1:
@@ -124,7 +125,6 @@ class Poker(object):
                     
                 else:
                     print "\n\n++++++++ NOT READY TO COMPARE ALL OF THE POKER PLAYERS HANDS YET +++++++++"
-                    #self.__players_current_round_of_poker_hands.append(command)
                     i = i + 1
                 
                 # query user for continue/deposit/quit action
