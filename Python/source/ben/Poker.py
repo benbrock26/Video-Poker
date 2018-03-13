@@ -32,14 +32,14 @@ class Poker(object):
         self.__discard_card_list = []
         self.__number_of_replacement_cards = 0
         self.__players_current_round_of_poker_hands = []
-        self.__player_poker_hand_management = {}
+        self.__player_poker_hand_management = {}     # player poker's hand to player management
         
         # instantiate the objects controlled by the Poker object
         self.__deck = Deck()        ## 1 deck of cards
-        self.__player = None        ## 1 to many player's
-        self.__players = []
+        self.__player = None        ## 1 player  -- used for testing only
+        self.__players = []         ## 1 to many player's -- used in actual code
         self.__game_view = None     ## 1 PokerGameInterface
-        self.__player_poker_hands = []
+        self.__player_poker_hands = []  ## history of all player's poker hands played
         self.__poker_game_theory_strategy   = PokerGameTheoryStrategy()  # Nash Equilibrium Game Theory
         self.__poker_hand_utility = PokerHandUtility()   # Poker Hand Utility object which evaluates any 5 card hand
     
