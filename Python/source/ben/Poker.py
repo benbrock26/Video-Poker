@@ -609,7 +609,7 @@ class Poker(object):
         elif winner_command_type != PokerHandUtility.POKER_HAND_COMMAND_NAME["royal_flush"]:
             print "\n\nLet's Get Ready to Rumble!!!\n\n"
             print "WINNING POKER HAND IS {}".format(winner_command_type)
-            print "NUMBER OF WINNING is {}".format(len(winning_poker_hands))
+            print "NUMBER OF WINNING POKER HANDS in the CURRENT ROUND is {}".format(len(winning_poker_hands))
             
             if debug == 1:
                 for command in winning_poker_hands:
@@ -617,11 +617,12 @@ class Poker(object):
             
             print "\n\nLet investigate the list of poker hands named {}".format(winner_command_type) 
             
+            # Determine the winning NON-Royal Flush Hand in the current round of poker player's
             winner = self.__poker_hand_utility.determine_the_winning_poker_non_royal_flush_hand(winner_command_type, winning_poker_hands)
             
             
             #print "\n\n ***** Let's see who won!!!  *********"
-            print "****  The winner player of this round of poker is {} with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name(),
+            print "****  The winner player of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management[winner].get_name(),
                                                                                                                                                             winner.getCommandName(),
                                                                                                                                                             winner.getTotalPokerHandCardValue())
             #print "PLAYER's NAME: {}".format(self.__player_poker_hand_management[winner].get_name())
