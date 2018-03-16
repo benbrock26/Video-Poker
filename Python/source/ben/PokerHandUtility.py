@@ -401,10 +401,10 @@ class PokerHandUtility(object):
                 four_of_a_kind_cmd = FourOfAKindCommand(self.__bet_amount, 
                                        PokerHandUtility.HAND_PAYOUT_MULTIPLIER['four_of_a_kind'],
                                        PokerHandUtility.POKER_HAND_RANK['four_of_a_kind'],
-                                      'four_of_a_kind',
-                                      self.__converted_current_hand_list,
-                                      self.__converted_current_hand_string,
-                                      [f, all_rank_types.pop()])
+                                       'four_of_a_kind',
+                                       self.__converted_current_hand_list,
+                                       self.__converted_current_hand_string,
+                                       [f, all_rank_types.pop()])
                 
                 four_of_a_kind_cmd.setTotalPokerHandCardValue(sum(values))
                 
@@ -453,10 +453,10 @@ class PokerHandUtility(object):
                 full_house_command = FullHouseCommand(self.__bet_amount, 
                                        PokerHandUtility.HAND_PAYOUT_MULTIPLIER['full_house'],
                                        PokerHandUtility.POKER_HAND_RANK['full_house'],
-                                      'full_house',
-                                      self.__converted_current_hand_list,
-                                      self.__converted_current_hand_string,
-                                      [f, all_rank_types.pop()])
+                                       'full_house',
+                                       self.__converted_current_hand_list,
+                                       self.__converted_current_hand_string,
+                                       [f, all_rank_types.pop()])
                 
                 full_house_command.setTotalPokerHandCardValue(sum(values))
                 
@@ -505,10 +505,10 @@ class PokerHandUtility(object):
             flush_command = FlushCommand(self.__bet_amount, 
                                        PokerHandUtility.HAND_PAYOUT_MULTIPLIER['flush'],
                                        PokerHandUtility.POKER_HAND_RANK['flush'],
-                                      'flush',
-                                      self.__converted_current_hand_list,
-                                      self.__converted_current_hand_string,
-                                      sorted(all_ranks,
+                                       'flush',
+                                       self.__converted_current_hand_list,
+                                       self.__converted_current_hand_string,
+                                       sorted(all_ranks,
                                              key=lambda f: FACE.index(f),
                                              reverse=True))
             
@@ -559,10 +559,10 @@ class PokerHandUtility(object):
             straight_command = StraightCommand(self.__bet_amount, 
                                        PokerHandUtility.HAND_PAYOUT_MULTIPLIER['straight'],
                                        PokerHandUtility.POKER_HAND_RANK['straight'],
-                                      'straight',
-                                      self.__converted_current_hand_list,
-                                      self.__converted_current_hand_string,
-                                      ordered[-1].face)
+                                       'straight',
+                                       self.__converted_current_hand_list,
+                                       self.__converted_current_hand_string,
+                                       ordered[-1].face)
             
             straight_command.setTotalPokerHandCardValue(sum(values))
             
@@ -1100,6 +1100,7 @@ class PokerHandUtility(object):
                 print "COMMAND TYPE is {} with total card hand value of {}".format(cmd.getCommandName(), cmd.getTotalPokerHandCardValue())
                 
         winner = sort_ordered_hands_by_hand_card_value[0]
+        losers = sort_ordered_hands_by_hand_card_value[1:]
         
         if debug == 1:
             print "\nTHE WINNING POKER HAND is a {} with a TOTAL HAND Card Values of {}".format(winner.getCommandName(), winner.getTotalPokerHandCardValue())

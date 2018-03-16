@@ -170,6 +170,9 @@ def main():
     print card.SUIT_TYPE[3]
     card.print_single_card()
     
+    card = Card("Diamonds", "9")
+    card.print_single_card()
+    
     print card.SUIT_TYPE_POS["spades"]
     
     card.set_suit_type_position("hearts")

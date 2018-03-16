@@ -599,6 +599,19 @@ class Poker(object):
         sort_ordered_hands_by_poker_hand_rank = sorted(self.__players_current_round_of_poker_hands, 
                                                        key=lambda command: command.get_rank(), 
                                                        reverse=False)
+        
+        '''
+        we know generically, the winner is located at 
+        winner = sort_ordered_hands_by_poker_hand_rank[0]
+        
+        and the losers are at 
+        losers = sort_ordered_hands_by_poker_hand_rank[1:]
+        
+        we may be using this to make sure we solve this problem correctly when it comes time to deduct the money or pot from
+        the losing players.
+        
+        It was so easy using the sorted function to determine the winners and losers of the poker game so quickly!!
+        '''
         winner_command_type, winning_poker_hands = \
                                       self.__poker_hand_utility.determine_the_winning_poker_hand(sort_ordered_hands_by_poker_hand_rank)
                                       
@@ -607,6 +620,8 @@ class Poker(object):
             if len(winning_poker_hands) == 1:
                 
                 winner =  winning_poker_hands[0]
+                losers = winning_poker_hands[1:]
+                
                 print "\n\n **** WINNING COMMAND POKER HAND TYPE IS {} ****".format(winner_command_type)
                 print " **** THE NUMBER OF {} WINNERS is {}".format(winner_command_type, len(winning_poker_hands))
                 
@@ -642,6 +657,8 @@ class Poker(object):
             # Determine the winning NON-Royal Flush Hand in the current round of poker player's
             winner = self.__poker_hand_utility.determine_the_winning_poker_non_royal_flush_hand(winner_command_type, winning_poker_hands)
             
+            ## Need to determine the losers quickly on the fly.
+            ## This should be easy!!!
             
             #print "\n\n ***** Let's see who won!!!  *********"
             print "****  The winner of this round of poker is '{}' with poker hand of a {} with a total poker hand of cards with a value of {}".format(self.__player_poker_hand_management_dict[winner].get_name().capitalize(),
