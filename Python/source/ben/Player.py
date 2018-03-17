@@ -8,6 +8,7 @@ Created on Mon Feb 19 16:20:36 2018
 from Card import Card
 from Hand import Hand
 from Deck import Deck
+from PokerHandUtility import PokerHandUtility
 
 class Player(object):
 
@@ -23,9 +24,13 @@ class Player(object):
          self.__name = name
          self.__current_hand = Hand()
          self.__list_of_hands = []
+         self.__poker_hands = []
          self.__bank_roll = 0
          self.__bet_amount = 0
          self.__current_hand_size = 0
+         
+         # Poker Hand Utility object which evaluates any 5 card hand
+         self.__poker_hand_utility = PokerHandUtility()   
          
      
      '''
@@ -36,6 +41,13 @@ class Player(object):
      '''
      def __del__(self):
         del self.__list_of_hands[:]
+    
+    
+     def get_poker_hand_utility(self):
+        return self.__poker_hand_utility
+     
+     def get_poker_hands(self):
+         return self.__poker_hands
     
      '''
      add_card
@@ -53,7 +65,7 @@ class Player(object):
      @return: NONE
      '''
      def add_funds(self, new_funds):
-        self.__bank_roll = self.__bank_roll + int(new_funds)
+        self.__bank_roll = self.__bank_roll + float(new_funds)
         
     
      '''
@@ -63,7 +75,11 @@ class Player(object):
      @return: NONE
      '''
      def remove_funds(self, amount_of_funds):
-        self.__bank_roll = self.__bank_roll - int(amount_of_funds)
+         
+        # probably should check to make sure the player as enough funds in their 
+        # bank roll before blindly deduction cash from the account.
+        # we dont want our account to go in the red or become negative
+        self.__bank_roll = self.__bank_roll - float(amount_of_funds)
     
      '''
      get_funds
@@ -235,6 +251,9 @@ def main():
     
     print "Players' current hand size:\t{}\n".format(bob.get_current_hand_size())
     
+    assert bob.get_current_hand_size() == 5, "Invalid: Must be 5 cards in a hand, not %i" % bob.get_current_hand_size()
+
+    
     print "\n...Printing Bob's hand via the show_hand() method.....\n"
     bob.show_hand()
     
@@ -251,12 +270,13 @@ def main():
     
     print "Number of hands listed in the HISTORY of Commands:\t{}\n".format(bob.get_list_of_players_hands_size())
     
-    print "CARD:\t{}".format(bob.get_hand().get_cards()[0].print_card())
-    position = 2
+    #print "CARD:\t{}".format(bob.get_hand().get_cards()[0].print_card())
+    #position = 2
     #print "CARD POSITION:\t{} is {}".format(position,   bob.get_card_at_index(position))
     
     bob.show_hand_ver1()
-    
+
+    #print bob.toString() 
     
     
             

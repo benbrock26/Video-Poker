@@ -1,0 +1,114 @@
+LDA
+
+https://spacy.io/#getting-started
+
+https://conda.io/docs/_downloads/conda-cheatsheet.pdf
+
+
+conda create --clone py35 --name py35-2
+
+conda create --clone py27_gensim --name py27_gensim_spacy
+
+conda create --clone py27_gensim_spacy --name py27_gensim_spacy_vader
+
+conda create --clone py36_tweet --name py36_tweet_spacy
+
+conda create --clone py36_tweet_spacy --name py36_tweet_gensim_spacy
+
+https://spacy.io/usage/
+
+conda install -c spacy spacy
+
+conda install -c conda-forge spacy
+
+conda uninstall spacy
+
+MUST RUN AS ADMINISTRATOR
+https://www.sevenforums.com/tutorials/11841-run-administrator.html
+python -m spacy download en
+
+python -m spacy.en.download
+python -m spacy.en.download
+
+
+
+(C:\Users\Ben Brock\Anaconda3\envs\py27_gensim_spacy) C:\Users\Ben Brock>python -m spacy download en
+Collecting https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.0.0/en_core_web_sm-2.0.0.tar.gz
+  Downloading https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.0.0/en_core_web_sm-2.0.0.tar.gz (37.4MB)
+    100% |################################| 37.4MB 3.8MB/s
+Installing collected packages: en-core-web-sm
+  Running setup.py install for en-core-web-sm ... done
+Successfully installed en-core-web-sm-2.0.0
+You do not have sufficient privilege to perform this operation.
+
+    Linking successful
+    C:\Users\Ben
+    Brock\Anaconda3\envs\py27_gensim_spacy\lib\site-packages\en_core_web_sm
+    --> C:\Users\Ben
+    Brock\Anaconda3\envs\py27_gensim_spacy\lib\site-packages\spacy\data\en
+
+    You can now load the model via spacy.load('en')
+
+
+(C:\Users\Ben Brock\Anaconda3\envs\py27_gensim_spacy) C:\
+
+
+conda env remove --name py36
+
+
+conda env remove --name py27_gensim_spacy
+
+
+gensim
+python 2.7 and python 3.X
+
+https://radimrehurek.com/gensim/install.html
+
+easy_install -U gensim
+pip install --upgrade gensim
+
+
+https://spacy.io
+https://spacy.io/usage/
+
+https://demos.explosion.ai/displacy
+
+https://web.archive.org/web/20151025005315/http://spacy.io/docs/
+
+
+VADER: (Valence Aware Dictionary and sEntiment Reasoner)
+The best way to understand VADER is to look at the source code
+
+(Although it is a little unpolished) https://github.com/cjhutto/vaderSentiment
+
+Also see the actual dictionary at https://github.com/cjhutto/vaderSentiment/blob/master/vaderSentiment/vader_sentiment_lexicon.txt.
+
+You can install the code using pip install vaderSentiment but it might be better to download it so you can more easily modify it.
+
+Dictionary was created using human ratings:
+http://comp.social.gatech.edu/papers/icwsm14.vader.hutto.pdf
+
+
+LDA pyLDAvis
+http://pyldavis.readthedocs.io/en/latest/
+
+
+Query DBPEDIA
+http://dbpedia.org/snorql
+
+Use SPQRQL
+  - https://www.w3.org/TR/rdf-sparql-query/
+
+SPARQL from Python
+ - https://rdflib.github.io/sparqlwrapper/
+
+
+ Example:
+ PREFIX dbo: <http://dbpedia.org/ontology/>
+SELECT ?date WHERE{
+<http://dbpedia.org/resource/Paul_Newman>dbo:birthDate ?date
+}
+
+http://wit.istc.cnr.it/stlab-tools/fred/fredlib
+
+safariqueue
