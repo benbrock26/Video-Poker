@@ -6,3 +6,4 @@ This should be very interesting!!!
 ## Required Packages:
 	Run following command to install required package
 	prompt>conda install colour
+	promot>conda install pil

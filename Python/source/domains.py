@@ -3,6 +3,7 @@
 # Define Classes related to Poker game here
 
 from colour import Color
+from random import shuffle
 
 card_suits = ['Spade','Diamond','Heart','Club']
 card_values = [2,3,4,5,6,7,8,9,10,'Joker','Queen','King','Ace']
@@ -36,6 +37,7 @@ class Deck:
             print (str(card))
             
     def shuffle(self):
-        print ('Shuffle functionality is not implemented yet')
+        for i in range(0,5):
+            shuffle(self.deck)
     
             
