@@ -862,8 +862,8 @@ def main():
     jacks_or_better_command.setTotalPokerHandCardValue(sum(values))
     
     players_current_round_of_poker_hands = []
-    players_current_round_of_poker_hands.append(royal_flush_command)
-    players_current_round_of_poker_hands.append(royal_flush_command_1)
+    #players_current_round_of_poker_hands.append(royal_flush_command)
+    #players_current_round_of_poker_hands.append(royal_flush_command_1)
     players_current_round_of_poker_hands.append(straight_command)
     players_current_round_of_poker_hands.append(straight_flush_command)
     players_current_round_of_poker_hands.append(straight_flush_command1)
@@ -959,7 +959,7 @@ def main():
     
     
     print "\n\nSTYLE 1 SEARCH BASED ON SEARCH FOR EXACT ROYAL_FLUSH_HAND\n"
-    
+
     winner_command_type, winning_poker_hand = determine_the_winning_poker_royal_flush_hand(sort_ordered_hands_by_poker_hand_rank)
     
     if winner_command_type == None:
@@ -977,6 +977,13 @@ def main():
           
             
     print "\n\nSTYLE 1 SEARCH BASED ON ORDERING OF THE HIGHEST RANKED DATA IN THE LIST\n"
+    
+        
+    print "\nSORTED LIST BASED ON STYLE 1 OF USING SORTED COMMAND\n"
+    sort_ordered_hands_by_poker_hand_rank = sorted(players_current_round_of_poker_hands, 
+                     key=lambda command: command.get_rank(), 
+                     reverse=False)
+    
     
     winner_command_type, winning_poker_hands = determine_the_winning_poker_hand(sort_ordered_hands_by_poker_hand_rank)
     
@@ -1141,6 +1148,10 @@ def main():
 #    
 #    print "FIRST ITEM is {}:".format(first.getCommandName())
 
+'''
+Update this function to return the winner and loser poker hands.  
+This would make life so convenient.
+'''
 
 def determine_number_of_winning_poker_hands(winning_poker_hand, ordered_list_of_player_poker_hand_commands):
     
