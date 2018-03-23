@@ -592,6 +592,9 @@ class Poker(object):
             
     def determine_players_poker_hand_winner(self):
         
+        winner = []
+        losers = []
+        
         if debug == 1:
             for hand in self.__players_current_round_of_poker_hands:
                 print hand
@@ -621,6 +624,12 @@ class Poker(object):
                 
                 winner =  winning_poker_hands[0]
                 losers = winning_poker_hands[1:]
+                
+                '''
+                This code should work too!!!
+                winner =  sort_ordered_hands_by_poker_hand_rank[0]
+                losers = sort_ordered_hands_by_poker_hand_rank[1:]
+                '''
                 
                 print "\n\n **** WINNING COMMAND POKER HAND TYPE IS {} ****".format(winner_command_type)
                 print " **** THE NUMBER OF {} WINNERS is {}".format(winner_command_type, len(winning_poker_hands))
